@@ -39,7 +39,7 @@
 						<a class="nav-link" href="../open-account-page/open-account.jsp">Open Account</a>
 					</li>
 					<li id="check-balance">
-						<a class="nav-link" href="../balance-page/balance.jsp">Check Balance</a>
+						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
@@ -57,7 +57,7 @@
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
 					<li id="close-account">
-						<a class="nav-link" href="../close-account/close-account.jsp">Close Account</a>
+						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav show-right">
@@ -129,11 +129,11 @@
 						<button type="submit" class="btn btn-success">Login</button>
 						
 					</div>
-					<br>
 					<% 
 						status = (String) request.getSession().getAttribute("success");
 						if (status != null) {
 					%>
+					<br>
 				    <div class="valid-status-container">
 				    	<%
 							out.println(status);
@@ -145,6 +145,7 @@
 						status = (String) request.getSession().getAttribute("otherException");
 						if (status != null) {
 					%>
+					<br>
 				    <div class="invalid-status-container">
 				    	<%
 							out.println(status);

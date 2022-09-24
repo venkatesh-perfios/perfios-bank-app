@@ -15,11 +15,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Signup</title>
+		<title>Withdraw</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="signup.css">
+		<link rel="stylesheet" href="withdraw.css">
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -45,7 +45,7 @@
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
 					<li id="withdraw">
-						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
+						<a class="nav-link" href="withdraw.jsp">Withdraw</a>
 					</li>
 					<li id="transfer">
 						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
@@ -66,7 +66,7 @@
 						if (!isLoggedIn) {
 					%>
 					<li id="signup">
-						<a class="nav-link" href="signup.jsp">Signup</a>
+						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 					</li>
 					<li id="login">
 						<a class="nav-link" href="../login-page/login.jsp">Login</a>
@@ -87,62 +87,55 @@
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
-					<h2 class="card-header">Lets Get Started!</h2>
+					<h2 class="card-header">Withdraw Here!</h2>
 				</div>
-				<form action="signup" method="post">
-					<div class="form-group">
-						<label for="exampleInputUsername" class="card-title">Username</label>
+				<form action="withdraw" method="post">
 						<% 
-							status = (String) request.getSession().getAttribute("usernameException");
+							status = (String) request.getSession().getAttribute("authenticationException");
 							if (status == null) {
 						%>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						</div>
+						<br>
 						<%
 							} else {
 						%>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
-					    <div class="invalid-feedback">
-					    	<%
-								out.println(status);
-					    	%>
-					    </div>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>	
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						    <div class="invalid-feedback">
+						    	<%
+									out.println(status);
+						    	%>
+						    </div>
+						</div>
+						<br>
 						<%
 							}
 						%>
-					</div>
-					<br>
 					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
+						<label for="exampleInputAmount">Withdraw Amount</label>
 						<% 
-							status = (String) request.getSession().getAttribute("passwordException");
+							status = (String) request.getSession().getAttribute("amountException");
 							if (status == null) {
 						%>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleAmount" placeholder="Enter your amount to withdraw" required>
 						<%
 							} else {
 						%>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
-					    <div class="invalid-feedback">
-					    	<%
-								out.println(status);
-					    	%>
-					    </div>
-						<%
-							}
-						%>
-					</div>
-					<br>
-					<div class="form-group">
-						<label for="exampleInputReenterPassword" class="card-title">Re-enter Password</label>
-						<% 
-							status = (String) request.getSession().getAttribute("reenterPasswordException");
-							if (status == null) {
-						%>
-						<input type="password" name="reenteredPassword" value="<%= (request.getParameter("reenteredPassword") == null) ? "" : request.getParameter("reenteredPassword") %>" class="form-control" id="exampleInputReenterPassword" placeholder="Re-enter your password" required>
-						<%
-							} else {
-						%>
-						<input type="password" name="reenteredPassword" value="<%= (request.getParameter("reenteredPassword") == null) ? "" : request.getParameter("reenteredPassword") %>" class="form-control is-invalid" id="exampleInputReenterPassword" placeholder="Re-enter your password" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleAmount" placeholder="Enter your amount to withdraw" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -154,8 +147,7 @@
 					</div>
 					<br>
 					<div class="btn-container">
-						<button type="submit" class="btn btn-success">Signup</button>
-						
+						<button type="submit" class="btn btn-success">Withdraw</button>
 					</div>
 					<% 
 						status = (String) request.getSession().getAttribute("success");

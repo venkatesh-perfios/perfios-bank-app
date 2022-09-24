@@ -46,5 +46,5 @@ li {
 
 .invalid-status-container {
 	text-align: center;
-	color: green;
+	color: red;
 }

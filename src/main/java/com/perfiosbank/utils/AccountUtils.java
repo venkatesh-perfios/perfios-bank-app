@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class AccountUtils {
     public static boolean isAccountNotFound(User userInSession) throws SQLException, ClassNotFoundException {
-        String getAccountNumberSql = "select Account_Number from Accounts where " + "Username='" + 
+        String getAccountNumberSql = "select Account_Number from Accounts where Username='" + 
         		userInSession.getUsername() + "'";
         Statement statement = DatabaseUtils.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(getAccountNumberSql);

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
+import com.perfiosbank.deposit.DepositService;
 import com.perfiosbank.exceptions.AadhaarInvalidException;
 import com.perfiosbank.exceptions.AccountAlreadyExistsException;
 import com.perfiosbank.exceptions.AccountNotFoundException;
@@ -15,6 +16,7 @@ import com.perfiosbank.exceptions.BelowMinBalanceException;
 import com.perfiosbank.exceptions.PanInvalidException;
 import com.perfiosbank.exceptions.PhoneInvalidException;
 import com.perfiosbank.model.AccountInfo;
+import com.perfiosbank.model.DepositWithdrawInfo;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.AccountUtils;
 import com.perfiosbank.utils.AuthenticationUtils;
@@ -53,9 +55,9 @@ public class OpenAccountService {
 		}
 		
 		if (AccountUtils.isAmountInvalid(accountInfo.getAmount())) {
-			msg = "Please enter a valid amount! Here are some tips:\n" +
-			  "1. Don't enter any alphabet or special character\n" +
-			  "2. Don't enter 0 as the amount to deposit\n" +
+			msg = "Please enter a valid amount! Here are some tips:<br>" +
+			  "1. Don't enter any alphabet or special character<br>" +
+			  "2. Don't enter 0 as the amount to deposit<br>" +
 			  "3. Don't enter more than 2 numbers after the decimal point";
 			throw new AmountInvalidException(msg);
 		}
@@ -71,11 +73,11 @@ public class OpenAccountService {
 			throw new Exception();
 		}
 
-//		DepositWithdrawInfo depositInfo = new DepositWithdrawInfo();
-//		depositInfo.setUsername(enteredDetails.getUsername());
-//		depositInfo.setPassword(enteredDetails.getPassword());
-//		depositInfo.setAmount(accountInfo.getAmount());
-//		new Deposit().depositMoney(userInSession, depositInfo, statement);
+		DepositWithdrawInfo depositInfo = new DepositWithdrawInfo();
+		depositInfo.setUsername(enteredDetails.getUsername());
+		depositInfo.setPassword(enteredDetails.getPassword());
+		depositInfo.setAmount(accountInfo.getAmount());
+		new DepositService().depositMoney(userInSession, depositInfo);
 		
 		return newAccountNumber;
 	}

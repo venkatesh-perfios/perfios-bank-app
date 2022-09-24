@@ -59,7 +59,7 @@
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
 					<li id="close-account">
-						<a class="nav-link" href="../close-account/close-account.jsp">Close Account</a>
+						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav show-right">

@@ -61,8 +61,9 @@ public class OpenAccountController extends HttpServlet {
         
         try {
         	OpenAccountService openAccountService = new OpenAccountService();
-        	openAccountService.openAccount(userInSession, enteredDetails, accountInfo);
-			request.getSession().setAttribute("success", "You have opened an account successfully!");
+        	String accountNumber = openAccountService.openAccount(userInSession, enteredDetails, accountInfo);
+			request.getSession().setAttribute("success", "You have opened an account successfully! "
+					+ "Here's your account number: " + accountNumber);
         } catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
         } catch(AadhaarInvalidException aadhaarInvalidException) {
@@ -77,6 +78,7 @@ public class OpenAccountController extends HttpServlet {
 		} catch(AccountAlreadyExistsException | AccountNotFoundException accountExceptions) {
 			request.getSession().setAttribute("otherException", accountExceptions.getMessage());
 		} catch(Exception e) {
+			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to open your account at the moment! Try again later.");
 		} finally {
 			RequestDispatcher rd = request.getRequestDispatcher("open-account.jsp");

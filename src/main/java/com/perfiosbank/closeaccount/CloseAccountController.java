@@ -1,4 +1,4 @@
-package com.perfiosbank.login;
+package com.perfiosbank.closeaccount;
 
 import java.io.IOException;
 
@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.SessionUtils;
 
-@WebServlet("/login-page/login")
-public class LoginController extends HttpServlet {
+@WebServlet("/close-account-page/close-account")
+public class CloseAccountController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,6 +23,10 @@ public class LoginController extends HttpServlet {
 		request.getSession().setAttribute("refresh", false);
 		
 		response.setContentType("text/html");
+
+		User userInSession = new User();
+		userInSession.setUsername((String) request.getSession().getAttribute("usernameInSession"));
+		userInSession.setPassword((String) request.getSession().getAttribute("passwordInSession"));
 		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -31,19 +36,18 @@ public class LoginController extends HttpServlet {
 		enteredDetails.setPassword(password);
 		
 		try {
-			LoginService loginService = new LoginService();
-			User userInNewSession = loginService.loginUser(enteredDetails);
-			request.getSession().setAttribute("success", "You have logged in successfully!");
-			request.getSession().setAttribute("isLoggedIn", true);
-			request.getSession().setAttribute("usernameInSession", userInNewSession.getUsername());
-			request.getSession().setAttribute("passwordInSession", userInNewSession.getPassword());
+			CloseAccountService closeAccountService = new CloseAccountService();
+			closeAccountService.closeAccount(userInSession, enteredDetails);
+			request.getSession().setAttribute("success", "You have closed your account successfully!");
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
+        } catch(AccountNotFoundException accountNotFoundException) {
+			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
 		} catch(Exception e) {
-			request.getSession().setAttribute("otherException", "Unable to login at the moment! Try again later.");
+			request.getSession().setAttribute("otherException", "Unable to close your account money at the moment! Try again later.");
 		} finally {
-			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("close-account.jsp");
 			rd.include(request, response);
-		}
+		} 
 	}
 }

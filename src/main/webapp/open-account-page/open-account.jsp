@@ -39,7 +39,7 @@
 						<a class="nav-link" href="open-account.jsp">Open Account</a>
 					</li>
 					<li id="check-balance">
-						<a class="nav-link" href="../balance-page/balance.jsp">Check Balance</a>
+						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
@@ -57,7 +57,7 @@
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
 					<li id="close-account">
-						<a class="nav-link" href="../close-account/close-account.jsp">Close Account</a>
+						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav show-right">
@@ -209,11 +209,11 @@
 							status = (String) request.getSession().getAttribute("amountException");
 							if (status == null) {
 						%>
-						<input type="number" name="amount" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleAmount" placeholder="Enter your amount to deposit" required>
 						<%
 							} else {
 						%>
-						<input type="number" name="amount" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleAmount" placeholder="Enter your amount to deposit" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -226,13 +226,12 @@
 					<br>
 					<div class="btn-container">
 						<button type="submit" class="btn btn-success">Open Account</button>
-						
 					</div>
-					<br>
 					<% 
 						status = (String) request.getSession().getAttribute("success");
 						if (status != null) {
 					%>
+					<br>
 				    <div class="valid-status-container">
 				    	<%
 							out.println(status);
@@ -244,6 +243,7 @@
 						status = (String) request.getSession().getAttribute("otherException");
 						if (status != null) {
 					%>
+					<br>
 				    <div class="invalid-status-container">
 				    	<%
 							out.println(status);
