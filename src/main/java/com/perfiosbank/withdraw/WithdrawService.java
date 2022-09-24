@@ -55,7 +55,7 @@ public class WithdrawService {
         }
 
         String date = DateTimeUtils.getCurrentDateTime();
-        if (WithdrawDao.withdrawMoney(withdrawInfo, date, newBalance) != 1) {
+        if (WithdrawDao.withdrawMoney(withdrawInfo.getUsername(), date, withdrawInfo.getAmount(), newBalance) != 1) {
 			throw new Exception();
         }
     }

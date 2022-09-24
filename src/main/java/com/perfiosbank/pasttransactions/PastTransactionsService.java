@@ -1,4 +1,4 @@
-package com.perfiosbank.checkbalance;
+package com.perfiosbank.pasttransactions;
 
 import com.perfiosbank.exceptions.AccountNotFoundException;
 
@@ -9,8 +9,8 @@ import com.perfiosbank.utils.AuthenticationUtils;
 
 import java.sql.ResultSet;
 
-public class CheckBalanceService {
-    public double checkBalance(User userInSession, User enteredDetails) 
+public class PastTransactionsService {
+    public ResultSet viewPastTransactions(User userInSession, User enteredDetails) 
     		throws AuthenticationFailedException, AccountNotFoundException, Exception {
         String msg;
 
@@ -20,12 +20,10 @@ public class CheckBalanceService {
         }
 
         if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please open an account before checking its balance!";
+            msg = "Please create an account before viewing your transactions!";
             throw new AccountNotFoundException(msg);
         }
 
-        ResultSet resultSet = CheckBalanceDao.getCurrentBalance(userInSession.getUsername());
-
-        return resultSet.next() ? resultSet.getDouble(1) : 0.0;
+        return PastTransactionsDao.getPastTransactions(userInSession.getUsername());
     }
 }

@@ -15,11 +15,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Deposit</title>
+		<title>Change Password</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="deposit.css">
+		<link rel="stylesheet" href="change-password.css">
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -42,7 +42,7 @@
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
-						<a class="nav-link" href="deposit.jsp">Deposit</a>
+						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
 					<li id="withdraw">
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
@@ -54,7 +54,7 @@
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
 					</li>
 					<li id="change-password">
-						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
+						<a class="nav-link" href="change-password.jsp">Change Password</a>
 					</li>
 					<li id="close-account">
 						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
@@ -87,9 +87,9 @@
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
-					<h2 class="card-header">Deposit Here!</h2>
+					<h2 class="card-header">Change Your Password Here!</h2>
 				</div>
-				<form action="deposit" method="post">
+				<form action="change-password" method="post">
 					<% 
 						status = (String) request.getSession().getAttribute("authenticationException");
 						if (status == null) {
@@ -100,8 +100,8 @@
 					</div>
 					<br>
 					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						<label for="exampleInputCurrentPassword" class="card-title">Password</label>
+						<input type="password" name="currentPassword" value="<%= (request.getParameter("currentPassword") == null) ? "" : request.getParameter("currentPassword") %>" class="form-control" id="exampleInputCurrentPassword" aria-describedby="passwordHelp" placeholder="Enter your current password" required>
 					</div>
 					<br>
 					<%
@@ -113,9 +113,9 @@
 					</div>	
 					<br>
 					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
-					    <div class="invalid-feedback">
+						<label for="exampleInputCurrentPassword" class="card-title">Password</label>
+						<input type="password" name="currentPassword" value="<%= (request.getParameter("currentPassword") == null) ? "" : request.getParameter("currentPassword") %>" class="form-control is-invalid" id="exampleInputCurrentPassword" aria-describedby="passwordHelp" placeholder="Enter your current password" required>
+						<div class="invalid-feedback">
 					    	<%
 								out.println(status);
 					    	%>
@@ -126,16 +126,37 @@
 						}
 					%>
 					<div class="form-group">
-						<label for="exampleInputAmount">Deposit Amount</label>
+						<label for="exampleInputNewPassword" class="card-title">New Password</label>
 						<% 
-							status = (String) request.getSession().getAttribute("amountException");
+							status = (String) request.getSession().getAttribute("newPasswordException");
 							if (status == null) {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
+						<input type="password" name="newPassword" value="<%= (request.getParameter("newPassword") == null) ? "" : request.getParameter("newPassword") %>" class="form-control" id="exampleInputNewPassword" aria-describedby="passwordHelp" placeholder="Enter your new password" required>
 						<%
 							} else {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
+						<input type="password" name="newPassword" value="<%= (request.getParameter("newPassword") == null) ? "" : request.getParameter("newPassword") %>" class="form-control is-invalid" id="exampleInputNewPassword" aria-describedby="passwordHelp" placeholder="Enter your new password" required>
+					    <div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
+					</div>
+					<br>
+					<div class="form-group">
+						<label for="exampleInputReenterPassword" class="card-title">Re-enter Password</label>
+						<% 
+							status = (String) request.getSession().getAttribute("reenterPasswordException");
+							if (status == null) {
+						%>
+						<input type="password" name="reenteredPassword" value="<%= (request.getParameter("reenteredPassword") == null) ? "" : request.getParameter("reenteredPassword") %>" class="form-control" id="exampleInputReenterPassword" placeholder="Re-enter your new password" required>
+						<%
+							} else {
+						%>
+						<input type="password" name="reenteredPassword" value="<%= (request.getParameter("reenteredPassword") == null) ? "" : request.getParameter("reenteredPassword") %>" class="form-control is-invalid" id="exampleInputReenterPassword" placeholder="Re-enter your new password" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -147,7 +168,8 @@
 					</div>
 					<br>
 					<div class="btn-container">
-						<button type="submit" class="btn btn-success">Deposit</button>
+						<button type="submit" class="btn btn-success">Change Password</button>
+						
 					</div>
 					<% 
 						status = (String) request.getSession().getAttribute("success");

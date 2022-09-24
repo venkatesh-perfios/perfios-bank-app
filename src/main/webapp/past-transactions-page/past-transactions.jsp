@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="com.perfiosbank.utils.SessionUtils" %>
+<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
 	String toHighlight = request.getRequestURI().split("/")[3];
@@ -15,11 +15,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Deposit</title>
+		<title>Past Transactions</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="deposit.css">
+		<link rel="stylesheet" href="past-transactions.css">
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -42,7 +42,7 @@
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
-						<a class="nav-link" href="deposit.jsp">Deposit</a>
+						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
 					<li id="withdraw">
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
@@ -51,7 +51,7 @@
 						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
 					</li>
 					<li id="past-transactions">
-						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
+						<a class="nav-link" href="past-transactions.jsp">View Past Transactions</a>
 					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
@@ -84,70 +84,54 @@
 			</div>
 		</nav>
 
+		<%
+			ResultSet resultSet = (ResultSet) request.getSession().getAttribute("pastTransactions");
+			if (resultSet == null) {
+		%>
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
-					<h2 class="card-header">Deposit Here!</h2>
+					<h2 class="card-header">View Your Past Transactions Here!</h2>
 				</div>
-				<form action="deposit" method="post">
-					<% 
-						status = (String) request.getSession().getAttribute("authenticationException");
-						if (status == null) {
-					%>
-					<div class="form-group">
-						<label for="exampleInputUsername" class="card-title">Username</label>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
-					</div>
-					<br>
-					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
-					</div>
-					<br>
-					<%
-						} else {
-					%>
-					<div class="form-group">
-						<label for="exampleInputUsername" class="card-title">Username</label>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
-					</div>	
-					<br>
-					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
-					    <div class="invalid-feedback">
-					    	<%
-								out.println(status);
-					    	%>
-					    </div>
-					</div>
-					<br>
-					<%
-						}
-					%>
-					<div class="form-group">
-						<label for="exampleInputAmount">Deposit Amount</label>
+				<form action="past-transactions" method="post">
 						<% 
-							status = (String) request.getSession().getAttribute("amountException");
+							status = (String) request.getSession().getAttribute("authenticationException");
 							if (status == null) {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						</div>
+						<br>
 						<%
 							} else {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
-					    <div class="invalid-feedback">
-					    	<%
-								out.println(status);
-					    	%>
-					    </div>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>	
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						    <div class="invalid-feedback">
+						    	<%
+									out.println(status);
+						    	%>
+						    </div>
+						</div>
+						<br>
 						<%
 							}
 						%>
-					</div>
-					<br>
 					<div class="btn-container">
-						<button type="submit" class="btn btn-success">Deposit</button>
+						<button type="submit" class="btn btn-success">View Past Transactions</button>
+						
 					</div>
 					<% 
 						status = (String) request.getSession().getAttribute("success");
@@ -177,6 +161,66 @@
 				</form>
 			</div>
 		</div>
+		<%
+			} else {
+		%>
+		<div class="card center">
+			<div class="card-body">
+				<%
+					if (!resultSet.next()) {
+				%>
+					<div class="title-container">
+						<h2 class="card-header">There are no transactions to display!</h2>
+					</div>
+				<%
+					} else {
+				%>
+					<div class="title-container">
+						<h2 class="card-header">Here You Go!</h2>
+					</div>
+					<table class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr class="table-dark">
+								<th scope="col">Date and Time</th>
+								<th scope="col">Type</th>
+								<th scope="col">Amount</th>
+								<th scope="col">Balance</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%
+							do {
+								if (resultSet.getString(2).equals("D")) {
+						%>
+							    <tr class="table-success">
+							      <td><%= resultSet.getString(1) %></td>
+							      <td><%= resultSet.getString(2) %></td>
+							      <td><%= resultSet.getDouble(3) %></td>
+							      <td><%= resultSet.getDouble(4) %></td>
+							    </tr>
+						<%
+								} else {
+						%>
+							    <tr class="table-danger">
+							      <td><%= resultSet.getString(1) %></td>
+							      <td><%= resultSet.getString(2) %></td>
+							      <td><%= resultSet.getDouble(3) %></td>
+							      <td><%= resultSet.getDouble(4) %></td>
+							    </tr>
+						<%
+								}
+							} while (resultSet.next());
+						%>
+						</tbody>
+					</table>
+				<%
+					}
+				%>
+			</div>
+		</div>
+		<%
+			}
+		%>
 
 		<script type="text/javascript">
 			function highlight(toHighlight) {

@@ -45,7 +45,7 @@ public class DepositService {
         double currentBalance = checkBalance.checkBalance(userInSession, enteredDetails);
         double newBalance = currentBalance + depositInfo.getAmount();
         String date = DateTimeUtils.getCurrentDateTime();
-        if (DepositDao.depositMoney(depositInfo, date, newBalance) != 1) {
+        if (DepositDao.depositMoney(depositInfo.getUsername(), date, depositInfo.getAmount(), newBalance) != 1) {
 			throw new Exception();
         }
     }

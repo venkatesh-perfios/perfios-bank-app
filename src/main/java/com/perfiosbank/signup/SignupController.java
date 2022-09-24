@@ -37,6 +37,7 @@ public class SignupController extends HttpServlet {
 		try {
 			SignupService signupService = new SignupService();
 			signupService.signupUser(user, reenteredPassword);
+			
 			request.getSession().setAttribute("success", "You have signed up successfully!");
 			request.getSession().setAttribute("isLoggedIn", true);
 			request.getSession().setAttribute("usernameInSession", username);

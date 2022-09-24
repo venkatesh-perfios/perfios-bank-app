@@ -188,11 +188,11 @@
 							status = (String) request.getSession().getAttribute("phoneException");
 							if (status == null) {
 						%>
-						<input type="number" name="phone" value="<%= (request.getParameter("phone") == null) ? "" : request.getParameter("phone") %>" class="form-control" id="examplePhone" placeholder="Enter your phone number" required>
+						<input type="number" name="phone" value="<%= (request.getParameter("phone") == null) ? "" : request.getParameter("phone") %>" class="form-control" id="exampleInputPhone" placeholder="Enter your phone number" required>
 						<%
 							} else {
 						%>
-						<input type="number" name="phone" value="<%= (request.getParameter("phone") == null) ? "" : request.getParameter("phone") %>" class="form-control is-invalid" id="examplePhone" placeholder="Enter your phone number" required>
+						<input type="number" name="phone" value="<%= (request.getParameter("phone") == null) ? "" : request.getParameter("phone") %>" class="form-control is-invalid" id="exampleInputPhone" placeholder="Enter your phone number" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -209,11 +209,11 @@
 							status = (String) request.getSession().getAttribute("amountException");
 							if (status == null) {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
 						<%
 							} else {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);

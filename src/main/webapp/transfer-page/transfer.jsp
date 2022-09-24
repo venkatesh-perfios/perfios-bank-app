@@ -15,11 +15,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Deposit</title>
+		<title>Transfer</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="deposit.css">
+		<link rel="stylesheet" href="transfer.css">
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -42,13 +42,13 @@
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
-						<a class="nav-link" href="deposit.jsp">Deposit</a>
+						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
 					<li id="withdraw">
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
 					<li id="transfer">
-						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
+						<a class="nav-link" href="transfer.jsp">Transfer</a>
 					</li>
 					<li id="past-transactions">
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
@@ -87,55 +87,76 @@
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
-					<h2 class="card-header">Deposit Here!</h2>
+					<h2 class="card-header">Transfer Here!</h2>
 				</div>
-				<form action="deposit" method="post">
-					<% 
-						status = (String) request.getSession().getAttribute("authenticationException");
-						if (status == null) {
-					%>
+				<form action="transfer" method="post">
+						<% 
+							status = (String) request.getSession().getAttribute("authenticationException");
+							if (status == null) {
+						%>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						</div>
+						<br>
+						<%
+							} else {
+						%>
+						<div class="form-group">
+							<label for="exampleInputUsername" class="card-title">Username</label>
+							<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
+						</div>	
+						<br>
+						<div class="form-group">
+							<label for="exampleInputPassword" class="card-title">Password</label>
+							<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						    <div class="invalid-feedback">
+						    	<%
+									out.println(status);
+						    	%>
+						    </div>
+						</div>
+						<br>
+						<%
+							}
+						%>
 					<div class="form-group">
-						<label for="exampleInputUsername" class="card-title">Username</label>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
-					</div>
-					<br>
-					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
-					</div>
-					<br>
-					<%
-						} else {
-					%>
-					<div class="form-group">
-						<label for="exampleInputUsername" class="card-title">Username</label>
-						<input type="text" name="username" value="<%= (request.getParameter("username") == null) ? "" : request.getParameter("username") %>" class="form-control is-invalid" id="exampleInputUsername" aria-describedby="usernameHelp" placeholder="Enter your username" required>
-					</div>	
-					<br>
-					<div class="form-group">
-						<label for="exampleInputPassword" class="card-title">Password</label>
-						<input type="password" name="password" value="<%= (request.getParameter("password") == null) ? "" : request.getParameter("password") %>" class="form-control is-invalid" id="exampleInputPassword" aria-describedby="passwordHelp" placeholder="Enter your password" required>
+						<label for="exampleInputTarget">Target Account Number</label>
+						<% 
+							status = (String) request.getSession().getAttribute("targetException");
+							if (status == null) {
+						%>
+						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control" id="exampleInputTarget" placeholder="Enter the target account number to trasfer your money into" required>
+						<%
+							} else {
+						%>
+						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control is-invalid" id="exampleInputTarget" placeholder="Enter the target account number to trasfer your money into" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
 					    	%>
 					    </div>
+						<%
+							}
+						%>
 					</div>
 					<br>
-					<%
-						}
-					%>
 					<div class="form-group">
 						<label for="exampleInputAmount">Deposit Amount</label>
 						<% 
 							status = (String) request.getSession().getAttribute("amountException");
 							if (status == null) {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
 						<%
 							} else {
 						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleTargetAmount" placeholder="Enter your amount to deposit" required>
+						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -147,7 +168,7 @@
 					</div>
 					<br>
 					<div class="btn-container">
-						<button type="submit" class="btn btn-success">Deposit</button>
+						<button type="submit" class="btn btn-success">Transfer</button>
 					</div>
 					<% 
 						status = (String) request.getSession().getAttribute("success");
@@ -196,7 +217,7 @@
 				}
 			}
 			
-			highlight('<%= toHighlight %>');
+			highlight('transfer.jsp');
 		</script>
 	</body>
 </html>
