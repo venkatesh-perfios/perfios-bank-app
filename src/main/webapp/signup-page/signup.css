@@ -21,8 +21,9 @@ li {
     float: right;
 }
 
-.active {
-    background-color: lightgray;
+.navbar-dark .navbar-nav .nav-link:hover {
+    background-color: white;
+  	color: black;
 }
 
 .card {

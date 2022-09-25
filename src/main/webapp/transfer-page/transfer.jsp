@@ -28,7 +28,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="../landing-page/index.jsp">Perfios Bank</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -87,7 +87,7 @@
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
-					<h2 class="card-header">Transfer Here!</h2>
+					<h2 class="card-header">Transfer Money To Others Here!</h2>
 				</div>
 				<form action="transfer" method="post">
 						<% 
@@ -131,11 +131,11 @@
 							status = (String) request.getSession().getAttribute("targetException");
 							if (status == null) {
 						%>
-						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control" id="exampleInputTarget" placeholder="Enter the target account number to trasfer your money into" required>
+						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control" id="exampleInputTarget" placeholder="Enter the target account number to transfer your money into" required>
 						<%
 							} else {
 						%>
-						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control is-invalid" id="exampleInputTarget" placeholder="Enter the target account number to trasfer your money into" required>
+						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control is-invalid" id="exampleInputTarget" placeholder="Enter the target account number to transfer your money into" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);
@@ -207,7 +207,8 @@
 					return;
 				}
 				var li = document.getElementById(id);
-				li.className = "active"
+				li.style.backgroundColor = "white";
+				li.childNodes[0].nextSibling.style.color = "black";
 			}
 	
 			function deselect() {

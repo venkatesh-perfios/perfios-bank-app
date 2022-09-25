@@ -21,17 +21,18 @@ li {
     float: right;
 }
 
-.active {
-    background-color: lightgray;
-}
-
-.card-header {
-	color: green;
+.navbar-dark .navbar-nav .nav-link:hover {
+    background-color: white;
+  	color: black;
 }
 
 .card {
     width: 40%;
-    margin: 15% auto;
+    margin: 20% auto;
+}
+
+.card-header {
+	color: green;
 }
 
 .title-container {
