@@ -53,6 +53,9 @@
 					<li id="past-transactions">
 						<a class="nav-link" href="past-transactions.jsp">View Past Transactions</a>
 					</li>
+					<li id="fixed-deposit">
+						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
+					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>

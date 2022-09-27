@@ -44,7 +44,7 @@
 					<li>
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
-					<li>
+					<li>	
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
 					<li>
@@ -52,6 +52,9 @@
 					</li>
 					<li>
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
+					</li>
+					<li id="fixed-deposit">
+						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
 					<li>
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>

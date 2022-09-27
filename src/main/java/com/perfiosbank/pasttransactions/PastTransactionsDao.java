@@ -8,7 +8,7 @@ import com.perfiosbank.utils.DatabaseUtils;
 public class PastTransactionsDao {
 	public static ResultSet getPastTransactions(String username) throws Exception {
         String getPastTransactions = "select Date_and_Time, Type, Amount, Balance from Transactions "
-        		+ "where Username='" + username + "'";
+        		+ "where Username='" + username + "' order by Date_and_Time desc";
         Statement statement = DatabaseUtils.getConnection().createStatement();
         
         return statement.executeQuery(getPastTransactions);

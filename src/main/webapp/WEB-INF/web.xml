@@ -4,54 +4,19 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  
+  <listener>
+  	<listener-class>com.perfiosbank.fixeddeposit.ServerStateListener</listener-class>
+  </listener>
+  
   <servlet>
-  	<servlet-name>WithdrawController</servlet-name>
-  	<display-name>WithdrawController</display-name>
+  	<servlet-name>GetFixedDepositsController</servlet-name>
+  	<display-name>GetFixedDepositsController</display-name>
   	<description></description>
-  	<servlet-class>com.perfiosbank.withdraw.WithdrawController</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>CloseAccountController</servlet-name>
-  	<display-name>CloseAccountController</display-name>
-  	<description></description>
-  	<servlet-class>com.perfiosbank.closeaccount.CloseAccountController</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>TransferController</servlet-name>
-  	<display-name>TransferController</display-name>
-  	<description></description>
-  	<servlet-class>com.perfiosbank.transfer.TransferController</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>ChangePasswordController</servlet-name>
-  	<display-name>ChangePasswordController</display-name>
-  	<description></description>
-  	<servlet-class>com.perfiosbank.changepassword.ChangePasswordController</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>PastTransactionsController</servlet-name>
-  	<display-name>PastTransactionsController</display-name>
-  	<description></description>
-  	<servlet-class>com.perfiosbank.pasttransactions.PastTransactionsController</servlet-class>
+  	<servlet-class>com.perfiosbank.fixeddeposit.GetFixedDepositsController</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>WithdrawController</servlet-name>
-  	<url-pattern>/WithdrawController</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>CloseAccountController</servlet-name>
-  	<url-pattern>/CloseAccountController</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>TransferController</servlet-name>
-  	<url-pattern>/TransferController</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>ChangePasswordController</servlet-name>
-  	<url-pattern>/ChangePasswordController</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>PastTransactionsController</servlet-name>
-  	<url-pattern>/PastTransactionsController</url-pattern>
+  	<servlet-name>GetFixedDepositsController</servlet-name>
+  	<url-pattern>/GetFixedDepositsController</url-pattern>
   </servlet-mapping>
 </web-app>

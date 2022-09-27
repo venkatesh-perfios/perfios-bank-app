@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="com.perfiosbank.utils.SessionUtils" %>
+<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
-	request.getSession().setAttribute("isLoggedIn", false);
-	request.getSession().setAttribute("username", null);
-	request.getSession().setAttribute("password", null);
+	String toHighlight = "fixed-deposit";
 	String status;
 %>
 
@@ -17,11 +15,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Logout</title>
+		<title>Fixed Deposit</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="logout.css">
+		<link rel="stylesheet" href="fixed-deposit.css">
+		
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -30,7 +29,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="../landing-page/index.jsp">Perfios Bank</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -55,11 +54,14 @@
 					<li id="past-transactions">
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
 					</li>
+					<li id="fixed-deposit">
+						<a class="nav-link" href="../fixed-deposit/fixed-deposit.jsp">Fixed Deposit</a>
+					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
 					<li id="close-account">
-						<a class="nav-link" href="../close-account/close-account.jsp">Close Account</a>
+						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav show-right">
@@ -77,7 +79,7 @@
 						} else {
 					%>
 					<li id="logout">
-						<a class="nav-link" href="logout.jsp">Logout</a>
+						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
 					<%
 						}
@@ -86,12 +88,82 @@
 			</div>
 		</nav>
 
-		<div class="card center">
-			<div class="card-body">
-				<div class="title-container">
-					<h2 class="card-header">You have been logged out successfully!</h2>
+		<%
+			ResultSet resultSet = (ResultSet) request.getSession().getAttribute("fixedDeposits");
+			if (resultSet == null || !resultSet.next()) {
+		%>
+			<div class="card center" style="width: 45%; margin: 15% auto;">
+				<div class="card-body">
+					<div class="title-container">
+						<h2 class="card-header" style="color: red">You don't have any active FD account(s) at the moment!</h2>
+					</div>
+					<div class="">
+						<a href="fixed-deposit.jsp">Open a fixed deposit account now?</a>
+					</div>
 				</div>
 			</div>
-		</div>
+		<%
+			} else {
+		%>
+			<div class="card center">
+				<div class="card-body">
+					<div class="title-container">
+						<h2 class="card-header">Here You Go!</h2>
+					</div>
+					<table class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr class="table-dark">
+								<th scope="col">Principal Amount</th>
+								<th scope="col">End Date</th>
+								<th scope="col">Interest Rate</th>
+								<th scope="col">Maturity Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+						<%
+							do {
+						%>
+							    <tr>
+							      <td><%= resultSet.getDouble(3) %></td>
+							      <td><%= resultSet.getString(4) %></td>
+							      <td><%= resultSet.getDouble(5) %></td>
+							      <td><%= resultSet.getDouble(6) %></td>
+							    </tr>
+						<%
+							} while (resultSet.next());
+						%>
+						</tbody>
+					</table>
+					<br>
+					<div class="center">
+						<a href="fixed-deposit.jsp">Open another fixed deposit account?</a>
+					</div>
+				</div>
+			</div>
+		<%
+			}
+		%>
+
+		<script type="text/javascript">
+			function highlight(toHighlight) {
+				deselect();
+				var id = toHighlight.split(".")[0];
+				if (id === "index") {
+					return;
+				}
+				var li = document.getElementById(id);
+				li.style.backgroundColor = "white";
+				li.childNodes[0].nextSibling.style.color = "black";
+			}
+	
+			function deselect() {
+				var liElements = document.getElementsByTagName("li");
+				for (var li of liElements) {
+					li.className = ""
+				}
+			}
+			
+			highlight('<%= toHighlight %>');
+		</script>
 	</body>
 </html>

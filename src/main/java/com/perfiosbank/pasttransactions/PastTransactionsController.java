@@ -52,6 +52,6 @@ public class PastTransactionsController extends HttpServlet {
 		} finally {
 			RequestDispatcher rd = request.getRequestDispatcher("past-transactions.jsp");
 			rd.include(request, response);
-		}  
+		}
 	}
 }

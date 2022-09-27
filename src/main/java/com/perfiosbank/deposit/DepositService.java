@@ -36,8 +36,13 @@ public class DepositService {
             throw new AmountInvalidException(msg);
         }
 
-        if (depositInfo.getAmount() > 50000) {
-            msg = "You cannot deposit more than Rs. 50000 at a time!";
+        if (depositInfo.getAmount() < 1000) {
+            msg = "You cannot invest less than Rs. 1000 into fixed deposit!";
+            throw new AmountLimitReachedException(msg);
+        }
+
+        if (depositInfo.getAmount() > 150000) {
+            msg = "You cannot invest more than Rs. 150000 into fixed deposit!";
             throw new AmountLimitReachedException(msg);
         }
 

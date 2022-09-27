@@ -4,7 +4,7 @@
 <%@ page import="com.perfiosbank.utils.SessionUtils" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
-	String toHighlight = request.getRequestURI().split("/")[3];
+	String toHighlight = "fixed-deposit";
 	String status;
 %>
 
@@ -15,11 +15,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Transfer</title>
+		<title>Fixed Deposit</title>
 
 		<!-- Latest compiled and minified CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" href="transfer.css">
+		<link rel="stylesheet" href="fixed-deposit.css">
+		
 
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -48,13 +49,13 @@
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
 					<li id="transfer">
-						<a class="nav-link" href="transfer.jsp">Transfer</a>
+						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
 					</li>
 					<li id="past-transactions">
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
 					</li>
 					<li id="fixed-deposit">
-						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
+						<a class="nav-link" href="fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
@@ -87,12 +88,45 @@
 			</div>
 		</nav>
 
-		<div class="card center">
-			<div class="card-body">
-				<div class="title-container">
-					<h2 class="card-header">Transfer Money To Others Here!</h2>
+		<div class="main-container">
+			<div class="card center">
+				<div class="card-body" style="margin: 15%">
+					<h1>FD Interest Rates</h1>
+					<br>
+					<table class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr class="table-dark">
+								<th scope="col">Duration</th>
+								<th scope="col">Interest Rate</th>
+							</tr>
+						</thead>
+						<tbody>
+						    <tr>
+						      <td>7 days to 179 days</td>
+						      <td>3.90%</td>
+						    </tr>
+						    <tr>
+						      <td>180 days to 364 days</td>
+						      <td>4.60%</td>
+						    </tr>
+						    <tr>
+						      <td>365 days to 1824 days</td>
+						      <td>5.50%</td>
+						    </tr>
+						    <tr>
+						      <td>1825 days to 3650 days</td>
+						      <td>6.50%</td>
+						    </tr>
+					    </tbody>
+				    </table>
 				</div>
-				<form action="transfer" method="post">
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<div class="title-container">
+						<h2 class="card-header">Open Your FD Account Here!</h2>
+					</div>
+					<form action="fixed-deposit" method="post">
 						<% 
 							status = (String) request.getSession().getAttribute("authenticationException");
 							if (status == null) {
@@ -128,18 +162,69 @@
 						<%
 							}
 						%>
-					<div class="form-group">
-						<label for="exampleInputTarget">Target Account Number</label>
+						<div class="form-group">
+							<label for="exampleInputAmount">Fixed Deposit Amount</label>
+							<% 
+								status = (String) request.getSession().getAttribute("amountException");
+								if (status == null) {
+							%>
+							<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleTargetAmount" placeholder="Enter your amount to invest in fixed deposit" required>
+							<%
+								} else {
+							%>
+							<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleTargetAmount" placeholder="Enter your amount to invest in fixed deposit" required>
+						    <div class="invalid-feedback">
+						    	<%
+									out.println(status);
+						    	%>
+					    	</div>
+							<%
+								}
+							%>
+						</div>
+						<br>
+				        <div class="form-group col-lg-12 col-sm-6">
+				            <label for="endDate">End Date</label>
+							<% 
+								status = (String) request.getSession().getAttribute("endDateException");
+								if (status == null) {
+							%>
+				            <input name="endDate" id="endDate" class="form-control" value="<%= (request.getParameter("endDate") == null) ? "" : request.getParameter("endDate") %>" type="date" required/>
+							<%
+								} else {
+							%>
+				            <input name="endDate" id="endDate" class="form-control is-invalid" value="<%= (request.getParameter("endDate") == null) ? "" : request.getParameter("endDate") %>" type="date" required/>
+							<div class="invalid-feedback">
+						    	<%
+									out.println(status);
+						    	%>
+					    	</div>
+							<%
+								}
+							%>
+				        </div>
+						<br>
+						<div class="btn-container">
+							<button type="submit" class="btn btn-success">Open FD Account</button>
+						</div>
 						<% 
-							status = (String) request.getSession().getAttribute("targetException");
-							if (status == null) {
+							status = (String) request.getSession().getAttribute("success");
+							if (status != null) {
 						%>
-						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control" id="exampleInputTarget" placeholder="Enter the target account number to transfer your money into" required>
+						<br>
+					    <div class="valid-status-container">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
 						<%
-							} else {
+							}
+							
+							status = (String) request.getSession().getAttribute("otherException");
+							if (status != null) {
 						%>
-						<input type="text" name="target" value="<%= (request.getParameter("target") == null) ? "" : request.getParameter("target") %>" class="form-control is-invalid" id="exampleInputTarget" placeholder="Enter the target account number to transfer your money into" required>
-					    <div class="invalid-feedback">
+						<br>
+					    <div class="invalid-status-container">
 					    	<%
 								out.println(status);
 					    	%>
@@ -147,65 +232,27 @@
 						<%
 							}
 						%>
+					</form>
+					<br>
+					<div class="center">
+						<a href="/PerfiosBank/GetFixedDepositsController">View your fixed deposits instead?</a>
 					</div>
-					<br>
-					<div class="form-group">
-						<label for="exampleInputAmount">Deposit Amount</label>
-						<% 
-							status = (String) request.getSession().getAttribute("amountException");
-							if (status == null) {
-						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
-						<%
-							} else {
-						%>
-						<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
-					    <div class="invalid-feedback">
-					    	<%
-								out.println(status);
-					    	%>
-					    </div>
-						<%
-							}
-						%>
-					</div>
-					<br>
-					<div class="btn-container">
-						<button type="submit" class="btn btn-success">Transfer</button>
-					</div>
-					<% 
-						status = (String) request.getSession().getAttribute("success");
-						if (status != null) {
-					%>
-					<br>
-				    <div class="valid-status-container">
-				    	<%
-							out.println(status);
-				    	%>
-				    </div>
-					<%
-						}
-						
-						status = (String) request.getSession().getAttribute("otherException");
-						if (status != null) {
-					%>
-					<br>
-				    <div class="invalid-status-container">
-				    	<%
-							out.println(status);
-				    	%>
-				    </div>
-					<%
-						}
-					%>
-				</form>
+				</div>
 			</div>
 		</div>
 
 		<script type="text/javascript">
+			var endDate = document.getElementById('endDate');
+	
+			endDate.addEventListener('change', (e) => {
+				var endDateVal = e.target.value;
+			  	document.getElementById('endDateSelected').innerText = endDateVal;
+			})  
+		
 			function highlight(toHighlight) {
 				deselect();
 				var id = toHighlight.split(".")[0];
+				console.log(id);
 				if (id === "index") {
 					return;
 				}
@@ -221,7 +268,7 @@
 				}
 			}
 			
-			highlight('transfer.jsp');
+			highlight('<%= toHighlight %>');
 		</script>
 	</body>
 </html>
