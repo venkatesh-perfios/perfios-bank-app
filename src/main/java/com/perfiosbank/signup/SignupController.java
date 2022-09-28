@@ -1,8 +1,8 @@
 package com.perfiosbank.signup;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +13,7 @@ import com.perfiosbank.exceptions.InvalidPasswordException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.exceptions.UsernameAlreadyExistsException;
 import com.perfiosbank.exceptions.UsernameTooLongException;
+import com.perfiosbank.login.LoginDao;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.SessionUtils;
 
@@ -37,22 +38,36 @@ public class SignupController extends HttpServlet {
 		try {
 			SignupService signupService = new SignupService();
 			signupService.signupUser(user, reenteredPassword);
+
+			ResultSet resultSet = LoginDao.getAccountCountByUsername(username);
+			if (resultSet == null) {
+				throw new Exception();
+			}
+			
+			resultSet.next();
+			if (resultSet.getInt(1) == 0) {
+				request.getSession().setAttribute("isAccountOpened", false);
+			} else {
+				request.getSession().setAttribute("isAccountOpened", true);
+			}
 			
 			request.getSession().setAttribute("success", "You have signed up successfully!");
 			request.getSession().setAttribute("isLoggedIn", true);
 			request.getSession().setAttribute("usernameInSession", username);
 			request.getSession().setAttribute("passwordInSession", password);
+			response.sendRedirect("/PerfiosBank/landing-page/index.jsp");
 		} catch(UsernameAlreadyExistsException | UsernameTooLongException usernameException) {
 			request.getSession().setAttribute("usernameException", usernameException.getMessage());
+			response.sendRedirect("signup.jsp");
 		} catch (InvalidPasswordException passwordException) {
 			request.getSession().setAttribute("passwordException", passwordException.getMessage());
+			response.sendRedirect("signup.jsp");
 		} catch(PasswordMismatchException reenterPasswordException) {
 			request.getSession().setAttribute("reenterPasswordException", reenterPasswordException.getMessage());
+			response.sendRedirect("signup.jsp");
 		} catch (Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to signup at the moment! Try again later.");
-		} finally {
-			RequestDispatcher rd = request.getRequestDispatcher("signup.jsp");
-			rd.include(request, response);
+			response.sendRedirect("signup.jsp");
 		}
 	}
 }

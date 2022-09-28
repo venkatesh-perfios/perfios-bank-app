@@ -40,6 +40,7 @@ public class OpenAccountController extends HttpServlet {
 		String password = request.getParameter("password");
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
+		int age = Integer.parseInt(request.getParameter("age"));
 		long aadhaar = Long.parseLong(request.getParameter("aadhaar"));
 		String pan = request.getParameter("pan");
 		String address = request.getParameter("address");
@@ -53,6 +54,7 @@ public class OpenAccountController extends HttpServlet {
 		AccountInfo accountInfo = new AccountInfo();
         accountInfo.setFirstName(firstName);
         accountInfo.setLastName(lastName);
+        accountInfo.setAge(age);
         accountInfo.setAadhaar(aadhaar);
         accountInfo.setPan(pan);
         accountInfo.setAddress(address);
@@ -64,6 +66,7 @@ public class OpenAccountController extends HttpServlet {
         	String accountNumber = openAccountService.openAccount(userInSession, enteredDetails, accountInfo);
 			request.getSession().setAttribute("success", "You have opened an account successfully! "
 					+ "Here's your account number: " + accountNumber);
+			request.getSession().setAttribute("isAccountOpened", true);
         } catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
         } catch(AadhaarInvalidException aadhaarInvalidException) {

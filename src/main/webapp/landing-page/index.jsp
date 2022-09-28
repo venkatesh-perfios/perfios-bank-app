@@ -34,56 +34,75 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
+				<% 
+					Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+					if (!isLoggedIn) {
+				%>
 				<ul class="navbar-nav mx-auto">
+				</ul>
+				<ul class="navbar-nav show-right">
+					<li id="signup">
+						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
+					</li>
+					<li id="login">
+						<a class="nav-link" href="../login-page/login.jsp">Login</a>
+					</li>
+				</ul>
+				<%
+					} else {
+					Boolean isAccountOpened = (Boolean) request.getSession().getAttribute("isAccountOpened");
+					if (!isAccountOpened) {
+				%>
+				<ul class="navbar-nav mx-auto">				
 					<li>
 						<a class="nav-link" href="../open-account-page/open-account.jsp">Open Account</a>
 					</li>
-					<li>
+				</ul>
+				
+				<ul class="navbar-nav show-right">
+					<li id="logout">
+						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
+					</li>
+				</ul>
+				<%
+					} else {
+				%>
+				<ul class="navbar-nav mx-auto">
+					<li id="check-balance">
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
-					<li>
+					<li id="deposit">
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
-					<li>	
+					<li id="withdraw">	
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
-					<li>
+					<li id="transfer">
 						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
 					</li>
-					<li>
+					<li id="past-transactions">
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
 					</li>
 					<li id="fixed-deposit">
 						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
-					<li>
+					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
-					<li>
+					<li id="close-account">
 						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
+				
 				<ul class="navbar-nav show-right">
-					<% 
-						Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
-						if (!isLoggedIn) {
-					%>
-					<li>
-						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
-					</li>
-					<li>
-						<a class="nav-link" href="../login-page/login.jsp">Login</a>
-					</li>
-					<%
-						} else {
-					%>
-					<li>
+					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
-					<%
-						}
-					%>
 				</ul>
+				<%
+					}
+				}
+				%>
 			</div>
 		</nav>
 
@@ -94,8 +113,14 @@
                         <h1>Welcome to Perfios Bank!</h1>
                         <p class="lead">Access our banking services at your fingertips</p>
                         <p class="lead">Anytime</p>
-                        <p class="lead">Anywhere</p>
+                        <p class="lead">Anywhere</p>  
+						<% 
+							if (!isLoggedIn) {
+						%>
                         <p><a href="../signup-page/signup.jsp" class="btn btn-primary shadow mr-2">Signup</a>&nbsp&nbsp&nbsp<a href="../login-page/login.jsp" class="btn btn-primary shadow mr-2">Login</a></p>
+                        <%
+							}
+                        %>
                     </div>
                 	<div class="col-lg-6 order-1 order-lg-2"><img src="../images/logo_all.png" class="logo-all" alt="landing image" class="img-fluid"></div>
             	</div>
@@ -230,4 +255,3 @@
 		</script>
 	</body>
 </html>
-    

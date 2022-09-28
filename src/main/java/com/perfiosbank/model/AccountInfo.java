@@ -3,6 +3,7 @@ package com.perfiosbank.model;
 public class AccountInfo {
     private String firstName;
     private String lastName;
+    private int age;
     private long aadhaar;
     private String pan;
     private String address;
@@ -25,6 +26,14 @@ public class AccountInfo {
         this.lastName = lastName;
     }
 
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
     public long getAadhaar() {
         return aadhaar;
     }

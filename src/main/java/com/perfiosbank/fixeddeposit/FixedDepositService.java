@@ -1,5 +1,6 @@
 package com.perfiosbank.fixeddeposit;
 
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -82,7 +83,7 @@ public class FixedDepositService {
             throw new BelowMinBalanceException(msg);
         }
         
-        fixedDepositInfo.setInterestRate(getInterestRate(differenceInDays));
+        fixedDepositInfo.setInterestRate(getInterestRate(userInSession.getUsername(), differenceInDays));
         fixedDepositInfo.setMaturityAmount(getMaturityAmount(fixedDepositInfo, differenceInDays));
         
         if (WithdrawDao.withdrawMoney(fixedDepositInfo.getUsername(), DateTimeUtils.getCurrentDateTime(), 
@@ -118,20 +119,43 @@ public class FixedDepositService {
     	return newBalance < 0;
     }
     
-    private double getInterestRate(long differenceInDays) {
-    	if (differenceInDays >= 7 && differenceInDays <= 179) {
-    		return 3.90;
-    	} else if (differenceInDays >= 180 && differenceInDays <= 364) {
-    		return 4.60;
-    	} else if (differenceInDays >= 365 && differenceInDays <= 1824) {
-    		return 5.50;
+    private double getInterestRate(String username, long differenceInDays) throws Exception {
+    	int age;
+    	ResultSet resultSet = FixedDepositDao.getAgeByUsername(username);
+    	if (!resultSet.next()) {
+    		throw new Exception();
     	} else {
-    		return 6.50;
+    		age = resultSet.getInt(1);
+    	}
+    	
+    	if (age < 60) {
+	    	if (differenceInDays >= 7 && differenceInDays <= 179) {
+	    		return 3.90;
+	    	} else if (differenceInDays >= 180 && differenceInDays <= 364) {
+	    		return 4.60;
+	    	} else if (differenceInDays >= 365 && differenceInDays <= 1824) {
+	    		return 5.50;
+	    	} else {
+	    		return 6.50;
+	    	}
+    	} else {
+	    	if (differenceInDays >= 7 && differenceInDays <= 179) {
+	    		return 4.40;
+	    	} else if (differenceInDays >= 180 && differenceInDays <= 364) {
+	    		return 5.10;
+	    	} else if (differenceInDays >= 365 && differenceInDays <= 1824) {
+	    		return 6.00;
+	    	} else {
+	    		return 7.00;
+	    	}
     	}
     } 
     
     private double getMaturityAmount(FixedDepositInfo fixedDepositInfo, long differenceInDays) {
+    	System.out.println(1 + fixedDepositInfo.getInterestRate() / 100);
+    	System.out.println(differenceInDays);
+    	System.out.println(differenceInDays / 365.0);
     	return fixedDepositInfo.getPrincipal() * Math.pow(1 + fixedDepositInfo.getInterestRate() / 100, 
-    			differenceInDays / 365);
+    			differenceInDays / 365.0);
     }
 }

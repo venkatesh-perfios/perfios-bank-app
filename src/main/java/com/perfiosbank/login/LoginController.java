@@ -1,8 +1,8 @@
 package com.perfiosbank.login;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,17 +34,29 @@ public class LoginController extends HttpServlet {
 		try {
 			LoginService loginService = new LoginService();
 			User userInNewSession = loginService.loginUser(enteredDetails);
+
+			ResultSet resultSet = LoginDao.getAccountCountByUsername(username);
+			if (resultSet == null) {
+				throw new Exception();
+			}
+			
+			resultSet.next();
+			if (resultSet.getInt(1) == 0) {
+				request.getSession().setAttribute("isAccountOpened", false);
+			} else {
+				request.getSession().setAttribute("isAccountOpened", true);
+			}
 			request.getSession().setAttribute("success", "You have logged in successfully!");
 			request.getSession().setAttribute("isLoggedIn", true);
 			request.getSession().setAttribute("usernameInSession", userInNewSession.getUsername());
 			request.getSession().setAttribute("passwordInSession", userInNewSession.getPassword());
+			response.sendRedirect("/PerfiosBank/landing-page/index.jsp");
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
+			response.sendRedirect("login.jsp");
 		} catch(Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to login at the moment! Try again later.");
-		} finally {
-			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-			rd.include(request, response);
+			response.sendRedirect("login.jsp");
 		}
 	}
 }

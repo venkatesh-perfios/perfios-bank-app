@@ -34,17 +34,47 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
+				<% 
+					Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+					if (!isLoggedIn) {
+				%>
 				<ul class="navbar-nav mx-auto">
-					<li id="open-account">
+				</ul>
+				<ul class="navbar-nav show-right">
+					<li id="signup">
+						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
+					</li>
+					<li id="login">
+						<a class="nav-link" href="../login-page/login.jsp">Login</a>
+					</li>
+				</ul>
+				<%
+					} else {
+					Boolean isAccountOpened = (Boolean) request.getSession().getAttribute("isAccountOpened");
+					if (!isAccountOpened) {
+				%>
+				<ul class="navbar-nav mx-auto">				
+					<li>
 						<a class="nav-link" href="open-account.jsp">Open Account</a>
 					</li>
+				</ul>
+				
+				<ul class="navbar-nav show-right">
+					<li id="logout">
+						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
+					</li>
+				</ul>
+				<%
+					} else {
+				%>
+				<ul class="navbar-nav mx-auto">
 					<li id="check-balance">
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
 					<li id="deposit">
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
-					<li id="withdraw">
+					<li id="withdraw">	
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
 					<li id="transfer">
@@ -63,30 +93,19 @@
 						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
+				
 				<ul class="navbar-nav show-right">
-					<% 
-						Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
-						if (!isLoggedIn) {
-					%>
-					<li id="signup">
-						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
-					</li>
-					<li id="login">
-						<a class="nav-link" href="../login-page/login.jsp">Login</a>
-					</li>
-					<%
-						} else {
-					%>
 					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
-					<%
-						}
-					%>
 				</ul>
+				<%
+					}
+				}
+				%>
 			</div>
 		</nav>
-
+	
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
@@ -139,6 +158,27 @@
 					</div>
 					<br>
 					<div class="form-group">
+						<label for="exampleInputAge">Age</label>
+						<% 
+							status = (String) request.getSession().getAttribute("ageException");
+							if (status == null) {
+						%>
+						<input type="number" name="age" min="18" max="125" step="1" pattern="\d+" value="<%= (request.getParameter("age") == null) ? "" : request.getParameter("age") %>" class="form-control" id="exampleInputAge" placeholder="Enter your age" required>
+						<%
+							} else {
+						%>
+						<input type="number" name="age" min="18" max="125" step="1" pattern="\d+" value="<%= (request.getParameter("age") == null) ? "" : request.getParameter("age") %>" class="form-control is-invalid" id="exampleInputAge" placeholder="Enter your age" required>
+					    <div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
+					</div>
+					<br>
+					<div class="form-group">
 						<label for="exampleInputAadhaar">Aadhaar Number</label>
 						<% 
 							status = (String) request.getSession().getAttribute("aadhaarException");
@@ -148,7 +188,7 @@
 						<%
 							} else {
 						%>
-						<input type="text" name="aadhaar" value="<%= (request.getParameter("aadhaar") == null) ? "" : request.getParameter("aadhaar") %>" class="form-control is-invalid" id="exampleInputAadhaar" placeholder="Enter your aadhaar number" required>
+						<input type="number" name="aadhaar" value="<%= (request.getParameter("aadhaar") == null) ? "" : request.getParameter("aadhaar") %>" class="form-control is-invalid" id="exampleInputAadhaar" placeholder="Enter your aadhaar number" required>
 					    <div class="invalid-feedback">
 					    	<%
 								out.println(status);

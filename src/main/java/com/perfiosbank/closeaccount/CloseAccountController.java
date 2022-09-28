@@ -39,6 +39,7 @@ public class CloseAccountController extends HttpServlet {
 			CloseAccountService closeAccountService = new CloseAccountService();
 			closeAccountService.closeAccount(userInSession, enteredDetails);
 			request.getSession().setAttribute("success", "You have closed your account successfully!");
+			request.getSession().setAttribute("isAccountOpened", false);
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
         } catch(AccountNotFoundException accountNotFoundException) {
