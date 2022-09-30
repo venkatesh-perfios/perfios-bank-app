@@ -15,4 +15,12 @@ public class TransferDao {
         
         return statement.executeQuery(getAccountByAccountNumberSql);
 	}
+
+	public static ResultSet getAccountByUsername(String username) throws Exception {
+        String getAccountByUsernameSql = "select * from " + ACCOUNTS_TABLE_NAME + " where " + 
+        		"Username='" + username + "'";
+        Statement statement = DatabaseUtils.getConnection().createStatement();
+        
+        return statement.executeQuery(getAccountByUsernameSql);
+	}
 }

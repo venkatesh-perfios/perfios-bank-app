@@ -182,16 +182,16 @@
 								</div>
 								<br>
 								<div class="form-group">
-									<label for="exampleInputAmount">Deposit Amount</label>
+									<label for="exampleInputAmount">Transfer Amount</label>
 									<% 
 										status = (String) request.getSession().getAttribute("amountException");
 										if (status == null) {
 									%>
-									<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
+									<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control" id="exampleInputAmount" placeholder="Enter your amount to transfer" required>
 									<%
 										} else {
 									%>
-									<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleInputAmount" placeholder="Enter your amount to deposit" required>
+									<input type="number" name="amount" step=".01" value="<%= (request.getParameter("amount") == null) ? "" : request.getParameter("amount") %>" class="form-control is-invalid" id="exampleInputAmount" placeholder="Enter your amount to transfer" required>
 								    <div class="invalid-feedback">
 								    	<%
 											out.println(status);
@@ -244,6 +244,12 @@
 		</div>
 
 		<script type="text/javascript">
+		    function preventBack() { 
+		    	window.history.forward(); 
+		    }
+		    setTimeout("preventBack()", 0);
+	   		window.onunload = function () { null };
+    
 			function highlight(toHighlight) {
 				deselect();
 				var id = toHighlight.split(".")[0];

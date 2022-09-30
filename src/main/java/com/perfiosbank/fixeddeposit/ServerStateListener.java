@@ -40,7 +40,7 @@ public class ServerStateListener implements ServletContextListener {
             		.withIdentity("trigger1", "group1")
             		.startNow()
       	            .withSchedule(simpleSchedule()
-      	            		.withIntervalInSeconds(86400)
+      	            		.withIntervalInSeconds(20)
       	            		.repeatForever())
       	            .build();
             

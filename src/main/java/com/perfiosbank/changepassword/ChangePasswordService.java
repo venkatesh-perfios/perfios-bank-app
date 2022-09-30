@@ -3,7 +3,7 @@ package com.perfiosbank.changepassword;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.exceptions.InvalidPasswordException;
-
+import com.perfiosbank.exceptions.NewPasswordSameAsCurrentException;
 import com.perfiosbank.model.User;
 
 import com.perfiosbank.utils.AuthenticationUtils;
@@ -12,13 +12,18 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class ChangePasswordService {
     public User changePassword(User userInSession, User enteredDetails, String newPassword, 
-    		String reenteredNewPassword) throws InvalidPasswordException, PasswordMismatchException, 
+    		String reenteredNewPassword) throws NewPasswordSameAsCurrentException, InvalidPasswordException, PasswordMismatchException, 
     		AuthenticationFailedException, Exception {
         String msg;
 
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
+        }
+        
+        if (isNewPasswordSameAsCurrent(newPassword, enteredDetails.getPassword())) {
+        	msg = "Your new password is the same as the current password!";
+        	throw new NewPasswordSameAsCurrentException(msg);
         }
 
         if (isPasswordInvalid(newPassword)) {
@@ -45,6 +50,10 @@ public class ChangePasswordService {
         return userInSession;
     }
 
+    private boolean isNewPasswordSameAsCurrent(String newPassword, String currentPassword) {
+    	return newPassword.equals(currentPassword);
+    }
+    
     private boolean isPasswordInvalid(String password) {
         String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
         return !password.matches(pattern);

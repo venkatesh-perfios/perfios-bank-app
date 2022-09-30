@@ -164,6 +164,7 @@
 										}
 									%>
 								<br>
+								<br>
 								<div class="btn-container">
 									<button type="submit" class="btn btn-success">View Past Transactions</button>
 									
@@ -270,6 +271,12 @@
 		</div>
 		
 		<script type="text/javascript">
+		    function preventBack() { 
+		    	window.history.forward(); 
+		    }
+		    setTimeout("preventBack()", 0);
+		    window.onunload = function () { null };
+    
 			function highlight(toHighlight) {
 				deselect();
 				var id = toHighlight.split(".")[0];

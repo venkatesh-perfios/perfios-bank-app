@@ -12,13 +12,6 @@ public class OpenAccountDao {
 	private static final String TABLE_NAME = "Accounts";
 	
 	public static int openAccount(String newAccountNumber, User userInSession, AccountInfo accountInfo) throws Exception {
-//		String openAccountSql = "insert into " + TABLE_NAME + " values('" + newAccountNumber + "', '" +
-//				userInSession.getUsername() + "', " + accountInfo.getUploadedFiles().get("photo") + ", '" + 
-//				accountInfo.getFirstName() + "', '" + accountInfo.getLastName() + "', " + 
-//				accountInfo.getAge() + ", " + accountInfo.getAadhaar() + ", " + 
-//				accountInfo.getUploadedFiles().get("aadhaarProof") + ", '" + accountInfo.getPan() + "', " +
-//				accountInfo.getUploadedFiles().get("panProof") + ", '" + accountInfo.getAddress() + "', " + 
-//				accountInfo.getPhone() + ", " + accountInfo.getAmount() + ", 'Pending')";
 		String openAccountSql = "insert into " + TABLE_NAME + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement preparedStatement = DatabaseUtils.getConnection().prepareStatement(openAccountSql);
 		preparedStatement.setString(1, newAccountNumber);

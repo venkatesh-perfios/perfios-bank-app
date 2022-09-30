@@ -16,8 +16,8 @@ public class TransferService {
     String targetUsername;
 
     public void transferMoney(User userInSession, TransferInfo transferInfo) 
-    		throws AuthenticationFailedException, AccountNotFoundException, AmountInvalidException, 
-    		AmountLimitReachedException, BelowMinBalanceException, Exception {
+    		throws AuthenticationFailedException, AccountNotFoundException, TargetAccountNumberSameAsUserException, 
+    		AmountInvalidException, AmountLimitReachedException, BelowMinBalanceException, Exception {
         String msg;
         
         User enteredDetails = new User();
@@ -34,6 +34,17 @@ public class TransferService {
             throw new AccountNotFoundException(msg);
         }
 
+        if (isTargetAccountNumberNotFound(transferInfo.getTargetAccountNumber())) {
+            msg = "The account number " + transferInfo.getTargetAccountNumber() + " doesn't exist! Re-check "
+            		+ "your entered target account number.";
+            throw new AccountNotFoundException(msg);
+        }
+        
+        if (isTargetAccountNumberSameAsUser(userInSession.getUsername(), transferInfo.getTargetAccountNumber())) {
+        	msg = "The target account number is the same as your account number! Do a deposit instead.";
+        	throw new TargetAccountNumberSameAsUserException(msg);
+        }
+
         if (AccountUtils.isAmountInvalid(transferInfo.getAmount())) {
             msg = "Please enter a valid amount! Here are some tips:\n" +
                     "1. Don't enter any alphabet or special character\n" +
@@ -45,12 +56,6 @@ public class TransferService {
         if (transferInfo.getAmount() > 1000000) {
             msg = "You cannot transfer more than Rs. 1000000 at a time!";
             throw new AmountLimitReachedException(msg);
-        }
-
-        if (isTargetAccountNumberNotFound(transferInfo.getTargetAccountNumber())) {
-            msg = "The account number " + transferInfo.getTargetAccountNumber() + " doesn't exist! Re-check "
-            		+ "your entered target account number.";
-            throw new AccountNotFoundException(msg);
         }
 
         ResultSet resultSet = CheckBalanceDao.getCurrentBalance(userInSession.getUsername());
@@ -97,6 +102,15 @@ public class TransferService {
             targetUsername = resultSet.getString(2);
             return false;
         }
+    }
+    
+    private boolean isTargetAccountNumberSameAsUser(String username, String targetAccountNumber) 
+    		throws Exception {
+    	ResultSet resultSet = TransferDao.getAccountByUsername(username);
+    	resultSet.next();
+    	String userAccountNumber = resultSet.getString("Account_Number");
+    	
+    	return userAccountNumber.equals(targetAccountNumber);
     }
     
     private boolean isBalanceInsufficient(double newBalance) {
