@@ -45,7 +45,10 @@
 						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 					</li>
 					<li id="login">
-						<a class="nav-link" href="../login-page/login.jsp">Login</a>
+						<a class="nav-link" href="../login-page/login.jsp">User Login</a>
+					</li>
+					<li id="admin-login">
+						<a class="nav-link" href="../admin-login-page/admin-login.jsp">Admin Login</a>
 					</li>
 				</ul>
 				<%
@@ -85,6 +88,9 @@
 					</li>
 					<li id="fixed-deposit">
 						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
+					</li>
+					<li id="car-loan">
+						<a class="nav-link" href="../car-loan-page/car-loan.jsp">Car Loan</a>
 					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
@@ -220,17 +226,10 @@
 			</button>
 		</div>
 
-		<div class="bg-dark text-white">
-			<div class="footer-container">
-				<div class="row">
-					<div class="col-md-7 text-md-left">
-						<p class="mb-md-0">(C) 2022 Perfios Bank. All rights reserved. </p>
-					</div>
-					<div class="col-md-5 text-md-right">
-                    	<p class="mb-0 credits">Made with <span style="color: #e25555;">❤</span> by Venkatesh</p>
-					</div>
-	            </div>
-	        </div>
+
+		<div class="bg-dark text-white footer-container">
+			<span>(C) 2022 Perfios Bank. All rights reserved. </span>
+               <span class="show-right">Made with <span style="color: #e25555;">❤</span> by Venkatesh</span>
 	    </div>
 
 		<script type="text/javascript">
@@ -240,6 +239,7 @@
 				if (id === "index") {
 					return;
 				}
+				var li = document.getElementById(id);
 				li.style.backgroundColor = "white";
 				li.childNodes[0].nextSibling.style.color = "black";
 			}

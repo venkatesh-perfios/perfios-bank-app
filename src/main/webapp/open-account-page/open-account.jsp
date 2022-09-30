@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="com.perfiosbank.utils.SessionUtils" %>
+<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet,
+	com.perfiosbank.openaccount.OpenAccountDao" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
 	String toHighlight = request.getRequestURI().split("/")[3];
@@ -54,7 +55,7 @@
 					if (!isAccountOpened) {
 				%>
 				<ul class="navbar-nav mx-auto">				
-					<li>
+					<li id="open-account">
 						<a class="nav-link" href="open-account.jsp">Open Account</a>
 					</li>
 				</ul>
@@ -86,6 +87,9 @@
 					<li id="fixed-deposit">
 						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
+					<li id="car-loan">
+						<a class="nav-link" href="../car-loan-page/car-loan.jsp">Car Loan</a>
+					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
@@ -106,12 +110,18 @@
 			</div>
 		</nav>
 	
+		<%
+			ResultSet resultSet = OpenAccountDao.getPendingAccountByUsername(
+					(String) request.getSession().getAttribute("usernameInSession"));
+			boolean ans = resultSet.next();
+			if(!ans) {
+		%>
 		<div class="card center">
 			<div class="card-body">
 				<div class="title-container">
 					<h2 class="card-header">Open Your Account Here!</h2>
 				</div>
-				<form action="open-account" method="post">
+				<form action="open-account" method="post" enctype="multipart/form-data">
 						<% 
 							status = (String) request.getSession().getAttribute("authenticationException");
 							if (status == null) {
@@ -147,6 +157,27 @@
 						<%
 							}
 						%>
+					<div class="form-group">
+						<label for="inputGroupFile02" class="card-title">Photograph (in .pdf format)</label>
+						<% 
+							status = (String) request.getSession().getAttribute("photoException");
+							if (status == null) {
+						%>
+						<input type="file" name="photo" class="form-control" id="inputGroupFile02" required>
+						<%
+							} else {
+						%>
+						<input type="file" name="photo" class="form-control is-invalid" id="inputGroupFile02" required>
+						<div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
+					</div>
+					<br>
 					<div class="form-group">
 						<label for="exampleInputFirstName">First Name</label>
 						<input type="text" name="firstName" value="<%= (request.getParameter("firstName") == null) ? "" : request.getParameter("firstName") %>" class="form-control" id="exampleInputFirstName" aria-describedby="firstNameHelp" placeholder="Enter your first name" required>
@@ -200,6 +231,27 @@
 					</div>
 					<br>
 					<div class="form-group">
+						<label for="inputGroupFile02" class="card-title">Aadhaar Proof (in .pdf format)</label>
+						<% 
+							status = (String) request.getSession().getAttribute("aadhaarProofException");
+							if (status == null) {
+						%>
+						<input type="file" name="aadhaarProof" class="form-control" id="inputGroupFile02" required>
+						<%
+							} else {
+						%>
+						<input type="file" name="aadhaarProof" class="form-control is-invalid" id="inputGroupFile02" required>
+						<div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
+					</div>
+					<br>
+					<div class="form-group">
 						<label for="exampleInputPan">PAN</label>
 						<% 
 							status = (String) request.getSession().getAttribute("panException");
@@ -211,6 +263,27 @@
 						%>
 						<input type="text" name="pan" value="<%= (request.getParameter("pan") == null) ? "" : request.getParameter("pan") %>" class="form-control is-invalid" id="examplePan" placeholder="Enter your PAN" required>
 					    <div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
+					</div>
+					<br>
+					<div class="form-group">
+						<label for="inputGroupFile02" class="card-title">PAN Proof (in .pdf format)</label>
+						<% 
+							status = (String) request.getSession().getAttribute("panProofException");
+							if (status == null) {
+						%>
+						<input type="file" name="panProof" class="form-control" id="inputGroupFile02" required>
+						<%
+							} else {
+						%>
+						<input type="file" name="panProof" class="form-control is-invalid" id="inputGroupFile02" required>
+						<div class="invalid-feedback">
 					    	<%
 								out.println(status);
 					    	%>
@@ -270,19 +343,7 @@
 					<div class="btn-container">
 						<button type="submit" class="btn btn-success">Open Account</button>
 					</div>
-					<% 
-						status = (String) request.getSession().getAttribute("success");
-						if (status != null) {
-					%>
-					<br>
-				    <div class="valid-status-container">
-				    	<%
-							out.println(status);
-				    	%>
-				    </div>
 					<%
-						}
-						
 						status = (String) request.getSession().getAttribute("otherException");
 						if (status != null) {
 					%>
@@ -298,6 +359,23 @@
 				</form>
 			</div>
 		</div>
+		<%
+			} else {
+		%>
+		<div class="card center" style="width: 50%; margin-top: 15%">
+			<div class="card-body">
+				<div class="title-container">
+					<h2 class="card-header">
+						Here's your temporary account number: <%= resultSet.getString(1) %>. 
+						It will become your permanent account number upon approval from our side. 
+						If rejected, your account will be automatically deleted.
+					</h2>
+				</div>
+			</div>
+		</div>
+		<%
+			}
+		%>
 
 		<script type="text/javascript">
 			function highlight(toHighlight) {

@@ -152,9 +152,6 @@ public class FixedDepositService {
     } 
     
     private double getMaturityAmount(FixedDepositInfo fixedDepositInfo, long differenceInDays) {
-    	System.out.println(1 + fixedDepositInfo.getInterestRate() / 100);
-    	System.out.println(differenceInDays);
-    	System.out.println(differenceInDays / 365.0);
     	return fixedDepositInfo.getPrincipal() * Math.pow(1 + fixedDepositInfo.getInterestRate() / 100, 
     			differenceInDays / 365.0);
     }

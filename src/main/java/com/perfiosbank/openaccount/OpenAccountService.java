@@ -2,10 +2,10 @@ package com.perfiosbank.openaccount;
 
 import java.sql.ResultSet;
 
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import com.perfiosbank.deposit.DepositService;
 import com.perfiosbank.exceptions.AadhaarInvalidException;
 import com.perfiosbank.exceptions.AccountAlreadyExistsException;
 import com.perfiosbank.exceptions.AccountNotFoundException;
@@ -13,10 +13,10 @@ import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.BelowMinBalanceException;
+import com.perfiosbank.exceptions.FileInvalidException;
 import com.perfiosbank.exceptions.PanInvalidException;
 import com.perfiosbank.exceptions.PhoneInvalidException;
 import com.perfiosbank.model.AccountInfo;
-import com.perfiosbank.model.DepositWithdrawInfo;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.AccountUtils;
 import com.perfiosbank.utils.AuthenticationUtils;
@@ -25,7 +25,7 @@ public class OpenAccountService {
     public String openAccount(User userInSession, User enteredDetails, AccountInfo accountInfo) 
     		throws AccountAlreadyExistsException, AccountNotFoundException, AadhaarInvalidException, 
     		PanInvalidException, PhoneInvalidException, AmountInvalidException, BelowMinBalanceException, 
-    		AuthenticationFailedException, AmountLimitReachedException, Exception {
+    		AuthenticationFailedException, AmountLimitReachedException, FileInvalidException, Exception {
 		String msg;
 			
 		if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
@@ -67,17 +67,26 @@ public class OpenAccountService {
 			throw new BelowMinBalanceException(msg);
 		}
 		
+        for (String filename : accountInfo.getUploadedFilenames()) {
+        	String type = filename.split(",")[0];
+        	String actualFilename = filename.split(",")[1];
+	        if (isFilenameInvalid(actualFilename)) {
+	        	msg = type + ", Please upload a pdf file!";
+	        	throw new FileInvalidException(msg);
+	        }
+        }
+		
 		String newAccountNumber = generateAccountNumber();
 		
 		if (OpenAccountDao.openAccount(newAccountNumber, userInSession, accountInfo) != 1) {
 			throw new Exception();
 		}
 
-		DepositWithdrawInfo depositInfo = new DepositWithdrawInfo();
-		depositInfo.setUsername(enteredDetails.getUsername());
-		depositInfo.setPassword(enteredDetails.getPassword());
-		depositInfo.setAmount(accountInfo.getAmount());
-		new DepositService().depositMoney(userInSession, depositInfo);
+//		DepositWithdrawInfo depositInfo = new DepositWithdrawInfo();
+//		depositInfo.setUsername(enteredDetails.getUsername());
+//		depositInfo.setPassword(enteredDetails.getPassword());
+//		depositInfo.setAmount(accountInfo.getAmount());
+//		new DepositService().depositMoney(userInSession, depositInfo);
 		
 		return newAccountNumber;
 	}
@@ -157,4 +166,8 @@ public class OpenAccountService {
 	private boolean isPhoneInvalid(long phone) {
 		return !Pattern.matches("^\\d{10}$", Long.toString(phone));
 	}
+
+	private boolean isFilenameInvalid(String filename) {
+		return !(filename.substring(filename.length() - 3).equals("pdf"));
+	}	
 }

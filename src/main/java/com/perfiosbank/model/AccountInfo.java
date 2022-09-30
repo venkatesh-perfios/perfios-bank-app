@@ -1,5 +1,8 @@
 package com.perfiosbank.model;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class AccountInfo {
     private String firstName;
     private String lastName;
@@ -9,8 +12,26 @@ public class AccountInfo {
     private String address;
     private long phone;
     private double amount;
+	HashMap<String, byte[]> uploadedFiles;
+	List<String> uploadedFilenames;
 
-    public String getFirstName() {
+    public HashMap<String, byte[]> getUploadedFiles() {
+		return uploadedFiles;
+	}
+
+	public void setUploadedFiles(HashMap<String, byte[]> uploadedFiles) {
+		this.uploadedFiles = uploadedFiles;
+	}
+
+	public List<String> getUploadedFilenames() {
+		return uploadedFilenames;
+	}
+
+	public void setUploadedFilenames(List<String> uploadedFilenames) {
+		this.uploadedFilenames = uploadedFilenames;
+	}
+
+	public String getFirstName() {
         return firstName;
     }
 
@@ -26,7 +47,7 @@ public class AccountInfo {
         this.lastName = lastName;
     }
 
-    public long getAge() {
+    public int getAge() {
         return age;
     }
 

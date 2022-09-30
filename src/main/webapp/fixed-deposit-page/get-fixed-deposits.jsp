@@ -87,6 +87,9 @@
 					<li id="fixed-deposit">
 						<a class="nav-link" href="fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
+					<li id="car-loan">
+						<a class="nav-link" href="../car-loan-page/car-loan.jsp">Car Loan</a>
+					</li>
 					<li id="change-password">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>

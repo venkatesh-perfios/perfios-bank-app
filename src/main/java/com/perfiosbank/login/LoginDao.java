@@ -18,7 +18,7 @@ public class LoginDao {
 	
 	public static ResultSet getAccountCountByUsername(String username) throws Exception {
 		String getAccountCountByUsernameSql = "select count(*) from " + ACCOUNTS_TABLE_NAME + " where "
-				+ "Username='" + username + "'";
+				+ "Username='" + username + "' and status='Approved'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 
 		return statement.executeQuery(getAccountCountByUsernameSql);

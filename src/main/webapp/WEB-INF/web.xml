@@ -15,8 +15,88 @@
   	<description></description>
   	<servlet-class>com.perfiosbank.fixeddeposit.GetFixedDepositsController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>CarLoanController</servlet-name>
+  	<display-name>CarLoanController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.carloan.CarLoanController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GetCarLoansController</servlet-name>
+  	<display-name>GetCarLoansController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.carloan.GetCarLoansController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>DownloadFileController</servlet-name>
+  	<display-name>DownloadFileController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.carloan.DownloadFileController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AdminCarLoansController</servlet-name>
+  	<display-name>AdminCarLoansController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.admincarloans.AdminCarLoansController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AdminDownloadFileController</servlet-name>
+  	<display-name>AdminDownloadFileController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.admincarloans.AdminDownloadFileController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AdminLoginController</servlet-name>
+  	<display-name>AdminLoginController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.adminlogin.AdminLoginController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AdminAccountsController</servlet-name>
+  	<display-name>AdminAccountsController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.adminaccounts.AdminAccountsController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AdminAccountsDownloadFileController</servlet-name>
+  	<display-name>AdminAccountsDownloadFileController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.adminaccounts.AdminDownloadFileController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GetFixedDepositsController</servlet-name>
   	<url-pattern>/GetFixedDepositsController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>CarLoanController</servlet-name>
+  	<url-pattern>/CarLoanController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetCarLoansController</servlet-name>
+  	<url-pattern>/GetCarLoansController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DownloadFileController</servlet-name>
+  	<url-pattern>/DownloadFileController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AdminCarLoansController</servlet-name>
+  	<url-pattern>/AdminCarLoansController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AdminDownloadFileController</servlet-name>
+  	<url-pattern>/AdminDownloadFileController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AdminLoginController</servlet-name>
+  	<url-pattern>/AdminLoginController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AdminAccountsController</servlet-name>
+  	<url-pattern>/AdminAccountsController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AdminAccountsDownloadFileController</servlet-name>
+  	<url-pattern>/AdminAccountsDownloadFileController</url-pattern>
   </servlet-mapping>
 </web-app>

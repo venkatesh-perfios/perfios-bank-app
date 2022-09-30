@@ -1,5 +1,6 @@
 package com.perfiosbank.openaccount;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -11,14 +12,31 @@ public class OpenAccountDao {
 	private static final String TABLE_NAME = "Accounts";
 	
 	public static int openAccount(String newAccountNumber, User userInSession, AccountInfo accountInfo) throws Exception {
-		String openAccountSql = "insert into " + TABLE_NAME + " values('" + newAccountNumber + "', '" +
-				userInSession.getUsername() + "', '" + accountInfo.getFirstName() + "', '" + 
-				accountInfo.getLastName() + "', " + accountInfo.getAge() + ", " + accountInfo.getAadhaar() + 
-				", '" + accountInfo.getPan() + "', '" + accountInfo.getAddress() + "', " + 
-				accountInfo.getPhone() + ", " + accountInfo.getAmount() + ")";
-		Statement statement = DatabaseUtils.getConnection().createStatement();
+//		String openAccountSql = "insert into " + TABLE_NAME + " values('" + newAccountNumber + "', '" +
+//				userInSession.getUsername() + "', " + accountInfo.getUploadedFiles().get("photo") + ", '" + 
+//				accountInfo.getFirstName() + "', '" + accountInfo.getLastName() + "', " + 
+//				accountInfo.getAge() + ", " + accountInfo.getAadhaar() + ", " + 
+//				accountInfo.getUploadedFiles().get("aadhaarProof") + ", '" + accountInfo.getPan() + "', " +
+//				accountInfo.getUploadedFiles().get("panProof") + ", '" + accountInfo.getAddress() + "', " + 
+//				accountInfo.getPhone() + ", " + accountInfo.getAmount() + ", 'Pending')";
+		String openAccountSql = "insert into " + TABLE_NAME + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement preparedStatement = DatabaseUtils.getConnection().prepareStatement(openAccountSql);
+		preparedStatement.setString(1, newAccountNumber);
+		preparedStatement.setString(2, userInSession.getUsername());
+		preparedStatement.setBytes(3, accountInfo.getUploadedFiles().get("photo"));
+		preparedStatement.setString(4, accountInfo.getFirstName());
+		preparedStatement.setString(5, accountInfo.getLastName());
+		preparedStatement.setInt(6, accountInfo.getAge());
+		preparedStatement.setLong(7, accountInfo.getAadhaar());
+		preparedStatement.setBytes(8, accountInfo.getUploadedFiles().get("aadhaarProof"));
+		preparedStatement.setString(9, accountInfo.getPan());
+		preparedStatement.setBytes(10, accountInfo.getUploadedFiles().get("panProof"));
+		preparedStatement.setString(11, accountInfo.getAddress());
+		preparedStatement.setLong(12, accountInfo.getPhone());
+		preparedStatement.setDouble(13, accountInfo.getAmount());
+		preparedStatement.setString(14, "Pending");
 		
-		return statement.executeUpdate(openAccountSql);
+		return preparedStatement.executeUpdate();
 	}
 	
 	public static ResultSet getMaxAccountNumber() throws Exception {
@@ -30,6 +48,14 @@ public class OpenAccountDao {
 	
 	public static ResultSet getAccountByUsername(String username) throws Exception {
 		String getAccountSql = "select * from " + TABLE_NAME + " where Username='" + username + "'";
+		Statement statement = DatabaseUtils.getConnection().createStatement();
+
+		return statement.executeQuery(getAccountSql);
+	}
+	
+	public static ResultSet getPendingAccountByUsername(String username) throws Exception {
+		String getAccountSql = "select * from " + TABLE_NAME + " where Username='" + username + 
+				"' and status='Pending'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 
 		return statement.executeQuery(getAccountSql);

@@ -44,10 +44,13 @@
 						</ul>
 						<ul class="navbar-nav show-right">
 							<li id="signup">
-								<a class="nav-link" href="signup.jsp">Signup</a>
+								<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 							</li>
 							<li id="login">
-								<a class="nav-link" href="../login-page/login.jsp">Login</a>
+								<a class="nav-link" href="../login-page/login.jsp">User Login</a>
+							</li>
+							<li id="admin-login">
+								<a class="nav-link" href="../admin-login-page/admin-login.jsp">Admin Login</a>
 							</li>
 						</ul>
 						<%
@@ -90,6 +93,9 @@
 							</li>
 							<li id="change-password">
 								<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
+							</li>
+							<li id="car-loan">
+								<a class="nav-link" href="../car-loan-page/car-loan.jsp">Car Loan</a>
 							</li>
 							<li id="close-account">
 								<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
