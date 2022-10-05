@@ -137,6 +137,8 @@
 													<input type="hidden" name="username" value="<%= resultSet.getString(2) %>" />
 													<input type="hidden" name="principal" value="<%= resultSet.getDouble(3) %>" />
 													<input type="hidden" name="newStatus" value="Approved" />
+													<input type="hidden" name="dueDate" value="<%= resultSet.getString(4) %>" />													
+													<input type="hidden" name="dueAmount" value="<%= resultSet.getDouble(11) %>" />
 													<button type="submit" class="btn btn-success">Approve</button>
 												</form>
 											</div>
@@ -148,6 +150,8 @@
 													<input type="hidden" name="username" value="<%= resultSet.getString(2) %>" />
 													<input type="hidden" name="principal" value="<%= resultSet.getDouble(3) %>" />
 													<input type="hidden" name="newStatus" value="Rejected" />
+													<input type="hidden" name="dueDate" value="<%= resultSet.getString(4) %>" />													
+													<input type="hidden" name="dueAmount" value="<%= resultSet.getDouble(11) %>" />
 													<button type="submit" class="btn btn-danger">Reject</button>
 												</form>
 											</div>

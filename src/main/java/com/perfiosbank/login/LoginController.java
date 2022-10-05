@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.perfiosbank.exceptions.AccountFrozenException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.SessionUtils;
@@ -54,7 +55,11 @@ public class LoginController extends HttpServlet {
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
 			response.sendRedirect("login.jsp");
+		} catch(AccountFrozenException accountFrozenException) {
+			request.getSession().setAttribute("otherException", accountFrozenException.getMessage());
+			response.sendRedirect("login.jsp");
 		} catch(Exception e) {
+			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to login at the moment! Try again later.");
 			response.sendRedirect("login.jsp");
 		}

@@ -1,6 +1,7 @@
 package com.perfiosbank.carloan;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/car-loan-page/car-loan")
 @MultipartConfig
-public class CarLoanController extends HttpServlet{
+public class CarLoanController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

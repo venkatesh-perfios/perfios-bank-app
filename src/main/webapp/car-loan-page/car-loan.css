@@ -74,3 +74,7 @@ li {
 	height: 40px;
 	padding: 8px;
 }
+
+.center {
+	text-align: center;
+}

@@ -58,7 +58,7 @@ public class TransferService {
             throw new AmountLimitReachedException(msg);
         }
 
-        ResultSet resultSet = CheckBalanceDao.getCurrentBalance(userInSession.getUsername());
+        ResultSet resultSet = CheckBalanceDao.getCurrentBalanceByUsername(userInSession.getUsername());
         if (!resultSet.next()) {
         	throw new Exception();
         }
@@ -80,7 +80,7 @@ public class TransferService {
         	throw new Exception();
         }
 
-        resultSet = CheckBalanceDao.getCurrentBalance(targetUsername);
+        resultSet = CheckBalanceDao.getCurrentBalanceByUsername(targetUsername);
         if (!resultSet.next()) {
         	throw new Exception();
         }

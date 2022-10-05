@@ -6,7 +6,10 @@
   <display-name>Archetype Created Web Application</display-name>
   
   <listener>
-  	<listener-class>com.perfiosbank.fixeddeposit.ServerStateListener</listener-class>
+  	<listener-class>com.perfiosbank.fixeddeposit.FixedDepositServerListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class>com.perfiosbank.carloan.CarLoanServerListener</listener-class>
   </listener>
   
   <servlet>
@@ -63,6 +66,12 @@
   	<description></description>
   	<servlet-class>com.perfiosbank.adminaccounts.AdminDownloadFileController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>DownloadPastTransactionsController</servlet-name>
+  	<display-name>DownloadPastTransactionsController</display-name>
+  	<description></description>
+  	<servlet-class>com.perfiosbank.pasttransactions.DownloadPastTransactionsController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>GetFixedDepositsController</servlet-name>
   	<url-pattern>/GetFixedDepositsController</url-pattern>
@@ -98,5 +107,9 @@
   <servlet-mapping>
   	<servlet-name>AdminAccountsDownloadFileController</servlet-name>
   	<url-pattern>/AdminAccountsDownloadFileController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DownloadPastTransactionsController</servlet-name>
+  	<url-pattern>/DownloadPastTransactionsController</url-pattern>
   </servlet-mapping>
 </web-app>

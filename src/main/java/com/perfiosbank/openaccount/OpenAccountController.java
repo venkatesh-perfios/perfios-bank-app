@@ -23,6 +23,7 @@ import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.BelowMinBalanceException;
 import com.perfiosbank.exceptions.FileInvalidException;
+import com.perfiosbank.exceptions.NameInvalidException;
 import com.perfiosbank.exceptions.PanInvalidException;
 import com.perfiosbank.exceptions.PhoneInvalidException;
 import com.perfiosbank.model.AccountInfo;
@@ -91,7 +92,15 @@ public class OpenAccountController extends HttpServlet {
         } catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
 			response.sendRedirect("open-account.jsp");
-        } catch(AadhaarInvalidException aadhaarInvalidException) {
+        }catch(NameInvalidException nameInvalidException) {
+        	String errorMessage = nameInvalidException.getMessage();
+        	if (errorMessage.contains("first")) {
+        		request.getSession().setAttribute("firstNameException", errorMessage);
+        	} else {
+        		request.getSession().setAttribute("lastNameException", errorMessage);
+        	}
+			response.sendRedirect("open-account.jsp");
+		} catch(AadhaarInvalidException aadhaarInvalidException) {
 			request.getSession().setAttribute("aadhaarException", aadhaarInvalidException.getMessage());
 			response.sendRedirect("open-account.jsp");
 		} catch(PanInvalidException panInvalidException) {

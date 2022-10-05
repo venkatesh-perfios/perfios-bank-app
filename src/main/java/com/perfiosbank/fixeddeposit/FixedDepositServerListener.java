@@ -18,10 +18,10 @@ import org.apache.log4j.BasicConfigurator;
 import static org.quartz.SimpleScheduleBuilder.*;
 
 
-public class ServerStateListener implements ServletContextListener {
+public class FixedDepositServerListener implements ServletContextListener {
 	Scheduler scheduler;
 	
-	public ServerStateListener() throws SchedulerException {
+	public FixedDepositServerListener() throws SchedulerException {
 	    scheduler = StdSchedulerFactory.getDefaultScheduler();
 	}
     
@@ -33,11 +33,11 @@ public class ServerStateListener implements ServletContextListener {
             scheduler.start();
             
             JobDetail job = newJob(FixedDepositJob.class)
-          	      .withIdentity("job1", "group1")
+          	      .withIdentity("fixedDepositJob", "fixedDepositGroup")
           	      .build();
 
             Trigger trigger = newTrigger()
-            		.withIdentity("trigger1", "group1")
+            		.withIdentity("fixedDepositTrigger", "fixedDepositGroup")
             		.startNow()
       	            .withSchedule(simpleSchedule()
       	            		.withIntervalInSeconds(20)

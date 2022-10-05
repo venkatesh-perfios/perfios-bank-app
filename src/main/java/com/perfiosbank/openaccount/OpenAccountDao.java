@@ -12,7 +12,7 @@ public class OpenAccountDao {
 	private static final String TABLE_NAME = "Accounts";
 	
 	public static int openAccount(String newAccountNumber, User userInSession, AccountInfo accountInfo) throws Exception {
-		String openAccountSql = "insert into " + TABLE_NAME + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String openAccountSql = "insert into " + TABLE_NAME + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement preparedStatement = DatabaseUtils.getConnection().prepareStatement(openAccountSql);
 		preparedStatement.setString(1, newAccountNumber);
 		preparedStatement.setString(2, userInSession.getUsername());
@@ -28,6 +28,7 @@ public class OpenAccountDao {
 		preparedStatement.setLong(12, accountInfo.getPhone());
 		preparedStatement.setDouble(13, accountInfo.getAmount());
 		preparedStatement.setString(14, "Pending");
+		preparedStatement.setInt(15, 1);
 		
 		return preparedStatement.executeUpdate();
 	}

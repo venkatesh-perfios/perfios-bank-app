@@ -41,7 +41,7 @@ public class FixedDepositJob implements Job {
 			        
 			        if (differenceInTime <= 0) {
 			        	String username = fixedDepositResultSet.getString(2);
-			            ResultSet currentBalanceResultSet = CheckBalanceDao.getCurrentBalance(username);
+			            ResultSet currentBalanceResultSet = CheckBalanceDao.getCurrentBalanceByUsername(username);
 			            double currentBalance = currentBalanceResultSet.next() ? currentBalanceResultSet.getDouble(1) : 0.0;
 			            double maturityAmount = fixedDepositResultSet.getDouble(6);
 			            double newBalance = currentBalance + maturityAmount;

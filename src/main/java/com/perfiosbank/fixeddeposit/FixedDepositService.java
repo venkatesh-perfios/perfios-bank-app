@@ -1,6 +1,7 @@
 package com.perfiosbank.fixeddeposit;
 
 import java.sql.ResultSet;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -42,7 +43,7 @@ public class FixedDepositService {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
         }
-
+        
         if (AccountUtils.isAccountNotFound(userInSession)) {
             msg = "Please open an account before depositing money into it!";
             throw new AccountNotFoundException(msg);

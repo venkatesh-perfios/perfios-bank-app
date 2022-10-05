@@ -54,7 +54,6 @@ public class CloseAccountController extends HttpServlet {
 			request.getSession().setAttribute("otherException", activeLoansFoundException.getMessage());
 			response.sendRedirect("close-account.jsp");
 		} catch(Exception e) {
-			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to close your account money at the moment! Try again later.");
 			response.sendRedirect("close-account.jsp");
 		}

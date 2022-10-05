@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/admin-car-loans-page/download-file")
-public class AdminCarLoansDownloadFileController extends HttpServlet {
+public class DownloadCarLoanDocumentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
      
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -30,7 +30,7 @@ public class AdminCarLoansDownloadFileController extends HttpServlet {
 		response.setHeader("Content-disposition", "attachment; filename=" + id + "_" + filename + ".pdf");
 	
 		try {
-			ResultSet resultSet = AdminCarLoansDao.getAllCarLoansById(id);
+			ResultSet resultSet = AdminCarLoansDao.getCarLoanById(id);
 			resultSet.next();
             Blob blob = resultSet.getBlob(filename);
             byte[] blobInBytes = blob.getBytes(1, (int) blob.length());

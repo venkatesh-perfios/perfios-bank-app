@@ -111,8 +111,20 @@
 		</nav>
 	
 		<%
-			ResultSet resultSet = (ResultSet) request.getSession().getAttribute("fixedDeposits");
-			if (resultSet == null || !resultSet.next()) {
+			status = (String) request.getSession().getAttribute("otherException");
+			if (status != null) {
+		%>
+			<div class="card center" style="width: 45%; margin: 15% auto;">
+				<div class="card-body">
+					<div class="title-container">
+						<h2 class="card-header" style="color: red"><%= status %></h2>
+					</div>
+				</div>
+			</div>
+		<%
+			} else {
+				ResultSet resultSet = (ResultSet) request.getSession().getAttribute("fixedDeposits");
+				if (resultSet == null || !resultSet.next()) {
 		%>
 			<div class="card center" style="width: 45%; margin: 15% auto;">
 				<div class="card-body">
@@ -125,7 +137,7 @@
 				</div>
 			</div>
 		<%
-			} else {
+				} else {
 		%>
 			<div class="content-container">
 				<div class="card center">
@@ -137,10 +149,10 @@
 							<thead>
 								<tr class="table-dark">
 									<th scope="col">Principal Amount</th>
-									<th scope="col">Maturity Date</th>
 									<th scope="col">Interest Rate</th>
 									<th scope="col">Interest Amount</th>
 									<th scope="col">Maturity Amount</th>
+									<th scope="col">Maturity Date (YYYY-MM-DD)</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -148,11 +160,11 @@
 								do {
 							%>
 								    <tr>
-								      <td><%= resultSet.getDouble(3) %></td>
+								      <td>Rs. <%= resultSet.getDouble(3) %></td>
+								      <td><%= resultSet.getDouble(5) %>%</td>
+								      <td>Rs. <%= (double) Math.round((resultSet.getDouble(6) - resultSet.getDouble(3)) * 100) / 100 %></td>
+								      <td>Rs. <%= resultSet.getDouble(6) %></td>
 								      <td><%= resultSet.getString(4) %></td>
-								      <td><%= resultSet.getDouble(5) %></td>
-								      <td><%= (double) Math.round((resultSet.getDouble(6) - resultSet.getDouble(3)) * 100) / 100 %></td>
-								      <td><%= resultSet.getDouble(6) %></td>
 								    </tr>
 							<%
 								} while (resultSet.next());
@@ -167,6 +179,7 @@
 				</div>
 			</div>
 		<%
+				}
 			}
 		%>
 

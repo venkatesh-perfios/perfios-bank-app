@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet" %>
+<%@ page import="com.perfiosbank.utils.SessionUtils, java.util.List, com.perfiosbank.model.PastTransactionsInfo" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
 	String toHighlight = request.getRequestURI().split("/")[3];
@@ -112,16 +112,16 @@
 				</nav>
 			</div>
 		<%
-			ResultSet resultSet = (ResultSet) request.getSession().getAttribute("pastTransactions");
-			if (resultSet == null) {
+			List<PastTransactionsInfo> pastTransactions = (List<PastTransactionsInfo>) request.getSession().getAttribute("pastTransactions");
+			if (pastTransactions == null) {
 		%>
 			<div class="content-container">
-				<div class="card center shadow-sm bg-body rounded" style="margin-right: 0;">
+				<div class="card shadow-sm bg-body rounded" style="margin-right: 0;">
 					<div class="card-body" style="padding: 32px">
 						<img src="../images/past_transactions.jpg" class="image">
 					</div>
 				</div>
-				<div class="card center shadow-sm bg-body rounded" style="margin-left: 0;">
+				<div class="card shadow-sm bg-body rounded" style="margin-left: 0;">
 					<div class="card-body" style="padding: 0">
 						<div class="title-container">
 							<h2 class="card-header">View Your Past Transactions Here!</h2>
@@ -167,7 +167,6 @@
 								<br>
 								<div class="btn-container">
 									<button type="submit" class="btn btn-success">View Past Transactions</button>
-									
 								</div>
 								<% 
 									status = (String) request.getSession().getAttribute("success");
@@ -208,10 +207,10 @@
 			} else {
 		%>
 			<div class="content-container">
-				<div class="card center shadow-sm bg-body rounded" style="margin-bottom: 10%">
+				<div class="card shadow-sm bg-body rounded" style="margin-bottom: 10%">
 					<div class="card-body" style="padding: 0;">
 						<%
-							if (!resultSet.next()) {
+							if (pastTransactions.size() == 0) {
 						%>
 							<div class="title-container">
 								<h2 class="card-header">There are no transactions to display!</h2>
@@ -225,39 +224,58 @@
 							<div style="padding: 16px">
 								<table class="table table-striped table-hover table-bordered">
 									<thead>
-										<tr class="table-dark">
+										<tr class="table-dark center">
 											<th scope="col">Date and Time</th>
-											<th scope="col">Type</th>
+											<th scope="col">Transaction Type</th>
 											<th scope="col">Amount</th>
 											<th scope="col">Balance</th>
 										</tr>
 									</thead>
 									<tbody>
 									<%
-										do {
-											if (resultSet.getString(2).equals("D")) {
+										for (PastTransactionsInfo pastTransaction : pastTransactions) {
+											if (pastTransaction.getType().equals("D")) {
 									%>
-										    <tr class="table-success">
-										      <td><%= resultSet.getString(1) %></td>
-										      <td><%= resultSet.getString(2) %></td>
-										      <td><%= resultSet.getDouble(3) %></td>
-										      <td><%= resultSet.getDouble(4) %></td>
+										    <tr class="table-success center">
+										      <td><%= pastTransaction.getDateAndTime() %></td>
+										      <td><%= pastTransaction.getType() %></td>
+										      <td>Rs. <%= pastTransaction.getAmount() %></td>
+										      <td>Rs. <%= pastTransaction.getBalance() %></td>
 										    </tr>
 									<%
 											} else {
 									%>
-										    <tr class="table-danger">
-										      <td><%= resultSet.getString(1) %></td>
-										      <td><%= resultSet.getString(2) %></td>
-										      <td><%= resultSet.getDouble(3) %></td>
-										      <td><%= resultSet.getDouble(4) %></td>
+										    <tr class="table-danger center">
+										      <td><%= pastTransaction.getDateAndTime() %></td>
+										      <td><%= pastTransaction.getType() %></td>
+										      <td>Rs. <%= pastTransaction.getAmount() %></td>
+										      <td>Rs. <%= pastTransaction.getBalance() %></td>
 										    </tr>
 									<%
 											}
-										} while (resultSet.next());
+										}
 									%>
 									</tbody>
 								</table>
+								<br>
+								<div class="btn-container">
+									<form action="download-past-transactions" method="get">
+										<button type="submit" class="btn btn-success">Download Past Transactions</button>
+									</form>
+								</div>
+								<%
+									status = (String) request.getSession().getAttribute("otherException");
+									if (status != null) {
+								%>
+								<br>
+							    <div class="invalid-status-container">
+							    	<%
+										out.println(status);
+							    	%>
+							    </div>
+								<%
+									}
+								%>
 							</div>
 						<%
 							}

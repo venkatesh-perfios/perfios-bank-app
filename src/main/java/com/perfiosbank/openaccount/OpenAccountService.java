@@ -14,6 +14,7 @@ import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.BelowMinBalanceException;
 import com.perfiosbank.exceptions.FileInvalidException;
+import com.perfiosbank.exceptions.NameInvalidException;
 import com.perfiosbank.exceptions.PanInvalidException;
 import com.perfiosbank.exceptions.PhoneInvalidException;
 import com.perfiosbank.model.AccountInfo;
@@ -23,9 +24,10 @@ import com.perfiosbank.utils.AuthenticationUtils;
 
 public class OpenAccountService {
     public String openAccount(User userInSession, User enteredDetails, AccountInfo accountInfo) 
-    		throws AccountAlreadyExistsException, AccountNotFoundException, AadhaarInvalidException, 
-    		PanInvalidException, PhoneInvalidException, AmountInvalidException, BelowMinBalanceException, 
-    		AuthenticationFailedException, AmountLimitReachedException, FileInvalidException, Exception {
+    		throws AccountAlreadyExistsException, AccountNotFoundException, NameInvalidException, 
+    		AadhaarInvalidException, PanInvalidException, PhoneInvalidException, 
+    		AmountInvalidException, BelowMinBalanceException, AuthenticationFailedException, 
+    		AmountLimitReachedException, FileInvalidException, Exception {
 		String msg;
 			
 		if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
@@ -36,6 +38,16 @@ public class OpenAccountService {
 		if (isAccountAlreadyExists(userInSession)) {
 			msg = "You already have an account!";
 			throw new AccountAlreadyExistsException(msg);
+		}
+		
+		if (isNameInvalid(accountInfo.getFirstName())) {
+			msg = "Please enter a valid first name!";
+			throw new NameInvalidException(msg);
+		}
+		
+		if (isNameInvalid(accountInfo.getLastName())) {
+			msg = "Please enter a valid last name!";
+			throw new NameInvalidException(msg);
 		}
 		
 		if (isAadhaarInvalid(accountInfo.getAadhaar())) {
@@ -81,12 +93,6 @@ public class OpenAccountService {
 		if (OpenAccountDao.openAccount(newAccountNumber, userInSession, accountInfo) != 1) {
 			throw new Exception();
 		}
-
-//		DepositWithdrawInfo depositInfo = new DepositWithdrawInfo();
-//		depositInfo.setUsername(enteredDetails.getUsername());
-//		depositInfo.setPassword(enteredDetails.getPassword());
-//		depositInfo.setAmount(accountInfo.getAmount());
-//		new DepositService().depositMoney(userInSession, depositInfo);
 		
 		return newAccountNumber;
 	}
@@ -107,11 +113,25 @@ public class OpenAccountService {
 		
 		return newAccountNumber;
 	}
-		
+	
 	private boolean isAccountAlreadyExists(User userInSession) throws Exception {
 		return OpenAccountDao.getAccountByUsername(userInSession.getUsername()).next();
 	}
+	
+	private boolean isNameInvalid(String name) {
+		final String ALLOWED_SPECIAL_CHARACTERS = " .-";
+		name = name.toLowerCase();
 		
+		for (int i = 0; i < name.length(); ++i) {
+			char currentCharacter = name.charAt(i);
+			
+			if (!(currentCharacter >= 'a' && currentCharacter <= 'z') && (ALLOWED_SPECIAL_CHARACTERS.indexOf(currentCharacter) < 0))
+				return true;
+		}
+		
+		return false;
+	}
+	
 	private boolean isAadhaarInvalid(long aadhar) {
 		return Long.toString(aadhar).length() != 12;
 	}

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet" %>
+<%@ page import="com.perfiosbank.utils.SessionUtils, java.sql.ResultSet, com.perfiosbank.carloan.CarLoanDao" %>
 <%
 	SessionUtils.updateSessionAttributes(request);
 	String toHighlight = "car-loan";
@@ -126,9 +126,11 @@
 			</div>
 		<%
 			} else {
+				ResultSet carLoanRepaymentResultSet = CarLoanDao.getCarLoanRepaymentByLoanId(resultSet.getInt(1));
+				boolean isApproved = carLoanRepaymentResultSet.next();
 		%>
-			<div class="content-container">
-				<div class="card" style="width: 70%;">
+			<div class="content-container" style="margin-top: 6%">
+				<div class="card" style="width: 95%;">
 					<div class="card-body" style="padding: 0">
 						<div class="title-container">
 							<h2 class="card-header">Here You Go!</h2>
@@ -136,29 +138,31 @@
 						<div style="padding: 16px">
 							<table class="table table-striped table-hover table-bordered">
 								<thead>
-									<tr class="table-dark">
+									<tr class="table-dark center">
 										<th scope="col">Loan ID</th>
-										<th scope="col">Principal Amount</th>
-										<th scope="col">Due Date</th>
 										<th scope="col">CIBIL Score</th>
 										<th scope="col">CIBIL Report</th>
 										<th scope="col">Identity Proof</th>
 										<th scope="col">Address Proof</th>
 										<th scope="col">Income Proof</th>
+										<th scope="col">Principal Amount</th>
 										<th scope="col">Interest Rate</th>
 										<th scope="col">Interest Amount</th>
 										<th scope="col">Due Amount</th>
-										<th scope="col">Status</th>
+										<th scope="col">Status of Loan Application</th>
+										<th scope="col">EMI Start Date</th>
+										<th scope="col">EMI End Date</th>
+										<th scope="col">EMI</th>
+										<th scope="col">Number of Missed EMI</th>
+										<th scope="col">Penalty Per Missed EMI</th>
 									</tr>
 								</thead>
 								<tbody>
 								<%
 									do {
 								%>
-									    <tr>
+									    <tr class="center">
 									      <td><%= resultSet.getInt(1) %></td>
-									      <td><%= resultSet.getDouble(3) %></td>
-									      <td style="width: 100px;"><%= resultSet.getString(4) %></td>
 									      <td><%= resultSet.getInt(5) %></td>
 									      <td>
 											<div class="btn-container">
@@ -196,10 +200,16 @@
 												</form>
 											</div>
 									      </td>
-										  <td><%= resultSet.getDouble(10) %></td>
-									      <td><%= (double) Math.round((resultSet.getDouble(11) - resultSet.getDouble(3)) * 100) / 100 %></td>
-									      <td><%= resultSet.getDouble(11) %></td>
-									      <td><%= resultSet.getString(12) %></td>
+									      <td width="12%">Rs. <%= resultSet.getDouble(3) %></td>
+										  <td><%= resultSet.getDouble(10) %>%</td>
+									      <td width="12%">Rs. <%= (double) Math.round((resultSet.getDouble(11) - resultSet.getDouble(3)) * 100) / 100 %></td>
+									      <td width="12%">Rs. <%= resultSet.getDouble(11) %></td>
+									      <td width="10%"><%= resultSet.getString(12) %></td>
+									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(4) : "-" %></td>
+									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(6) : "-" %></td>
+									      <td width="10%">Rs. <%= isApproved ? carLoanRepaymentResultSet.getDouble(8) : "-" %></td>
+									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getInt(9) : "-" %></td>
+									      <td width="10%">Rs. <%= isApproved ? carLoanRepaymentResultSet.getDouble(10) : "-" %></td>
 									    </tr>
 								<%
 									} while (resultSet.next());

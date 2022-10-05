@@ -113,7 +113,7 @@
 			</div>
 			
 			<div class="content-container">
-				<div class="card center shadow-sm bg-body rounded" style="margin-right: 0;">
+				<div class="card shadow-sm bg-body rounded" style="margin-right: 0;">
 					<div class="card-body" style="text-align: center; margin-top: 30%;">
 						<h1>Car Loan Interest Rates</h1>
 						<br>
@@ -150,7 +150,7 @@
 					    </table>
 					</div>
 				</div>
-				<div class="card center shadow-sm bg-body rounded" style="margin-left: 0;">
+				<div class="card shadow-sm bg-body rounded" style="margin-left: 0;">
 					<div class="card-body" style="padding: 0">
 						<div class="title-container">
 							<h2 class="card-header">Apply For Car Loan Here!</h2>

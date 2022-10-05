@@ -2,6 +2,8 @@ package com.perfiosbank.pasttransactions;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
+import com.perfiosbank.model.PastTransactionsInfo;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.SessionUtils;
 
@@ -41,7 +44,17 @@ public class PastTransactionsController extends HttpServlet {
 		try {
 			PastTransactionsService pastTransactionsService = new PastTransactionsService();
 			ResultSet resultSet = pastTransactionsService.viewPastTransactions(userInSession, enteredDetails);
-			request.getSession().setAttribute("pastTransactions", resultSet);
+			
+			List<PastTransactionsInfo> pastTransactions = new ArrayList<>();
+			while (resultSet.next()) {
+				PastTransactionsInfo pastTransaction = new PastTransactionsInfo();
+				pastTransaction.setDateAndTime(resultSet.getString(1));
+				pastTransaction.setType(resultSet.getString(2));
+				pastTransaction.setAmount(resultSet.getDouble(3));
+				pastTransaction.setBalance(resultSet.getDouble(4));
+				pastTransactions.add(pastTransaction);
+			}
+			request.getSession().setAttribute("pastTransactions", pastTransactions);
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
         } catch(AccountNotFoundException accountNotFoundException) {

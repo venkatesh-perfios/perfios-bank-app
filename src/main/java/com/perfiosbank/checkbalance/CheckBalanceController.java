@@ -42,7 +42,7 @@ public class CheckBalanceController extends HttpServlet {
 			request.getSession().setAttribute("success", "Your balance: " + balance);
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
-        }  catch(AccountNotFoundException accountNotFoundException) {
+        } catch(AccountNotFoundException accountNotFoundException) {
 			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
 		} catch(Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to display your balance at the moment! Try again later.");

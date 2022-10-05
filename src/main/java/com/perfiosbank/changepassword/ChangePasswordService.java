@@ -5,15 +5,14 @@ import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.exceptions.InvalidPasswordException;
 import com.perfiosbank.exceptions.NewPasswordSameAsCurrentException;
 import com.perfiosbank.model.User;
-
 import com.perfiosbank.utils.AuthenticationUtils;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class ChangePasswordService {
-    public User changePassword(User userInSession, User enteredDetails, String newPassword, 
-    		String reenteredNewPassword) throws NewPasswordSameAsCurrentException, InvalidPasswordException, PasswordMismatchException, 
-    		AuthenticationFailedException, Exception {
+    public User changePassword(User userInSession, User enteredDetails, String newPassword, String reenteredNewPassword) 
+    		throws NewPasswordSameAsCurrentException, InvalidPasswordException, 
+    		PasswordMismatchException, AuthenticationFailedException, Exception {
         String msg;
 
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {

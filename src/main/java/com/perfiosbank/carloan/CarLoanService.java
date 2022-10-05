@@ -1,6 +1,7 @@
 package com.perfiosbank.carloan;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -27,20 +28,17 @@ public class CarLoanService {
         enteredDetails.setPassword(carLoanInfo.getPassword());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date now = simpleDateFormat.parse(DateTimeUtils.getCurrentDateTime().substring(0, 10));
+        String currentDate = DateTimeUtils.getCurrentDateTime().substring(0, 10);
+        Date now = simpleDateFormat.parse(currentDate);
         Date endDate = simpleDateFormat.parse(carLoanInfo.getDueDate());
         long differenceInTime = endDate.getTime() - now.getTime();
         long differenceInDays = TimeUnit.MILLISECONDS.toDays(differenceInTime);
         
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
-        	System.out.println(userInSession.getUsername());
-        	System.out.println(userInSession.getPassword());
-        	System.out.println(enteredDetails.getUsername());
-        	System.out.println(enteredDetails.getPassword());
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
         }
-
+        
         if (AccountUtils.isAccountNotFound(userInSession)) {
             msg = "Please open an account before depositing money into it!";
             throw new AccountNotFoundException(msg);
@@ -126,7 +124,7 @@ public class CarLoanService {
 	    		return 8.90;
 	    	}
     	}
-    } 
+    }
     
     private double getDueAmount(CarLoanInfo carLoanInfo, long differenceInDays) {
     	return carLoanInfo.getLoanAmount() * Math.pow(1 + carLoanInfo.getInterestRate() / 100, differenceInDays / 365.0);

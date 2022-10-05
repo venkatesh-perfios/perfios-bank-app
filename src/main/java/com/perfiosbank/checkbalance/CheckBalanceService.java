@@ -23,8 +23,8 @@ public class CheckBalanceService {
             msg = "Please open an account before checking its balance!";
             throw new AccountNotFoundException(msg);
         }
-
-        ResultSet resultSet = CheckBalanceDao.getCurrentBalance(userInSession.getUsername());
+        
+		ResultSet resultSet = CheckBalanceDao.getCurrentBalanceByUsername(userInSession.getUsername());
 
         return resultSet.next() ? resultSet.getDouble(1) : 0.0;
     }

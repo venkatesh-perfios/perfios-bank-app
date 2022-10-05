@@ -22,14 +22,14 @@ public class GetFixedDepositsController extends HttpServlet {
 		request.getSession().setAttribute("refresh", false);
 
 		response.setContentType("text/html");
-		
+        
 		try {
 			String usernameInSession = (String) request.getSession().getAttribute("usernameInSession");
 			ResultSet resultSet = FixedDepositDao.getAllFixedDepositAccountsByUsername(usernameInSession);
 			request.getSession().setAttribute("fixedDeposits", resultSet);
 		} catch(Exception e) {
-			request.getSession().setAttribute("otherException", "Unable to display your Fixed Deposit(s) "
-					+ "account at the moment! Try again later.");
+			request.getSession().setAttribute("otherException", "Unable to display your Fixed Deposit "
+					+ "account(s) at the moment! Try again later.");
 		} finally {
 			response.sendRedirect("fixed-deposit-page/get-fixed-deposits.jsp");
 		}

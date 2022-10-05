@@ -180,12 +180,44 @@
 					<br>
 					<div class="form-group">
 						<label for="exampleInputFirstName">First Name</label>
+						<% 
+							status = (String) request.getSession().getAttribute("firstNameException");
+							if (status == null) {
+						%>
 						<input type="text" name="firstName" value="<%= (request.getParameter("firstName") == null) ? "" : request.getParameter("firstName") %>" class="form-control" id="exampleInputFirstName" aria-describedby="firstNameHelp" placeholder="Enter your first name" required>
+						<%
+							} else {
+						%>
+						<input type="text" name="firstName" value="<%= (request.getParameter("firstName") == null) ? "" : request.getParameter("firstName") %>" class="form-control is-invalid" id="exampleInputFirstName" aria-describedby="firstNameHelp" placeholder="Enter your first name" required>
+					    <div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>				
 					</div>
 					<br>
 					<div class="form-group">
 						<label for="exampleInputLastName">Last Name</label>
+						<% 
+							status = (String) request.getSession().getAttribute("lastNameException");
+							if (status == null) {
+						%>
 						<input type="text" name="lastName" value="<%= (request.getParameter("lastName") == null) ? "" : request.getParameter("lastName") %>" class="form-control" id="exampleInputLastName" aria-describedby="lastNameHelp" placeholder="Enter your last name" required>
+						<%
+							} else {
+						%>
+						<input type="text" name="lastName" value="<%= (request.getParameter("lastName") == null) ? "" : request.getParameter("lastName") %>" class="form-control is-invalid" id="exampleInputLastName" aria-describedby="lastNameHelp" placeholder="Enter your last name" required>
+						<div class="invalid-feedback">
+					    	<%
+								out.println(status);
+					    	%>
+					    </div>
+						<%
+							}
+						%>
 					</div>
 					<br>
 					<div class="form-group">

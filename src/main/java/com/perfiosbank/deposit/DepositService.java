@@ -22,7 +22,7 @@ public class DepositService {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
         }
-
+        
         if (AccountUtils.isAccountNotFound(userInSession)) {
             msg = "Please open an account before depositing money into it!";
             throw new AccountNotFoundException(msg);
