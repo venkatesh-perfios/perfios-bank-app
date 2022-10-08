@@ -46,7 +46,8 @@ public class CarLoanController extends HttpServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		double loanAmount = Double.parseDouble(request.getParameter("amount"));
-		String dueDate = request.getParameter("endDate");
+		int days = Integer.parseInt(request.getParameter("days"));
+		System.out.println(days);
 		int cibilScore = Integer.parseInt(request.getParameter("cibil"));
 		
 		final String[] FILENAMES = {"cibilReport", "identityProof", "addressProof", "incomeProof"};
@@ -64,7 +65,7 @@ public class CarLoanController extends HttpServlet {
 		carLoanInfo.setUsername(username);
 		carLoanInfo.setPassword(password);
 		carLoanInfo.setLoanAmount(loanAmount);
-		carLoanInfo.setDueDate(dueDate);
+		carLoanInfo.setDays(days);
 		carLoanInfo.setCibilScore(cibilScore);
 		carLoanInfo.setUploadedFiles(uploadedFiles);
 		carLoanInfo.setUploadedFilenames(uploadedFilenames);

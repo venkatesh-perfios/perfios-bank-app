@@ -1,10 +1,5 @@
 package com.perfiosbank.carloan;
 
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -15,7 +10,6 @@ import com.perfiosbank.model.CarLoanInfo;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.AccountUtils;
 import com.perfiosbank.utils.AuthenticationUtils;
-import com.perfiosbank.utils.DateTimeUtils;
 
 public class CarLoanService {
 	public void applyCarLoan(User userInSession, CarLoanInfo carLoanInfo) 
@@ -27,13 +21,6 @@ public class CarLoanService {
         enteredDetails.setUsername(carLoanInfo.getUsername());
         enteredDetails.setPassword(carLoanInfo.getPassword());
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String currentDate = DateTimeUtils.getCurrentDateTime().substring(0, 10);
-        Date now = simpleDateFormat.parse(currentDate);
-        Date endDate = simpleDateFormat.parse(carLoanInfo.getDueDate());
-        long differenceInTime = endDate.getTime() - now.getTime();
-        long differenceInDays = TimeUnit.MILLISECONDS.toDays(differenceInTime);
-        
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
@@ -52,16 +39,6 @@ public class CarLoanService {
             throw new AmountInvalidException(msg);
         }
         
-        if (isDueDateInvalid(carLoanInfo.getDueDate())) {
-        	msg = "Please enter a valid year!";
-        	throw new EndDateInvalidException(msg);
-        }
-        
-        if (isDueDateExpired(differenceInTime) || isDurationRangeInvalid(differenceInDays)) {
-        	msg = "Car Loan duration must be for a minimum of 1 year and a maximum of 7 years from now!";
-        	throw new DurationRangeException(msg);
-        }
-        
         for (String filename : carLoanInfo.getUploadedFilenames()) {
         	String type = filename.split(",")[0];
         	String actualFilename = filename.split(",")[1];
@@ -71,8 +48,8 @@ public class CarLoanService {
 	        }
         }
 
-        carLoanInfo.setInterestRate(getInterestRate(carLoanInfo.getCibilScore(), differenceInDays));
-        carLoanInfo.setDueAmount(getDueAmount(carLoanInfo, differenceInDays));
+        carLoanInfo.setInterestRate(getInterestRate(carLoanInfo.getCibilScore(), carLoanInfo.getDays()));
+        carLoanInfo.setDueAmount(getDueAmount(carLoanInfo, carLoanInfo.getDays()));
         
         if (CarLoanDao.saveLoanApplication(carLoanInfo) != 1) {
         	throw new Exception();
@@ -82,43 +59,28 @@ public class CarLoanService {
 	private boolean isFilenameInvalid(String filename) {
 		return !(filename.substring(filename.length() - 3).equals("pdf"));
 	}
-	
-	private boolean isDueDateInvalid(String endDate) {
-		return endDate.split("-")[0].length() > 4;
-	}
-	
-	private boolean isDueDateExpired(long differenceInTime) throws Exception {
-        return differenceInTime <= 0;
-	}
 
-	private boolean isDurationRangeInvalid(long differenceInDays) throws Exception {
-        boolean lessThanAYear = differenceInDays < 365;
-        boolean moreThanSevenYears = differenceInDays > 2555;
-        
-        return lessThanAYear || moreThanSevenYears;
-	}
-
-    private double getInterestRate(int cibil, long differenceInDays) throws Exception {
+    private double getInterestRate(int cibil, int days) throws Exception {
     	if (cibil >= 775) {
-	    	if (differenceInDays <= 1825) {
+	    	if (days <= 1825) {
 	    		return 7.85;
 	    	} else {
 	    		return 7.95;
 	    	}
     	} else if (cibil >= 750) {
-	    	if (differenceInDays <= 1825) {
+	    	if (days <= 1825) {
 	    		return 8.20;
 	    	} else {
-	    		return 8.45;
+	    		return 8.30;
 	    	}
     	} else if (cibil >= 700) {
-	    	if (differenceInDays <= 1825) {
+	    	if (days <= 1825) {
 	    		return 8.45;
 	    	} else {
 	    		return 8.55;
 	    	}
     	} else {
-	    	if (differenceInDays <= 1825) {
+	    	if (days <= 1825) {
 	    		return 8.80;
 	    	} else {
 	    		return 8.90;
@@ -126,7 +88,7 @@ public class CarLoanService {
     	}
     }
     
-    private double getDueAmount(CarLoanInfo carLoanInfo, long differenceInDays) {
-    	return carLoanInfo.getLoanAmount() * Math.pow(1 + carLoanInfo.getInterestRate() / 100, differenceInDays / 365.0);
+    private double getDueAmount(CarLoanInfo carLoanInfo, int days) {
+    	return carLoanInfo.getLoanAmount() * Math.pow(1 + carLoanInfo.getInterestRate() / 100, days / 365.0);
     }
 }

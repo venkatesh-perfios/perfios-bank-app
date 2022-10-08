@@ -14,13 +14,13 @@ public class CarLoanDao {
 	private static final String ACCOUNTS_TABLE = "Accounts";
 	
 	public static int saveLoanApplication(CarLoanInfo carLoanInfo) throws Exception {
-		String saveLoanApplication = "insert into " + CAR_LOANS_TABLE_NAME + "(Username, Loan_Amount, Due_Date, Cibil_Score, "
+		String saveLoanApplication = "insert into " + CAR_LOANS_TABLE_NAME + "(Username, Loan_Amount, Days, Cibil_Score, "
 				+ "Cibil_Report, Identity_Proof, Address_Proof, Income_Proof, Interest_Rate, Due_Amount, Status) values(?, ?, ?, "
 				+ "?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement preparedStatement = DatabaseUtils.getConnection().prepareStatement(saveLoanApplication);
 		preparedStatement.setString(1, carLoanInfo.getUsername());
 		preparedStatement.setDouble(2, carLoanInfo.getLoanAmount());
-		preparedStatement.setString(3, carLoanInfo.getDueDate());
+		preparedStatement.setInt(3, carLoanInfo.getDays());
 		preparedStatement.setInt(4, carLoanInfo.getCibilScore());
 		preparedStatement.setBytes(5, carLoanInfo.getUploadedFiles().get("cibilReport"));
 		preparedStatement.setBytes(6, carLoanInfo.getUploadedFiles().get("identityProof"));
@@ -34,8 +34,7 @@ public class CarLoanDao {
 	}
 	
 	public static ResultSet getAllCarLoansByUsername(String username) throws Exception {
-		String getAllCarLoansByUsername = "select * from " + CAR_LOANS_TABLE_NAME + " where Username='" + username + 
-				"' order by Due_Date";
+		String getAllCarLoansByUsername = "select * from " + CAR_LOANS_TABLE_NAME + " where Username='" + username + "'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 		
 		return statement.executeQuery(getAllCarLoansByUsername); 

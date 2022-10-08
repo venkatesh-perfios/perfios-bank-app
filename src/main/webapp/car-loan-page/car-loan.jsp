@@ -213,26 +213,26 @@
 									%>
 								</div>
 								<br>
-						        <div class="form-group col-lg-12 col-sm-6">
-						            <label for="endDate">Due Date</label>
+								<div class="form-group">
+									<label for="exampleInputDays">Number of Days</label>
 									<% 
-										status = (String) request.getSession().getAttribute("endDateException");
+										status = (String) request.getSession().getAttribute("daysException");
 										if (status == null) {
 									%>
-						            <input name="endDate" id="endDate" class="form-control" value="<%= (request.getParameter("endDate") == null) ? "" : request.getParameter("endDate") %>" type="date" required/>
+									<input type="number" name="days" min="365" max="2555" step="1" pattern="\d+" value="<%= (request.getParameter("days") == null) ? "" : request.getParameter("days") %>" class="form-control" id="exampleInputDays" placeholder="Enter your desired number of days to repay your loan" required>
 									<%
 										} else {
 									%>
-						            <input name="endDate" id="endDate" class="form-control is-invalid" value="<%= (request.getParameter("endDate") == null) ? "" : request.getParameter("endDate") %>" type="date" required/>
-									<div class="invalid-feedback">
+									<input type="number" name="days" min="365" max="2555" step="1" pattern="\d+" value="<%= (request.getParameter("days") == null) ? "" : request.getParameter("days") %>" class="form-control is-invalid" id="exampleInputDays" placeholder="Enter your desired number of days to repay your loan" required>
+								    <div class="invalid-feedback">
 								    	<%
 											out.println(status);
 								    	%>
-							    	</div>
+								    </div>
 									<%
 										}
 									%>
-						        </div>
+								</div>
 								<br>
 								<div class="form-group">
 									<label for="exampleInputCibil">CIBIL Score</label>

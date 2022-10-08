@@ -126,8 +126,6 @@
 			</div>
 		<%
 			} else {
-				ResultSet carLoanRepaymentResultSet = CarLoanDao.getCarLoanRepaymentByLoanId(resultSet.getInt(1));
-				boolean isApproved = carLoanRepaymentResultSet.next();
 		%>
 			<div class="content-container" style="margin-top: 6%">
 				<div class="card" style="width: 95%;">
@@ -160,6 +158,8 @@
 								<tbody>
 								<%
 									do {
+										ResultSet carLoanRepaymentResultSet = CarLoanDao.getCarLoanRepaymentByLoanId(resultSet.getInt(1));
+										boolean isApproved = carLoanRepaymentResultSet.next();
 								%>
 									    <tr class="center">
 									      <td><%= resultSet.getInt(1) %></td>
@@ -207,9 +207,9 @@
 									      <td width="10%"><%= resultSet.getString(12) %></td>
 									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(4) : "-" %></td>
 									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(6) : "-" %></td>
-									      <td width="10%">Rs. <%= isApproved ? carLoanRepaymentResultSet.getDouble(8) : "-" %></td>
+									      <td width="10%"><%= isApproved ? "Rs. " + carLoanRepaymentResultSet.getDouble(8) : "-" %></td>
 									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getInt(9) : "-" %></td>
-									      <td width="10%">Rs. <%= isApproved ? carLoanRepaymentResultSet.getDouble(10) : "-" %></td>
+									      <td width="10%"><%= isApproved ? "Rs. " + carLoanRepaymentResultSet.getDouble(10) : "-" %></td>
 									    </tr>
 								<%
 									} while (resultSet.next());

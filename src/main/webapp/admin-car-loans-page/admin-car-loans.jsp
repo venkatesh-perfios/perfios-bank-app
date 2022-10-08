@@ -46,10 +46,10 @@
 			</ul>
 		</nav>
 	
-		<%
-			ResultSet resultSet = AdminCarLoansDao.getAllCarLoans();
-			if (resultSet == null || !resultSet.next()) {
-		%>
+			<%
+				ResultSet resultSet = AdminCarLoansDao.getAllPendingCarLoans();
+				if (resultSet == null || !resultSet.next()) {
+			%>
 			<div class="card" style="width: 45%; margin: 15% auto; text-align: center">
 				<div class="card-body">
 					<div class="title-container">
@@ -74,7 +74,7 @@
 										<th scope="col">Loan ID</th>
 										<th scope="col">Username</th>
 										<th scope="col">Principal Amount</th>
-										<th scope="col">Due Date</th>
+										<th scope="col">Days</th>
 										<th scope="col">CIBIL Score</th>
 										<th scope="col">CIBIL Report</th>
 										<th scope="col">Identity Proof</th>
@@ -92,7 +92,7 @@
 									      <td><%= resultSet.getInt(1) %></td>
 									      <td><%= resultSet.getString(2) %></td>
 									      <td><%= resultSet.getDouble(3) %></td>
-									      <td style="width: 100px;"><%= resultSet.getString(4) %></td>
+									      <td><%= resultSet.getInt(4) %></td>
 									      <td><%= resultSet.getInt(5) %></td>
 									      <td>
 											<div class="btn-container">
@@ -137,7 +137,7 @@
 													<input type="hidden" name="username" value="<%= resultSet.getString(2) %>" />
 													<input type="hidden" name="principal" value="<%= resultSet.getDouble(3) %>" />
 													<input type="hidden" name="newStatus" value="Approved" />
-													<input type="hidden" name="dueDate" value="<%= resultSet.getString(4) %>" />													
+													<input type="hidden" name="days" value="<%= resultSet.getInt(4) %>" />													
 													<input type="hidden" name="dueAmount" value="<%= resultSet.getDouble(11) %>" />
 													<button type="submit" class="btn btn-success">Approve</button>
 												</form>
@@ -150,7 +150,7 @@
 													<input type="hidden" name="username" value="<%= resultSet.getString(2) %>" />
 													<input type="hidden" name="principal" value="<%= resultSet.getDouble(3) %>" />
 													<input type="hidden" name="newStatus" value="Rejected" />
-													<input type="hidden" name="dueDate" value="<%= resultSet.getString(4) %>" />													
+													<input type="hidden" name="days" value="<%= resultSet.getInt(4) %>" />													
 													<input type="hidden" name="dueAmount" value="<%= resultSet.getDouble(11) %>" />
 													<button type="submit" class="btn btn-danger">Reject</button>
 												</form>

@@ -3,6 +3,10 @@ package com.perfiosbank.admincarloans;
 import java.io.IOException;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +34,7 @@ public class AdminCarLoansController extends HttpServlet {
 		String username = request.getParameter("username");
 		double principal = Double.parseDouble(request.getParameter("principal"));
 		String newStatus = request.getParameter("newStatus");
-		String dueDate = request.getParameter("dueDate");
+		int days = Integer.parseInt(request.getParameter("days"));
 		double dueAmount = Double.parseDouble(request.getParameter("dueAmount"));
 		
 		try {
@@ -46,17 +50,13 @@ public class AdminCarLoansController extends HttpServlet {
 		        carLoanRepaymentInfo.setLoanId(id);
 		        carLoanRepaymentInfo.setStartDate(getStartDate(currentDate));
 		        carLoanRepaymentInfo.setHasStarted(0);
-		        carLoanRepaymentInfo.setEndDate(dueDate.substring(0, 8) + "01");
+		        carLoanRepaymentInfo.setEndDate(getEndDate(carLoanRepaymentInfo.getStartDate(), days));
 		        carLoanRepaymentInfo.setHasEnded(0);
 		        carLoanRepaymentInfo.setEmi(dueAmount / getDuration(carLoanRepaymentInfo.getStartDate(), carLoanRepaymentInfo.getEndDate()));
 		        carLoanRepaymentInfo.setMisses(0);
 		        carLoanRepaymentInfo.setPenalty(0.02 * carLoanRepaymentInfo.getEmi());
 		        
 		        if (AdminCarLoansDao.initializeRepayment(carLoanRepaymentInfo) != 1) {
-		        	throw new Exception();
-		        }
-		        
-		        if (AdminCarLoansDao.removeRejectedCarLoansByUsername(username) != 1) {
 		        	throw new Exception();
 		        }
 		        
@@ -68,6 +68,8 @@ public class AdminCarLoansController extends HttpServlet {
 		        if (DepositDao.depositMoney(username, date, principal, newBalance) != 1) {
 		        	throw new Exception();
 		        }
+		        
+		        AdminCarLoansDao.removeRejectedCarLoansByUsername(username);
 		        
 				request.getSession().setAttribute(newStatus, username + "'s loan application has been approved "
 						+ "successfully!");
@@ -95,6 +97,18 @@ public class AdminCarLoansController extends HttpServlet {
     	}
     	
     	return startDate;
+    }
+    
+    private String getEndDate(String startDateString, int days) throws Exception {
+    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    	Date startDate = formatter.parse(startDateString);
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.setTime(startDate);
+    	calendar.add(Calendar.DATE, days);
+    	String endDate = formatter.format(calendar.getTime());
+    	endDate = endDate.substring(0, 8) + "01";
+    	
+    	return endDate;
     }
     
     private int getDuration(String startDate, String endDate) {

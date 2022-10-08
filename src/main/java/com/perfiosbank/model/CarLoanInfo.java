@@ -7,7 +7,7 @@ public class CarLoanInfo {
 	private String username;
 	private String password;
 	private double loanAmount;
-	private String dueDate;
+	private int days;
 	private int cibilScore;
 	HashMap<String, byte[]> uploadedFiles;
 	List<String> uploadedFilenames;
@@ -38,12 +38,12 @@ public class CarLoanInfo {
 		this.loanAmount = loanAmount;
 	}
 	
-	public String getDueDate() {
-		return dueDate;
+	public int getDays() {
+		return days;
 	}
 	
-	public void setDueDate(String dueDate) {
-		this.dueDate = dueDate;
+	public void setDays(int days) {
+		this.days = days;
 	}
 	
 	public int getCibilScore() {
