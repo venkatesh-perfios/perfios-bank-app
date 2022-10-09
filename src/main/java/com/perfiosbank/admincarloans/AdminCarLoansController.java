@@ -2,22 +2,13 @@ package com.perfiosbank.admincarloans;
 
 import java.io.IOException;
 
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.checkbalance.CheckBalanceDao;
-import com.perfiosbank.deposit.DepositDao;
-import com.perfiosbank.model.CarLoanRepaymentInfo;
-import com.perfiosbank.utils.DateTimeUtils;
+import com.perfiosbank.model.AdminCarLoansInfo;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/admin-car-loans-page/change-status")
@@ -37,46 +28,18 @@ public class AdminCarLoansController extends HttpServlet {
 		int days = Integer.parseInt(request.getParameter("days"));
 		double dueAmount = Double.parseDouble(request.getParameter("dueAmount"));
 		
+		AdminCarLoansInfo adminCarLoansInfo = new AdminCarLoansInfo();
+		adminCarLoansInfo.setId(id);
+		adminCarLoansInfo.setUsername(username);
+		adminCarLoansInfo.setPrincipal(principal);
+		adminCarLoansInfo.setNewStatus(newStatus);
+		adminCarLoansInfo.setDays(days);
+		adminCarLoansInfo.setDueAmount(dueAmount);
+		
 		try {
-			if (AdminCarLoansDao.changeStatusById(id, newStatus) != 1) {
-				throw new Exception();
-			}
-			
-			if (newStatus.equals("Approved")) {
-				String currentDate = DateTimeUtils.getCurrentDateTime();
-				
-		        CarLoanRepaymentInfo carLoanRepaymentInfo = new CarLoanRepaymentInfo();
-		        carLoanRepaymentInfo.setUsername(username);
-		        carLoanRepaymentInfo.setLoanId(id);
-		        carLoanRepaymentInfo.setStartDate(getStartDate(currentDate));
-		        carLoanRepaymentInfo.setHasStarted(0);
-		        carLoanRepaymentInfo.setEndDate(getEndDate(carLoanRepaymentInfo.getStartDate(), days));
-		        carLoanRepaymentInfo.setHasEnded(0);
-		        carLoanRepaymentInfo.setEmi(dueAmount / getDuration(carLoanRepaymentInfo.getStartDate(), carLoanRepaymentInfo.getEndDate()));
-		        carLoanRepaymentInfo.setMisses(0);
-		        carLoanRepaymentInfo.setPenalty(0.02 * carLoanRepaymentInfo.getEmi());
-		        
-		        if (AdminCarLoansDao.initializeRepayment(carLoanRepaymentInfo) != 1) {
-		        	throw new Exception();
-		        }
-		        
-				ResultSet resultSet = CheckBalanceDao.getCurrentBalanceByUsername(username);
-				double currentBalance = resultSet.next() ? resultSet.getDouble(1) : 0.0;
-		        double newBalance = currentBalance + principal;
-		        String date = DateTimeUtils.getCurrentDateTime();
-				
-		        if (DepositDao.depositMoney(username, date, principal, newBalance) != 1) {
-		        	throw new Exception();
-		        }
-		        
-		        AdminCarLoansDao.removeRejectedCarLoansByUsername(username);
-		        
-				request.getSession().setAttribute(newStatus, username + "'s loan application has been approved "
-						+ "successfully!");
-			} else {
-				request.getSession().setAttribute(newStatus, username + "'s loan application has been rejected "
-						+ "successfully!");
-			}
+			AdminCarLoansService adminCarLoansService = new AdminCarLoansService();
+			String message = adminCarLoansService.reviewCarLoanApplication(adminCarLoansInfo);
+			request.getSession().setAttribute(newStatus, message);
 		} catch(Exception e) {
 			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to change the status "
@@ -85,46 +48,4 @@ public class AdminCarLoansController extends HttpServlet {
 			response.sendRedirect("admin-car-loans.jsp");
 		}
 	}
-	
-    private String getStartDate(String currentDate) {
-    	String[] currentDateSplit = currentDate.split("-");
-    	
-    	String startDate = "";
-    	if (Integer.parseInt(currentDateSplit[1]) + 2 > 12) {
-    		startDate += (Integer.parseInt(currentDateSplit[0]) + 1) + "-" + ((Integer.parseInt(currentDateSplit[1]) + 2) % 12) + "-01";
-    	} else {
-    		startDate += currentDateSplit[0] + "-" + (Integer.parseInt(currentDateSplit[1]) + 2) + "-01";
-    	}
-    	
-    	return startDate;
-    }
-    
-    private String getEndDate(String startDateString, int days) throws Exception {
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-    	Date startDate = formatter.parse(startDateString);
-    	Calendar calendar = Calendar.getInstance();
-    	calendar.setTime(startDate);
-    	calendar.add(Calendar.DATE, days);
-    	String endDate = formatter.format(calendar.getTime());
-    	endDate = endDate.substring(0, 8) + "01";
-    	
-    	return endDate;
-    }
-    
-    private int getDuration(String startDate, String endDate) {
-    	String[] startDateSplit = startDate.split("-");
-    	String[] endDateSplit = endDate.split("-");
-    	
-    	int duration = 0;
-    	if (Integer.parseInt(startDateSplit[1]) <= Integer.parseInt(endDateSplit[1])) {
-    		duration += ((Integer.parseInt(endDateSplit[0]) - Integer.parseInt(startDateSplit[0])) * 12) + 
-    				(Integer.parseInt(endDateSplit[1]) - Integer.parseInt(startDateSplit[1]));
-    	} else {
-    		duration += ((Integer.parseInt(endDateSplit[0]) - Integer.parseInt(startDateSplit[0]) - 1) * 12) + 
-    				(12 - Integer.parseInt(startDateSplit[1])) + 
-    				Integer.parseInt(endDateSplit[1]);
-    	}
-
-		return ++duration;
-    }
 }

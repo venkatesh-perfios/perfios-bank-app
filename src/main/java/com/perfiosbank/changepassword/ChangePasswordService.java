@@ -2,7 +2,7 @@ package com.perfiosbank.changepassword;
 
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
-import com.perfiosbank.exceptions.InvalidPasswordException;
+import com.perfiosbank.exceptions.PasswordInvalidException;
 import com.perfiosbank.exceptions.NewPasswordSameAsCurrentException;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.AuthenticationUtils;
@@ -11,7 +11,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class ChangePasswordService {
     public User changePassword(User userInSession, User enteredDetails, String newPassword, String reenteredNewPassword) 
-    		throws NewPasswordSameAsCurrentException, InvalidPasswordException, 
+    		throws NewPasswordSameAsCurrentException, PasswordInvalidException, 
     		PasswordMismatchException, AuthenticationFailedException, Exception {
         String msg;
 
@@ -32,7 +32,7 @@ public class ChangePasswordService {
                     "3. Contains at least 1 small letter<br>" +
                     "4. Contains at least 1 capital letter<br>" +
                     "5. Contains at least 1 of these special characters: @, #, $, %, ^, &, +, =";
-            throw new InvalidPasswordException(msg);
+            throw new PasswordInvalidException(msg);
         }
 
         if (isPasswordMismatch(newPassword, reenteredNewPassword)) {
@@ -45,8 +45,11 @@ public class ChangePasswordService {
         	throw new Exception();
         }
 
-        userInSession.setPassword(encryptedNewPassword);
-        return userInSession;
+        User updatedUserInSession = new User();
+        updatedUserInSession.setUsername(userInSession.getUsername());
+        updatedUserInSession.setPassword(encryptedNewPassword);
+        
+        return updatedUserInSession;
     }
 
     private boolean isNewPasswordSameAsCurrent(String newPassword, String currentPassword) {

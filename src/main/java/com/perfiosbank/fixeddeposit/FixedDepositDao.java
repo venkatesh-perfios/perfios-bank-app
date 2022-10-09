@@ -22,7 +22,7 @@ public class FixedDepositDao {
 	}
 	
 	public static ResultSet getAgeByUsername(String username) throws Exception {
-		String getAgeByUsernameSql = "select Age from " + ACCOUNTS_TABLE_NAME + " where Username='" + 
+		String getAgeByUsernameSql = "select Age, Username from " + ACCOUNTS_TABLE_NAME + " where Username='" + 
 				username + "'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 
@@ -41,7 +41,7 @@ public class FixedDepositDao {
 		String getAllFixedDeposits = "select * from " + FIXED_DEPOSITS_TABLE_NAME + " order by End_Date";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 		
-		return statement.executeQuery(getAllFixedDeposits); 
+		return statement.executeQuery(getAllFixedDeposits);
 	}
 	
 	public static int deleteFixedDepositAccountById(int id) throws Exception {

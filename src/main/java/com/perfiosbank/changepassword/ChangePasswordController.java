@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.perfiosbank.exceptions.AuthenticationFailedException;
-import com.perfiosbank.exceptions.InvalidPasswordException;
+import com.perfiosbank.exceptions.PasswordInvalidException;
 import com.perfiosbank.exceptions.NewPasswordSameAsCurrentException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.model.User;
@@ -50,7 +50,7 @@ public class ChangePasswordController extends HttpServlet {
         } catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException",
 					authenticationFailedException.getMessage());
-		} catch (NewPasswordSameAsCurrentException | InvalidPasswordException newPasswordExceptions) {
+		} catch (NewPasswordSameAsCurrentException | PasswordInvalidException newPasswordExceptions) {
 			request.getSession().setAttribute("newPasswordException", newPasswordExceptions.getMessage());
 		} catch(PasswordMismatchException reenterPasswordException) {
 			request.getSession().setAttribute("reenterPasswordException", 

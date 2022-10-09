@@ -10,7 +10,7 @@ import com.perfiosbank.utils.DateTimeUtils;
 
 public class WithdrawService {
     public void withdrawMoney(User userInSession, DepositWithdrawInfo withdrawInfo) 
-    		throws AuthenticationFailedException, AccountNotFoundException, AmountInvalidException, 
+    		throws AuthenticationFailedException, AmountInvalidException, 
     		AmountLimitReachedException, InsufficientBalanceException, BelowMinBalanceException, Exception {
         String msg;
         
@@ -21,11 +21,6 @@ public class WithdrawService {
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
-        }
-
-        if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please open an account before withdrawing money from it!";
-            throw new AccountNotFoundException(msg);
         }
 
         if (AccountUtils.isAmountInvalid(withdrawInfo.getAmount())) {

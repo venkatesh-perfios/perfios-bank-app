@@ -10,8 +10,8 @@ import com.perfiosbank.utils.DateTimeUtils;
 
 public class DepositService {
     public void depositMoney(User userInSession, DepositWithdrawInfo depositInfo) 
-    		throws AuthenticationFailedException, AccountNotFoundException, AmountInvalidException,
-            AmountLimitReachedException, Exception {
+    		throws AuthenticationFailedException, AmountInvalidException, 
+    		AmountLimitReachedException, Exception {
         String msg;
 
         User enteredDetails = new User();
@@ -22,11 +22,6 @@ public class DepositService {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
         }
-        
-        if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please open an account before depositing money into it!";
-            throw new AccountNotFoundException(msg);
-        }
 
         if (AccountUtils.isAmountInvalid(depositInfo.getAmount())) {
             msg = "Please enter a valid amount! Here are some tips:<br>" +
@@ -35,14 +30,9 @@ public class DepositService {
                     "3. Don't enter more than 2 numbers after the decimal point";
             throw new AmountInvalidException(msg);
         }
-
-        if (depositInfo.getAmount() < 1000) {
-            msg = "You cannot invest less than Rs. 1000 into fixed deposit!";
-            throw new AmountLimitReachedException(msg);
-        }
-
-        if (depositInfo.getAmount() > 150000) {
-            msg = "You cannot invest more than Rs. 150000 into fixed deposit!";
+        
+        if (depositInfo.getAmount() > 50000) {
+            msg = "You cannot deposit more than Rs. 50000 at a time!";
             throw new AmountLimitReachedException(msg);
         }
 

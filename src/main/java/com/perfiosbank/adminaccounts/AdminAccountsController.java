@@ -8,10 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.closeaccount.CloseAccountDao;
-import com.perfiosbank.deposit.DepositDao;
-import com.perfiosbank.model.User;
-import com.perfiosbank.utils.DateTimeUtils;
+import com.perfiosbank.model.AdminAccountsInfo;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/admin-accounts-page/change-status")
@@ -29,32 +26,16 @@ public class AdminAccountsController extends HttpServlet {
 		double amount = Double.parseDouble(request.getParameter("amount"));
 		String newStatus = request.getParameter("newStatus");
 		
+		AdminAccountsInfo adminAccountsInfo = new AdminAccountsInfo();
+		adminAccountsInfo.setAccountNumber(accountNumber);
+		adminAccountsInfo.setUsername(username);
+		adminAccountsInfo.setAmount(amount);
+		adminAccountsInfo.setNewStatus(newStatus);
+		
 		try {
-			if (AdminAccountsDao.changeStatusByAccountNumber(accountNumber, newStatus) != 1) {
-				throw new Exception();
-			}
-			
-			if (newStatus.equals("Approved")) {
-				double currentBalance = 0.0;
-		        double newBalance = currentBalance + amount;
-		        String date = DateTimeUtils.getCurrentDateTime();
-				
-		        if (DepositDao.depositMoney(username, date, amount, newBalance) != 1) {
-		        	throw new Exception();
-		        }
-		        
-				request.getSession().setAttribute(newStatus, username + "'s account opening application has been approved "
-						+ "successfully!");
-			} else {
-				User userInSession = new User();
-				userInSession.setUsername(username);
-				if (CloseAccountDao.removeUser(userInSession) != 1) {
-					throw new Exception();
-				}
-				
-				request.getSession().setAttribute(newStatus, username + "'s account opening application has been rejected "
-						+ "successfully!");
-			}
+			AdminAccountsService adminAccountsService = new AdminAccountsService();
+			String message = adminAccountsService.reviewAccountApplication(adminAccountsInfo);
+			request.getSession().setAttribute(newStatus, message);
 		} catch(Exception e) {
 			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to change the status "

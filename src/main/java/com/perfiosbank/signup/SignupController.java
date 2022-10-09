@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.InvalidPasswordException;
+import com.perfiosbank.exceptions.PasswordInvalidException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.exceptions.UsernameAlreadyExistsException;
 import com.perfiosbank.exceptions.UsernameTooLongException;
@@ -39,7 +39,7 @@ public class SignupController extends HttpServlet {
 			SignupService signupService = new SignupService();
 			signupService.signupUser(user, reenteredPassword);
 
-			ResultSet resultSet = LoginDao.getAccountCountByUsername(username);
+			ResultSet resultSet = LoginDao.getApprovedAccountCountByUsername(username);
 			if (resultSet == null) {
 				throw new Exception();
 			}
@@ -59,7 +59,7 @@ public class SignupController extends HttpServlet {
 		} catch(UsernameAlreadyExistsException | UsernameTooLongException usernameException) {
 			request.getSession().setAttribute("usernameException", usernameException.getMessage());
 			response.sendRedirect("signup.jsp");
-		} catch (InvalidPasswordException passwordException) {
+		} catch (PasswordInvalidException passwordException) {
 			request.getSession().setAttribute("passwordException", passwordException.getMessage());
 			response.sendRedirect("signup.jsp");
 		} catch(PasswordMismatchException reenterPasswordException) {

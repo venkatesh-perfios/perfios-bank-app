@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -51,9 +50,7 @@ public class WithdrawController extends HttpServlet {
         } catch(AmountInvalidException | AmountLimitReachedException | InsufficientBalanceException | 
         		BelowMinBalanceException amountExceptions) {
 			request.getSession().setAttribute("amountException", amountExceptions.getMessage());
-        } catch(AccountNotFoundException accountNotFoundException) {
-			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
-		} catch(Exception e) {
+        } catch(Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to withdraw money from your account at the moment! Try again later.");
 		} finally {
 			RequestDispatcher rd = request.getRequestDispatcher("withdraw.jsp");

@@ -205,8 +205,8 @@
 									      <td width="12%">Rs. <%= (double) Math.round((resultSet.getDouble(11) - resultSet.getDouble(3)) * 100) / 100 %></td>
 									      <td width="12%">Rs. <%= resultSet.getDouble(11) %></td>
 									      <td width="10%"><%= resultSet.getString(12) %></td>
-									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(4) : "-" %></td>
-									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getString(6) : "-" %></td>
+									      <td width="12%"><%= isApproved ? carLoanRepaymentResultSet.getString(4) : "-" %></td>
+									      <td width="12%"><%= isApproved ? carLoanRepaymentResultSet.getString(6) : "-" %></td>
 									      <td width="10%"><%= isApproved ? "Rs. " + carLoanRepaymentResultSet.getDouble(8) : "-" %></td>
 									      <td width="10%"><%= isApproved ? carLoanRepaymentResultSet.getInt(9) : "-" %></td>
 									      <td width="10%"><%= isApproved ? "Rs. " + carLoanRepaymentResultSet.getDouble(10) : "-" %></td>

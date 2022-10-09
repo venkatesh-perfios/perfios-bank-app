@@ -48,7 +48,7 @@ public class CarLoanDao {
 	}
 	
 	public static ResultSet isAccountFrozenByUsername(String username) throws Exception {
-		String isAccountFrozenSql = "select Is_Frozen from " + ACCOUNTS_TABLE + " where "
+		String isAccountFrozenSql = "select Is_Frozen, Username from " + ACCOUNTS_TABLE + " where "
 				+ "Username='" + username + "'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 		

@@ -1,6 +1,5 @@
 package com.perfiosbank.carloan;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.DurationRangeException;
@@ -13,7 +12,7 @@ import com.perfiosbank.utils.AuthenticationUtils;
 
 public class CarLoanService {
 	public void applyCarLoan(User userInSession, CarLoanInfo carLoanInfo) 
-			throws AuthenticationFailedException, AccountNotFoundException, AmountInvalidException, 
+			throws AuthenticationFailedException, AmountInvalidException, 
 			EndDateInvalidException, DurationRangeException, FileInvalidException, Exception {
 		String msg;
 
@@ -24,11 +23,6 @@ public class CarLoanService {
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
-        }
-        
-        if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please open an account before depositing money into it!";
-            throw new AccountNotFoundException(msg);
         }
 
         if (AccountUtils.isAmountInvalid(carLoanInfo.getLoanAmount())) {

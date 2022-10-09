@@ -40,7 +40,7 @@ public class FixedDepositServerListener implements ServletContextListener {
             		.withIdentity("fixedDepositTrigger", "fixedDepositGroup")
             		.startNow()
       	            .withSchedule(simpleSchedule()
-      	            		.withIntervalInSeconds(20)
+      	            		.withIntervalInSeconds(86400)
       	            		.repeatForever())
       	            .build();
             

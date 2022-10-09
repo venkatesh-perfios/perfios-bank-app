@@ -28,7 +28,7 @@ public class OpenAccountDao {
 		preparedStatement.setLong(12, accountInfo.getPhone());
 		preparedStatement.setDouble(13, accountInfo.getAmount());
 		preparedStatement.setString(14, "Pending");
-		preparedStatement.setInt(15, 1);
+		preparedStatement.setInt(15, 0);
 		
 		return preparedStatement.executeUpdate();
 	}

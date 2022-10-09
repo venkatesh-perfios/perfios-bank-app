@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.ActiveLoansFoundException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.model.User;
@@ -47,10 +46,7 @@ public class CloseAccountController extends HttpServlet {
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
 			response.sendRedirect("close-account.jsp");
-        } catch(AccountNotFoundException accountNotFoundException) {
-			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
-			response.sendRedirect("close-account.jsp");
-		} catch(ActiveLoansFoundException activeLoansFoundException) {
+        } catch(ActiveLoansFoundException activeLoansFoundException) {
 			request.getSession().setAttribute("otherException", activeLoansFoundException.getMessage());
 			response.sendRedirect("close-account.jsp");
 		} catch(Exception e) {

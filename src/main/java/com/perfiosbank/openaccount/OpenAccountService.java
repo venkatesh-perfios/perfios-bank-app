@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import com.perfiosbank.exceptions.AadhaarInvalidException;
 import com.perfiosbank.exceptions.AccountAlreadyExistsException;
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -24,20 +23,15 @@ import com.perfiosbank.utils.AuthenticationUtils;
 
 public class OpenAccountService {
     public String openAccount(User userInSession, User enteredDetails, AccountInfo accountInfo) 
-    		throws AccountAlreadyExistsException, AccountNotFoundException, NameInvalidException, 
-    		AadhaarInvalidException, PanInvalidException, PhoneInvalidException, 
-    		AmountInvalidException, BelowMinBalanceException, AuthenticationFailedException, 
-    		AmountLimitReachedException, FileInvalidException, Exception {
+    		throws AccountAlreadyExistsException, NameInvalidException, AadhaarInvalidException, 
+    		PanInvalidException, PhoneInvalidException, AmountInvalidException, 
+    		BelowMinBalanceException, AuthenticationFailedException, AmountLimitReachedException,
+    		FileInvalidException, Exception {
 		String msg;
 			
 		if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
 			msg = "Authentication failed! Please re-check your username/password.";
 			throw new AuthenticationFailedException(msg);
-		}
-		
-		if (isAccountAlreadyExists(userInSession)) {
-			msg = "You already have an account!";
-			throw new AccountAlreadyExistsException(msg);
 		}
 		
 		if (isNameInvalid(accountInfo.getFirstName())) {
@@ -112,10 +106,6 @@ public class OpenAccountService {
 		}
 		
 		return newAccountNumber;
-	}
-	
-	private boolean isAccountAlreadyExists(User userInSession) throws Exception {
-		return OpenAccountDao.getAccountByUsername(userInSession.getUsername()).next();
 	}
 	
 	private boolean isNameInvalid(String name) {

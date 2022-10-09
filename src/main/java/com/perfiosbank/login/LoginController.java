@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
 			LoginService loginService = new LoginService();
 			User userInNewSession = loginService.loginUser(enteredDetails);
 
-			ResultSet resultSet = LoginDao.getAccountCountByUsername(username);
+			ResultSet resultSet = LoginDao.getApprovedAccountCountByUsername(username);
 			if (resultSet == null) {
 				throw new Exception();
 			}

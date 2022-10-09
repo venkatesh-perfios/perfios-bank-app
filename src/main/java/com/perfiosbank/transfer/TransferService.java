@@ -16,7 +16,7 @@ public class TransferService {
     String targetUsername;
 
     public void transferMoney(User userInSession, TransferInfo transferInfo) 
-    		throws AuthenticationFailedException, AccountNotFoundException, TargetAccountNumberSameAsUserException, 
+    		throws AuthenticationFailedException, TargetAccountNumberSameAsUserException, 
     		AmountInvalidException, AmountLimitReachedException, BelowMinBalanceException, Exception {
         String msg;
         
@@ -27,11 +27,6 @@ public class TransferService {
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
-        }
-
-        if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please create an account before transferring money into somebody's account!";
-            throw new AccountNotFoundException(msg);
         }
 
         if (isTargetAccountNumberNotFound(transferInfo.getTargetAccountNumber())) {

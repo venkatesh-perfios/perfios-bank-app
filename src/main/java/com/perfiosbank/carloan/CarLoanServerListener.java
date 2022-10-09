@@ -40,7 +40,7 @@ public class CarLoanServerListener implements ServletContextListener {
             		.withIdentity("carLoanTrigger", "carLoanGroup")
             		.startNow()
       	            .withSchedule(simpleSchedule()
-      	            		.withIntervalInSeconds(20)
+      	            		.withIntervalInSeconds(86400)
       	            		.repeatForever())
       	            .build();
             

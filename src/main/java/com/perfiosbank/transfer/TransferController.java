@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -54,9 +53,8 @@ public class TransferController extends HttpServlet {
         } catch(AmountInvalidException | AmountLimitReachedException | BelowMinBalanceException 
         		amountExceptions) {
 			request.getSession().setAttribute("amountException", amountExceptions.getMessage());
-        } catch(AccountNotFoundException | TargetAccountNumberSameAsUserException 
-        		targetAccountNumberExceptions) {
-			request.getSession().setAttribute("targetException", targetAccountNumberExceptions.getMessage());
+        } catch(TargetAccountNumberSameAsUserException targetAccountNumberSameAsUserException) {
+			request.getSession().setAttribute("targetException", targetAccountNumberSameAsUserException.getMessage());
 		} catch(Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to transfer Rs. " + amount + 
 					" into account " + targetAccountNumber + " at the moment! Try again later.");

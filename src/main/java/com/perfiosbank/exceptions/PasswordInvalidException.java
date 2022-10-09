@@ -1,9 +1,9 @@
 package com.perfiosbank.exceptions;
 
-public class InvalidPasswordException extends Exception {
+public class PasswordInvalidException extends Exception {
     private static final long serialVersionUID = 1L;
 
-	public InvalidPasswordException(String msg) {
+	public PasswordInvalidException(String msg) {
         super(msg);
     }
 }

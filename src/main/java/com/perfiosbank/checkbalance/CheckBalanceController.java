@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.model.User;
 import com.perfiosbank.utils.SessionUtils;
@@ -42,9 +41,7 @@ public class CheckBalanceController extends HttpServlet {
 			request.getSession().setAttribute("success", "Your balance: " + balance);
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
-        } catch(AccountNotFoundException accountNotFoundException) {
-			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
-		} catch(Exception e) {
+        } catch(Exception e) {
 			request.getSession().setAttribute("otherException", "Unable to display your balance at the moment! Try again later.");
 		} finally {
 			RequestDispatcher requestDispatcher = request.getRequestDispatcher("check-balance.jsp");

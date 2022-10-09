@@ -1,6 +1,5 @@
 package com.perfiosbank.openaccount;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import javax.servlet.http.Part;
 
 import com.perfiosbank.exceptions.AadhaarInvalidException;
 import com.perfiosbank.exceptions.AccountAlreadyExistsException;
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountLimitReachedException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -28,6 +26,7 @@ import com.perfiosbank.exceptions.PanInvalidException;
 import com.perfiosbank.exceptions.PhoneInvalidException;
 import com.perfiosbank.model.AccountInfo;
 import com.perfiosbank.model.User;
+import com.perfiosbank.utils.FileUtils;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/open-account-page/open-account")
@@ -56,15 +55,15 @@ public class OpenAccountController extends HttpServlet {
 		long phone = Long.parseLong(request.getParameter("phone"));
 		double amount = Long.parseLong(request.getParameter("amount"));
 		
-		final String[] FILENAMES = {"photo", "aadhaarProof", "panProof"};
+		final String[] fileTypes = {"photo", "aadhaarProof", "panProof"};
 		HashMap<String, byte[]> uploadedFiles = new HashMap<>();
 		List<String> uploadedFilenames = new ArrayList<String>();
-		for (String FILENAME : FILENAMES) {
-			Part filePart = request.getPart(FILENAME);
-			uploadedFilenames.add(FILENAME + "," + filePart.getSubmittedFileName());
+		for (String fileType : fileTypes) {
+			Part filePart = request.getPart(fileType);
+			uploadedFilenames.add(fileType + "," + filePart.getSubmittedFileName());
 		    InputStream fileContent = filePart.getInputStream();
-		    byte[] fileContentInBytes = readAllBytes(fileContent);
-		    uploadedFiles.put(FILENAME, fileContentInBytes);
+		    byte[] fileContentInBytes = FileUtils.readAllBytes(fileContent);
+		    uploadedFiles.put(fileType, fileContentInBytes);
 		}
 	    
 		User enteredDetails = new User();
@@ -113,8 +112,8 @@ public class OpenAccountController extends HttpServlet {
 				amountExceptions) {
 			request.getSession().setAttribute("amountException", amountExceptions.getMessage());
 			response.sendRedirect("open-account.jsp");
-		} catch(AccountAlreadyExistsException | AccountNotFoundException accountExceptions) {
-			request.getSession().setAttribute("otherException", accountExceptions.getMessage());
+		} catch(AccountAlreadyExistsException accountAlreadyExistsException) {
+			request.getSession().setAttribute("otherException", accountAlreadyExistsException.getMessage());
 			response.sendRedirect("open-account.jsp");
 		} catch(FileInvalidException fileInvalidException) {
         	String[] filenameAndMessage = fileInvalidException.getMessage().split(",");
@@ -135,31 +134,5 @@ public class OpenAccountController extends HttpServlet {
 			request.getSession().setAttribute("otherException", "Unable to open your account at the moment! Try again later.");
 			response.sendRedirect("open-account.jsp");
 		}
-	}
-
-    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
-        final int bufLen = 4 * 0x400; // 4KB
-        byte[] buf = new byte[bufLen];
-        int readLen;
-        IOException exception = null;
-
-        try {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-                    outputStream.write(buf, 0, readLen);
-
-                return outputStream.toByteArray();
-            }
-        } catch (IOException e) {
-            exception = e;
-            throw e;
-        } finally {
-            if (exception == null) inputStream.close();
-            else try {
-                inputStream.close();
-            } catch (IOException e) {
-                exception.addSuppressed(e);
-            }
-        }
     }
 }

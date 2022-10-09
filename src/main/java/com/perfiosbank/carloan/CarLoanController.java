@@ -1,7 +1,5 @@
 package com.perfiosbank.carloan;
 
-import java.io.ByteArrayOutputStream;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.DurationRangeException;
@@ -25,6 +22,7 @@ import com.perfiosbank.exceptions.EndDateInvalidException;
 import com.perfiosbank.exceptions.FileInvalidException;
 import com.perfiosbank.model.CarLoanInfo;
 import com.perfiosbank.model.User;
+import com.perfiosbank.utils.FileUtils;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/car-loan-page/car-loan")
@@ -57,7 +55,7 @@ public class CarLoanController extends HttpServlet {
 			Part filePart = request.getPart(FILENAME);
 			uploadedFilenames.add(FILENAME + "," + filePart.getSubmittedFileName());
 		    InputStream fileContent = filePart.getInputStream();
-		    byte[] fileContentInBytes = readAllBytes(fileContent);
+		    byte[] fileContentInBytes = FileUtils.readAllBytes(fileContent);
 		    uploadedFiles.put(FILENAME, fileContentInBytes);
 		}
 	    
@@ -76,9 +74,7 @@ public class CarLoanController extends HttpServlet {
 			request.getSession().setAttribute("success", "You have applied for your car loan successfully!");	
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
-        } catch(AccountNotFoundException accountNotFoundException) {
-			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
-		} catch(AmountInvalidException amountInvalidException) {
+        } catch(AmountInvalidException amountInvalidException) {
 			request.getSession().setAttribute("amountException", amountInvalidException.getMessage());
         } catch(EndDateInvalidException | DurationRangeException endDateExceptions) {
         	request.getSession().setAttribute("endDateException", endDateExceptions.getMessage());
@@ -107,30 +103,4 @@ public class CarLoanController extends HttpServlet {
 			rd.include(request, response);
 		}
 	}
-    
-    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
-        final int bufLen = 4 * 0x400; // 4KB
-        byte[] buf = new byte[bufLen];
-        int readLen;
-        IOException exception = null;
-
-        try {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                while ((readLen = inputStream.read(buf, 0, bufLen)) != -1)
-                    outputStream.write(buf, 0, readLen);
-
-                return outputStream.toByteArray();
-            }
-        } catch (IOException e) {
-            exception = e;
-            throw e;
-        } finally {
-            if (exception == null) inputStream.close();
-            else try {
-                inputStream.close();
-            } catch (IOException e) {
-                exception.addSuppressed(e);
-            }
-        }
-    }
 }

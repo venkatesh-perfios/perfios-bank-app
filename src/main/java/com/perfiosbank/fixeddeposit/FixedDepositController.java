@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AmountRangeException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
@@ -52,9 +51,7 @@ public class FixedDepositController extends HttpServlet {
 			request.getSession().setAttribute("success", "You have started your fixed deposit successfully!");	
 		} catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
-        } catch(AccountNotFoundException accountNotFoundException) {
-			request.getSession().setAttribute("otherException", accountNotFoundException.getMessage());
-		} catch(AmountInvalidException | AmountRangeException | InsufficientBalanceException | 
+        } catch(AmountInvalidException | AmountRangeException | InsufficientBalanceException | 
 				BelowMinBalanceException amountExceptions) {
 			request.getSession().setAttribute("amountException", amountExceptions.getMessage());
         } catch(EndDateInvalidException | DurationRangeException endDateExceptions) {

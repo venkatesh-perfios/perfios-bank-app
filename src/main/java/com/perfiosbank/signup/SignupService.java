@@ -3,7 +3,7 @@ package com.perfiosbank.signup;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.perfiosbank.exceptions.InvalidPasswordException;
+import com.perfiosbank.exceptions.PasswordInvalidException;
 import com.perfiosbank.exceptions.PasswordMismatchException;
 import com.perfiosbank.exceptions.UsernameAlreadyExistsException;
 import com.perfiosbank.exceptions.UsernameTooLongException;
@@ -11,7 +11,7 @@ import com.perfiosbank.model.User;
 
 public class SignupService {
     public void signupUser(User user, String reenteredPassword) 
-    		throws UsernameAlreadyExistsException, UsernameTooLongException, InvalidPasswordException, 
+    		throws UsernameAlreadyExistsException, UsernameTooLongException, PasswordInvalidException, 
     		PasswordMismatchException, Exception {
 		String msg;
 		
@@ -32,7 +32,7 @@ public class SignupService {
 			"3. Contains at least 1 small letter<br>" +
 			"4. Contains at least 1 capital letter<br>" +
 			"5. Contains at least 1 of these special characters: @, #, $, %, ^, &, +, =";
-			throw new InvalidPasswordException(msg);
+			throw new PasswordInvalidException(msg);
 		}
 		
 		if (isPasswordMismatch(user.getPassword(), reenteredPassword)) {
@@ -49,16 +49,16 @@ public class SignupService {
 		ResultSet resultSet = SignupDao.getUserByUsername(username);
 		return resultSet.next();
 	}
-		
+	
 	private boolean isUsernameTooLong(String username) {
 		return username.length() > 20;
 	}
-		
+	
 	private boolean isPasswordInvalid(String password) {
 		String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
 		return !password.matches(pattern);
 	}
-		
+	
 	private boolean isPasswordMismatch(String password, String reenteredPassword) {
 		return !password.equals(reenteredPassword);
 	}

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import com.perfiosbank.checkbalance.CheckBalanceService;
-import com.perfiosbank.exceptions.AccountNotFoundException;
 import com.perfiosbank.exceptions.AmountInvalidException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.exceptions.BelowMinBalanceException;
@@ -24,9 +23,9 @@ import com.perfiosbank.withdraw.WithdrawDao;
 
 public class FixedDepositService {
 	public void startFixedDeposit(User userInSession, FixedDepositInfo fixedDepositInfo) 
-			throws AuthenticationFailedException, AccountNotFoundException, AmountInvalidException, 
-			AmountRangeException, InsufficientBalanceException, BelowMinBalanceException, 
-			EndDateInvalidException, DurationRangeException, Exception {
+			throws AuthenticationFailedException, AmountInvalidException, AmountRangeException, 
+			InsufficientBalanceException, BelowMinBalanceException, EndDateInvalidException, 
+			DurationRangeException, Exception {
 		String msg;
 
         User enteredDetails = new User();
@@ -42,11 +41,6 @@ public class FixedDepositService {
         if (AuthenticationUtils.isUserNotAuthenticated(userInSession, enteredDetails)) {
             msg = "Authentication failed! Please re-check your username/password.";
             throw new AuthenticationFailedException(msg);
-        }
-        
-        if (AccountUtils.isAccountNotFound(userInSession)) {
-            msg = "Please open an account before depositing money into it!";
-            throw new AccountNotFoundException(msg);
         }
 
         if (AccountUtils.isAmountInvalid(fixedDepositInfo.getPrincipal())) {
@@ -150,7 +144,7 @@ public class FixedDepositService {
 	    		return 7.00;
 	    	}
     	}
-    } 
+    }
     
     private double getMaturityAmount(FixedDepositInfo fixedDepositInfo, long differenceInDays) {
     	return fixedDepositInfo.getPrincipal() * Math.pow(1 + fixedDepositInfo.getInterestRate() / 100, 
