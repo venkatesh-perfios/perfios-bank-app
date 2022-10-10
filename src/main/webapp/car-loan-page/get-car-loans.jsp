@@ -21,15 +21,14 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="car-loan.css">
 		
-
 		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
 			<a class="navbar-brand" href="../landing-page/index.jsp">Perfios Bank</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -41,7 +40,7 @@
 				%>
 				<ul class="navbar-nav mx-auto">
 				</ul>
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="signup">
 						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 					</li>
@@ -60,7 +59,7 @@
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
@@ -98,7 +97,7 @@
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
@@ -127,10 +126,10 @@
 		<%
 			} else {
 		%>
-			<div class="content-container" style="margin-top: 6%">
-				<div class="card" style="width: 95%;">
-					<div class="card-body" style="padding: 0">
-						<div class="title-container">
+			<div class="table-container" style="margin-top: 6%">
+				<div style="width: 95%;">
+					<div style="padding: 0">
+						<div class="title-container hide-below-1500">
 							<h2 class="card-header">Here You Go!</h2>
 						</div>
 						<div style="padding: 16px">
@@ -217,6 +216,16 @@
 								</tbody>
 							</table>
 						</div>
+					    <div style="text-align: center">
+					    	Note:
+					    	<br>
+					    	1. The mentioned EMI will be automatically withdrawn from your account on the 1st of every month, starting from the "EMI Start Date".
+					    	<br>
+					    	2. Failure to ensure sufficient balance in your account to pay your EMI on the 1st of every month will attract the mentioned Penalty in the next month.
+					    	<br>
+					    	3. Failure to pay your EMI for 3 consecutive months will result in your account getting frozen.
+					    </div>
+					    <br>
 						<div style="text-align: center; margin-bottom: 16px;">
 							<a href="car-loan.jsp">Apply for another car loan?</a>
 						</div>

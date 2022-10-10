@@ -23,13 +23,13 @@
 		
 
 		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
 			<a class="navbar-brand" href="../landing-page/index.jsp">Perfios Bank</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -41,7 +41,7 @@
 				%>
 				<ul class="navbar-nav mx-auto">
 				</ul>
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="signup">
 						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 					</li>
@@ -60,7 +60,7 @@
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
@@ -98,7 +98,7 @@
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
+				<ul class="navbar-nav show-right max-width">
 					<li id="logout">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
@@ -139,13 +139,13 @@
 		<%
 				} else {
 		%>
-			<div class="content-container">
-				<div class="card center">
-					<div class="card-body">
-						<div class="title-container">
+			<div class="content-container table-container">
+				<div>
+					<div>
+						<div class="title-container hide-below-600">
 							<h2 class="card-header">Here You Go!</h2>
 						</div>
-						<table class="table table-striped table-hover table-bordered">
+						<table class="table table-striped table-hover table-bordered" style="text-align: center">
 							<thead>
 								<tr class="table-dark">
 									<th scope="col">Principal Amount</th>
@@ -171,6 +171,9 @@
 							%>
 							</tbody>
 						</table>
+					    <div class="valid-status-container">
+					    	Note: On maturity date, the maturity amount will be automatically deposited into your account!
+					    </div>
 						<br>
 						<div class="center">
 							<a href="fixed-deposit.jsp">Open another fixed deposit account?</a>

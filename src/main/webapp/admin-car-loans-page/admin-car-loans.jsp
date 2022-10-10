@@ -23,27 +23,32 @@
 		<link rel="stylesheet" href="admin-car-loans.css">
 		
 		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
 			<a class="navbar-brand" href="#">Perfios Bank</a>
-			<ul class="navbar-nav mx-auto">
-				<li id="admin-accounts">
-					<a class="nav-link" href="../admin-accounts-page/admin-accounts.jsp">Accounts</a>
-				</li>
-				<li id="admin-car-loans">
-					<a class="nav-link" href="admin-car-loans.jsp">Car Loans</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav show-right">
-				<li id="logout">
-					<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
-				</li>
-			</ul>
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+   		    <div class="collapse navbar-collapse" id="menuItems">
+				<ul class="navbar-nav mx-auto">
+					<li id="admin-accounts">
+						<a class="nav-link" href="../admin-accounts-page/admin-accounts.jsp">Accounts</a>
+					</li>
+					<li id="admin-car-loans">
+						<a class="nav-link" href="admin-car-loans.jsp">Car Loans</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav show-right max-width">
+					<li id="logout">
+						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
+					</li>
+				</ul>
+			</div>
 		</nav>
 	
 			<%
@@ -62,9 +67,9 @@
 			} else {
 		%>
 			<div class="content-container">
-				<div class="card" style="width: 70%;">
-					<div class="card-body" style="padding: 0">
-						<div class="title-container">
+				<div style="width: 70%;">
+					<div style="padding: 0">
+						<div class="title-container hide-below-1400">
 							<h2 class="card-header">Pending Loan Applications</h2>
 						</div>
 						<div style="padding: 16px">

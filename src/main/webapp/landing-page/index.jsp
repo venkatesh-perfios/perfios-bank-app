@@ -18,36 +18,36 @@
 		<title>Welcome!</title>
 
 		<!-- Latest compiled and minified CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="index.css">
-
+		
 		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-xl navbar-dark bg-dark">
 			<a class="navbar-brand" href="index.jsp">Perfios Bank</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
+		    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
+		      <span class="navbar-toggler-icon"></span>
+		    </button>
+			<div class="collapse navbar-collapse" id="menuItems">
 				<% 
 					Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
 					if (!isLoggedIn) {
 				%>
 				<ul class="navbar-nav mx-auto">
 				</ul>
-				<ul class="navbar-nav show-right">
-					<li id="signup">
+				<ul class="navbar-nav show-right max-width">
+					<li id="signup" class="nav-item">
 						<a class="nav-link" href="../signup-page/signup.jsp">Signup</a>
 					</li>
-					<li id="login">
+					<li id="login" class="nav-item">
 						<a class="nav-link" href="../login-page/login.jsp">User Login</a>
 					</li>
-					<li id="admin-login">
+					<li id="admin-login" class="nav-item">
 						<a class="nav-link" href="../admin-login-page/admin-login.jsp">Admin Login</a>
 					</li>
 				</ul>
@@ -57,13 +57,13 @@
 					if (!isAccountOpened) {
 				%>
 				<ul class="navbar-nav mx-auto">				
-					<li>
+					<li class="nav-item">
 						<a class="nav-link" href="../open-account-page/open-account.jsp">Open Account</a>
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
-					<li id="logout">
+				<ul class="navbar-nav show-right max-width">
+					<li id="logout" class="nav-item">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
 				</ul>
@@ -71,37 +71,37 @@
 					} else {
 				%>
 				<ul class="navbar-nav mx-auto">
-					<li id="check-balance">
+					<li id="check-balance" class="nav-item">
 						<a class="nav-link" href="../check-balance-page/check-balance.jsp">Check Balance</a>
 					</li>
-					<li id="deposit">
+					<li id="deposit" class="nav-item">
 						<a class="nav-link" href="../deposit-page/deposit.jsp">Deposit</a>
 					</li>
-					<li id="withdraw">	
+					<li id="withdraw" class="nav-item">	
 						<a class="nav-link" href="../withdraw-page/withdraw.jsp">Withdraw</a>
 					</li>
-					<li id="transfer">
+					<li id="transfer" class="nav-item">
 						<a class="nav-link" href="../transfer-page/transfer.jsp">Transfer</a>
 					</li>
-					<li id="past-transactions">
+					<li id="past-transactions" class="nav-item">
 						<a class="nav-link" href="../past-transactions-page/past-transactions.jsp">View Past Transactions</a>
 					</li>
-					<li id="fixed-deposit">
+					<li id="fixed-deposit" class="nav-item">
 						<a class="nav-link" href="../fixed-deposit-page/fixed-deposit.jsp">Fixed Deposit</a>
 					</li>
-					<li id="car-loan">
+					<li id="car-loan" class="nav-item">
 						<a class="nav-link" href="../car-loan-page/car-loan.jsp">Car Loan</a>
 					</li>
-					<li id="change-password">
+					<li id="change-password" class="nav-item">
 						<a class="nav-link" href="../change-password-page/change-password.jsp">Change Password</a>
 					</li>
-					<li id="close-account">
+					<li id="close-account" class="nav-item">
 						<a class="nav-link" href="../close-account-page/close-account.jsp">Close Account</a>
 					</li>
 				</ul>
 				
-				<ul class="navbar-nav show-right">
-					<li id="logout">
+				<ul class="navbar-nav show-right max-width">
+					<li id="logout" class="nav-item">
 						<a class="nav-link" href="../logout-page/logout.jsp">Logout</a>
 					</li>
 				</ul>
@@ -123,12 +123,18 @@
 						<% 
 							if (!isLoggedIn) {
 						%>
-                        <p><a href="../signup-page/signup.jsp" class="btn btn-primary shadow mr-2">Signup</a>&nbsp&nbsp&nbsp<a href="../login-page/login.jsp" class="btn btn-primary shadow mr-2">Login</a></p>
+                        <p>
+                        	<a href="../signup-page/signup.jsp" class="btn btn-primary shadow mr-2">Signup</a>
+                        	&nbsp&nbsp&nbsp
+                        	<a href="../login-page/login.jsp" class="btn btn-primary shadow mr-2">User Login</a>
+                        	&nbsp&nbsp&nbsp
+                        	<a href="../admin-login-page/admin-login.jsp" class="btn btn-primary shadow mr-2">Admin Login</a>
+                       	</p>
                         <%
 							}
                         %>
                     </div>
-                	<div class="col-lg-6 order-1 order-lg-2"><img src="../images/logo_all.png" class="logo-all" alt="landing image" class="img-fluid"></div>
+                	<div class="col-lg-6 order-1 order-lg-2 hide-below-1000"><img src="../images/logo_all.png" class="logo-all" alt="landing image" class="img-fluid"></div>
             	</div>
         	</div>
         </section>
@@ -229,7 +235,7 @@
 
 		<div class="bg-dark text-white footer-container">
 			<span>(C) 2022 Perfios Bank. All rights reserved. </span>
-               <span class="show-right">Made with <span style="color: #e25555;">❤</span> by Venkatesh</span>
+               <span class="show-right hide-below-600">Made with <span style="color: #e25555;">❤</span> by Venkatesh</span>
 	    </div>
 
 		<script type="text/javascript">

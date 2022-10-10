@@ -57,10 +57,20 @@ li {
 }
 
 .content-container {
+	min-height: 90vh;
 	display: flex;
 	justify-content: center;
 	margin-top: 10%;
 	margin-bottom: 10%;
+}
+
+.table-container {
+	min-height: 90vh;
+	display: flex;
+	justify-content: center;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	overflow-x: scroll; 
 }
 
 .image {
@@ -77,4 +87,32 @@ li {
 
 .center {
 	text-align: center;
+}
+
+@media only screen and (max-width: 1200px)  {
+	.max-width {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .hide-below-600 {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 1500px) {
+    .hide-below-1500 {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+	.content-container {
+		min-height: 60vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		margin-left: 20%;
+	}
 }

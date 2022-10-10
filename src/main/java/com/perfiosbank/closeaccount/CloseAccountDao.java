@@ -14,12 +14,23 @@ public class CloseAccountDao {
         return statement.executeUpdate(removeUserSql);
 	}
 	
-	public static int getNumberOfApprovedLoans(String username) throws Exception {
-		String getNumberOfApprovedLoansSql = "select count(*) from Car_Loans where Status='Approved' and "
+	public static int getNumberOfActiveFixedDepositAccountsByUsername(String username) throws Exception {
+		String getNumberOfActiveFixedDepositAccountsByUsernameSql = "select count(*) from Fixed_Deposits "
+				+ "where Username='" + username + "'";
+        Statement statement = DatabaseUtils.getConnection().createStatement();
+
+        ResultSet resultSet = statement.executeQuery(getNumberOfActiveFixedDepositAccountsByUsernameSql);
+        resultSet.next();
+        
+        return resultSet.getInt(1);
+	}
+	
+	public static int getNumberOfApprovedLoansByUsername(String username) throws Exception {
+		String getNumberOfApprovedLoansByUsernameSql = "select count(*) from Car_Loans where Status='Approved' and "
 				+ "Username='" + username + "'";
         Statement statement = DatabaseUtils.getConnection().createStatement();
 
-        ResultSet resultSet = statement.executeQuery(getNumberOfApprovedLoansSql);
+        ResultSet resultSet = statement.executeQuery(getNumberOfApprovedLoansByUsernameSql);
         resultSet.next();
         
         return resultSet.getInt(1);

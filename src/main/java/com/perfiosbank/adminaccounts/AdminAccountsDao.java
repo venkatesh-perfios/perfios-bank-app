@@ -29,4 +29,11 @@ public class AdminAccountsDao {
 		
 		return statement.executeUpdate(changeStatusByIdSql); 
 	}
+	
+	public static int removeAccountByUsername(String username) throws Exception {
+		String removeAccountByUsernameSql = "delete from " + TABLE_NAME + " where Username='" + username + "'";
+		Statement statement = DatabaseUtils.getConnection().createStatement();
+		
+		return statement.executeUpdate(removeAccountByUsernameSql);
+	}
 }

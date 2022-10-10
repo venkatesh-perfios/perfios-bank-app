@@ -15,6 +15,7 @@ import com.perfiosbank.exceptions.UsernameAlreadyExistsException;
 import com.perfiosbank.exceptions.UsernameTooLongException;
 import com.perfiosbank.login.LoginDao;
 import com.perfiosbank.model.User;
+import com.perfiosbank.utils.AuthenticationUtils;
 import com.perfiosbank.utils.SessionUtils;
 
 @WebServlet("/signup-page/signup")
@@ -54,7 +55,7 @@ public class SignupController extends HttpServlet {
 			request.getSession().setAttribute("success", "You have signed up successfully!");
 			request.getSession().setAttribute("isLoggedIn", true);
 			request.getSession().setAttribute("usernameInSession", username);
-			request.getSession().setAttribute("passwordInSession", password);
+			request.getSession().setAttribute("passwordInSession",  AuthenticationUtils.encryptPassword(password));
 			response.sendRedirect("/PerfiosBank/landing-page/index.jsp");
 		} catch(UsernameAlreadyExistsException | UsernameTooLongException usernameException) {
 			request.getSession().setAttribute("usernameException", usernameException.getMessage());

@@ -53,3 +53,15 @@ li {
 	text-align: center;
 	color: red;
 }
+
+@media only screen and (max-width: 1200px)  {
+	.max-width {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .hide-below-600 {
+        display: none !important;
+    }
+}

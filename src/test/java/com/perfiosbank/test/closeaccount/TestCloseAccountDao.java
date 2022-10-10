@@ -71,15 +71,26 @@ public class TestCloseAccountDao {
 			fail("Should have removed the user!");
 		}
 	}
-
+	
 	@Test
-	public void givenValidUsername_testGetNumberOfApprovedLoans_shouldReturnNumberOfApprovedLoans() {
+	public void givenValidUsername_testGetNumberOfActiveFixedDepositAccountsByUsername_shouldReturnNumberOfActiveFixedDepositAccounts() {
 		try {
-			int numberOfApprovedLoans = CloseAccountDao.getNumberOfApprovedLoans(username);
+			int numberOfActiveFixedDepositAccounts = CloseAccountDao.getNumberOfActiveFixedDepositAccountsByUsername(username);
+			assertTrue(numberOfActiveFixedDepositAccounts >= 0);
+		} catch(Exception e) {
+			e.printStackTrace();
+			fail("Should have returned the number of active fixed deposit accounts for the user!");
+		}
+	}
+	
+	@Test
+	public void givenValidUsername_testGetNumberOfApprovedLoansByUsername_shouldReturnNumberOfApprovedLoans() {
+		try {
+			int numberOfApprovedLoans = CloseAccountDao.getNumberOfApprovedLoansByUsername(username);
 			assertTrue(numberOfApprovedLoans >= 0);
 		} catch(Exception e) {
 			e.printStackTrace();
-			fail("Should have returned the number of approved loans for the user!");
+			fail("Should have returned the number of approved/active loans for the user!");
 		}
 	}
 }

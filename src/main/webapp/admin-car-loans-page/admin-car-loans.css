@@ -57,10 +57,12 @@ li {
 }
 
 .content-container {
+	min-height: 80vh;
 	display: flex;
 	justify-content: center;
-	margin-top: 10%;
-	margin-bottom: 10%;
+	margin-top: 12%;
+	margin-bottom: 12%;
+	overflow-x: scroll;
 }
 
 .image {
@@ -73,4 +75,22 @@ li {
 	top: 100%;
 	height: 40px;
 	padding: 8px;
+}
+
+@media only screen and (max-width: 1200px)  {
+	.max-width {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .hide-below-600 {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .hide-below-1400 {
+        display: none !important;
+    }
 }

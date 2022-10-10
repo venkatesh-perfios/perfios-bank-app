@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.perfiosbank.closeaccount.CloseAccountService;
+import com.perfiosbank.exceptions.ActiveFixedDepositAccountsFoundException;
 import com.perfiosbank.exceptions.ActiveLoansFoundException;
 import com.perfiosbank.exceptions.AuthenticationFailedException;
 import com.perfiosbank.login.LoginService;
@@ -60,7 +61,7 @@ public class TestCloseAccountService {
 	}
 	
 	@Test
-	public void givenInvalidUsername_testCloseAccountMoney_shouldThrowAuthenticationFailedException() {
+	public void givenInvalidUsername_testCloseAccount_shouldThrowAuthenticationFailedException() {
 		assertThrows(AuthenticationFailedException.class, () -> {
 			enteredDetails.setUsername("wrongUsername");
 			closeAccountService.closeAccount(user, enteredDetails);
@@ -68,7 +69,7 @@ public class TestCloseAccountService {
 	}
 
 	@Test
-	public void givenInvalidPassword_testCloseAccountMoney_shouldThrowAuthenticationFailedException() {
+	public void givenInvalidPassword_testCloseAccount_shouldThrowAuthenticationFailedException() {
 		assertThrows(AuthenticationFailedException.class, () -> {
 			enteredDetails.setPassword("wrongPassword");
 			closeAccountService.closeAccount(user, enteredDetails);
@@ -76,7 +77,18 @@ public class TestCloseAccountService {
 	}
 
 	@Test
-	public void givenUserWithActiveLoans_testCloseAccountMoney_shouldThrowActiveLoansFoundException() {
+	public void givenUserWithActiveFixedDepositAccounts_testCloseAccount_shouldThrowActiveFixedDepositAccountsFoundException() {
+		assertThrows(ActiveFixedDepositAccountsFoundException.class, () -> {
+			enteredDetails.setUsername("finalz");
+			enteredDetails.setPassword("venky@2K");
+			user.setUsername(enteredDetails.getUsername());
+			user.setPassword(new StrongPasswordEncryptor().encryptPassword(enteredDetails.getPassword()));
+			closeAccountService.closeAccount(user, enteredDetails);
+		});
+	}
+	
+	@Test
+	public void givenUserWithActiveLoans_testCloseAccount_shouldThrowActiveLoansFoundException() {
 		assertThrows(ActiveLoansFoundException.class, () -> {
 			enteredDetails.setUsername("final");
 			enteredDetails.setPassword("venky@2K");

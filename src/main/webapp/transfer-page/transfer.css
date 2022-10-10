@@ -73,3 +73,25 @@ li {
 	height: 40px;
 	padding: 8px;
 }
+
+@media only screen and (max-width: 1200px)  {
+	.max-width {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+    .hide-below-600 {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+	.content-container {
+		min-height: 60vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+}

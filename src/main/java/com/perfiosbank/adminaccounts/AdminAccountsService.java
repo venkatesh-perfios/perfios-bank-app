@@ -1,9 +1,7 @@
 package com.perfiosbank.adminaccounts;
 
-import com.perfiosbank.closeaccount.CloseAccountDao;
 import com.perfiosbank.deposit.DepositDao;
 import com.perfiosbank.model.AdminAccountsInfo;
-import com.perfiosbank.model.User;
 import com.perfiosbank.utils.DateTimeUtils;
 
 public class AdminAccountsService {
@@ -25,9 +23,7 @@ public class AdminAccountsService {
 	        
 			return adminAccountsInfo.getUsername() + "'s account opening application has been approved successfully!";
 		} else {
-			User userInSession = new User();
-			userInSession.setUsername(adminAccountsInfo.getUsername());
-			if (CloseAccountDao.removeUser(userInSession) != 1) {
+			if (AdminAccountsDao.removeAccountByUsername(adminAccountsInfo.getUsername()) != 1) {
 				throw new Exception();
 			}
 			
