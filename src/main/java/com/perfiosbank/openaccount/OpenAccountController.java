@@ -53,7 +53,7 @@ public class OpenAccountController extends HttpServlet {
 		String pan = request.getParameter("pan");
 		String address = request.getParameter("address");
 		long phone = Long.parseLong(request.getParameter("phone"));
-		double amount = Long.parseLong(request.getParameter("amount"));
+		double amount = Double.parseDouble(request.getParameter("amount"));
 		
 		final String[] fileTypes = {"photo", "aadhaarProof", "panProof"};
 		HashMap<String, byte[]> uploadedFiles = new HashMap<>();
@@ -87,10 +87,8 @@ public class OpenAccountController extends HttpServlet {
         	String accountNumber = openAccountService.openAccount(userInSession, enteredDetails, accountInfo);
 			request.getSession().setAttribute("success", "Here's your temporary account number: " 
         	+ accountNumber + ". It will become your permanent account number upon approval from our side");
-			response.sendRedirect("open-account.jsp");
         } catch(AuthenticationFailedException authenticationFailedException) {
 			request.getSession().setAttribute("authenticationException", authenticationFailedException.getMessage());
-			response.sendRedirect("open-account.jsp");
         }catch(NameInvalidException nameInvalidException) {
         	String errorMessage = nameInvalidException.getMessage();
         	if (errorMessage.contains("first")) {
@@ -98,23 +96,18 @@ public class OpenAccountController extends HttpServlet {
         	} else {
         		request.getSession().setAttribute("lastNameException", errorMessage);
         	}
-			response.sendRedirect("open-account.jsp");
 		} catch(AadhaarInvalidException aadhaarInvalidException) {
 			request.getSession().setAttribute("aadhaarException", aadhaarInvalidException.getMessage());
-			response.sendRedirect("open-account.jsp");
 		} catch(PanInvalidException panInvalidException) {
 			request.getSession().setAttribute("panException", panInvalidException.getMessage());
 			response.sendRedirect("open-account.jsp");
 		} catch(PhoneInvalidException phoneInvalidExcetion) {
 			request.getSession().setAttribute("phoneException", phoneInvalidExcetion.getMessage());
-			response.sendRedirect("open-account.jsp");
 		} catch(AmountInvalidException | BelowMinBalanceException | AmountLimitReachedException 
 				amountExceptions) {
 			request.getSession().setAttribute("amountException", amountExceptions.getMessage());
-			response.sendRedirect("open-account.jsp");
 		} catch(AccountAlreadyExistsException accountAlreadyExistsException) {
 			request.getSession().setAttribute("otherException", accountAlreadyExistsException.getMessage());
-			response.sendRedirect("open-account.jsp");
 		} catch(FileInvalidException fileInvalidException) {
         	String[] filenameAndMessage = fileInvalidException.getMessage().split(",");
         	switch(filenameAndMessage[0]) {
@@ -128,11 +121,10 @@ public class OpenAccountController extends HttpServlet {
                 	request.getSession().setAttribute("panProofException", filenameAndMessage[1]);
         			break;
         	}
-			response.sendRedirect("open-account.jsp");
         } catch(Exception e) {
-			e.printStackTrace();
 			request.getSession().setAttribute("otherException", "Unable to open your account at the moment! Try again later.");
-			response.sendRedirect("open-account.jsp");
+		} finally {
+			request.getRequestDispatcher("open-account.jsp").include(request, response);
 		}
     }
 }

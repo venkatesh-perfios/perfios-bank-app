@@ -1,14 +1,11 @@
 package com.perfiosbank.test.fixeddeposit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -26,7 +23,6 @@ import com.perfiosbank.fixeddeposit.FixedDepositService;
 import com.perfiosbank.login.LoginService;
 import com.perfiosbank.model.FixedDepositInfo;
 import com.perfiosbank.model.User;
-import com.perfiosbank.utils.DatabaseUtils;
 
 public class TestFixedDepositService {
 	static User user;
@@ -52,14 +48,14 @@ public class TestFixedDepositService {
 	
 	@AfterAll
 	public static void tearDownOnce() {
-		try {
-			String deleteFixedDepositAccountsByUsername = "delete from Fixed_Deposits where Username='" + user.getUsername() + "'";
-			Statement statement = DatabaseUtils.getConnection().createStatement();
-			statement.executeUpdate(deleteFixedDepositAccountsByUsername);
-		} catch(Exception e) {
-			e.printStackTrace();
-			fail("Should have closed the user's FD accounts!");
-		}
+//		try {
+//			String deleteFixedDepositAccountsByUsername = "delete from Fixed_Deposits where Username='" + user.getUsername() + "'";
+//			Statement statement = DatabaseUtils.getConnection().createStatement();
+//			statement.executeUpdate(deleteFixedDepositAccountsByUsername);
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//			fail("Should have closed the user's FD accounts!");
+//		}
 		user = null;
 		loginService = null;
 	}
@@ -88,9 +84,9 @@ public class TestFixedDepositService {
 			fixedDepositService.startFixedDeposit(user, fixedDepositInfo);
 
 			ResultSet resultSet = FixedDepositDao.getAllFixedDepositAccountsByUsername(fixedDepositInfo.getUsername());
-			assertTrue(resultSet.next());
-			assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
-			assertFalse(resultSet.next());
+			while (resultSet.next()) {
+				assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			fail("Should have opened the user's FD account!");

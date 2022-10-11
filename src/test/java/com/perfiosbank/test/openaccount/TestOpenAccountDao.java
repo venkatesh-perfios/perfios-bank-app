@@ -69,10 +69,10 @@ public class TestOpenAccountDao {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		newAccountNumber = "PBIN1000000010";
+		newAccountNumber = "PBIN1000000100";
 		username = user.getUsername();
 		
-		File file = new File("linuxcommands.pdf");
+		File file = new File("src/main/resources/linuxcommands.pdf");
 		final String[] fileTypes = {"photo", "aadhaarProof", "panProof"};
 		HashMap<String, byte[]> uploadedFiles = new HashMap<>();
 		List<String> uploadedFilenames = new ArrayList<String>();

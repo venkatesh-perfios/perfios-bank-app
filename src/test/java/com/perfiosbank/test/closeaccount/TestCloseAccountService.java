@@ -79,22 +79,26 @@ public class TestCloseAccountService {
 	@Test
 	public void givenUserWithActiveFixedDepositAccounts_testCloseAccount_shouldThrowActiveFixedDepositAccountsFoundException() {
 		assertThrows(ActiveFixedDepositAccountsFoundException.class, () -> {
-			enteredDetails.setUsername("finalz");
-			enteredDetails.setPassword("venky@2K");
+			enteredDetails.setUsername("TestServices");
+			enteredDetails.setPassword("Test3@Services");
 			user.setUsername(enteredDetails.getUsername());
 			user.setPassword(new StrongPasswordEncryptor().encryptPassword(enteredDetails.getPassword()));
 			closeAccountService.closeAccount(user, enteredDetails);
+			user.setUsername("TestCloseAccount");
+			user.setPassword(new StrongPasswordEncryptor().encryptPassword("Test5@CloseAccount"));
 		});
 	}
 	
 	@Test
 	public void givenUserWithActiveLoans_testCloseAccount_shouldThrowActiveLoansFoundException() {
 		assertThrows(ActiveLoansFoundException.class, () -> {
-			enteredDetails.setUsername("final");
-			enteredDetails.setPassword("venky@2K");
+			enteredDetails.setUsername("TestFrozenAccount");
+			enteredDetails.setPassword("Test4@FrozenAccount");
 			user.setUsername(enteredDetails.getUsername());
 			user.setPassword(new StrongPasswordEncryptor().encryptPassword(enteredDetails.getPassword()));
 			closeAccountService.closeAccount(user, enteredDetails);
+			user.setUsername("TestCloseAccount");
+			user.setPassword(new StrongPasswordEncryptor().encryptPassword("Test5@CloseAccount"));
 		});
 	}
 

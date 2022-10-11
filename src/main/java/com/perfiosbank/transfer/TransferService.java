@@ -41,9 +41,9 @@ public class TransferService {
         }
 
         if (AccountUtils.isAmountInvalid(transferInfo.getAmount())) {
-            msg = "Please enter a valid amount! Here are some tips:\n" +
-                    "1. Don't enter any alphabet or special character\n" +
-                    "2. Don't enter 0 as the amount to withdraw\n" +
+            msg = "Please enter a valid amount! Here are some tips:<br>" +
+                    "1. Don't enter any alphabet or special character<br>" +
+                    "2. Don't enter 0 as the amount to withdraw<br>" +
                     "3. Don't enter more than 2 numbers after the decimal point";
             throw new AmountInvalidException(msg);
         }

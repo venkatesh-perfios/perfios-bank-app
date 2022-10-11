@@ -197,7 +197,6 @@
 			
 			<div class="bg-dark text-white footer-container">
 				<span>(C) 2022 Perfios Bank. All rights reserved. </span>
-                <span class="show-right hide-below-600">Made with <span style="color: #e25555;">❤</span> by Venkatesh</span>
 		    </div>
 		</div>
 			

@@ -87,7 +87,7 @@ public class CarLoanDao {
 	}
 	
 	public static int setAccountAsFrozenByUsername(String username) throws Exception {
-		String setAccountAsFrozenByUsernameSql = "update " + ACCOUNTS_TABLE + " set Is_Frozen=0 where Username='"
+		String setAccountAsFrozenByUsernameSql = "update " + ACCOUNTS_TABLE + " set Is_Frozen=1 where Username='"
 				+ username + "'";
 		Statement statement = DatabaseUtils.getConnection().createStatement();
 		

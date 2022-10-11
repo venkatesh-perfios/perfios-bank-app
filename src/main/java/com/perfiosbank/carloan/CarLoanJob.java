@@ -38,13 +38,18 @@ public class CarLoanJob implements Job {
 				isAccountFrozenResultSet.next();
 				if (isAccountFrozenResultSet.getInt(1) == 0) {
 					if (hasEnded == 1) {
-						double paymentToMake = misses * (emi + penalty);
+						String currentDate = DateTimeUtils.getCurrentDateTime().substring(0, 10);
+						String onlyDate = currentDate.substring(8, 10);
 						
-						int status = transferMoneyToBank(username, id, paymentToMake, misses, TARGET_ACCOUNT_NUMBER);
-						
-						if (status == 1) {
-							if (CarLoanDao.removeCarLoanById(loanId) != 1) {
-								throw new Exception();
+						if (onlyDate.equals("01")) {
+							double paymentToMake = misses * (emi + penalty);
+							
+							int status = transferMoneyToBank(username, id, paymentToMake, misses, TARGET_ACCOUNT_NUMBER);
+							
+							if (status == 1) {
+								if (CarLoanDao.removeCarLoanById(loanId) != 1) {
+									throw new Exception();
+								}
 							}
 						}
 					} else if (hasStarted == 1) {
@@ -101,7 +106,7 @@ public class CarLoanJob implements Job {
         		throw new Exception();
         	}
         	
-        	if (newMisses == 3) {
+        	if (newMisses >= 3) {
         		if (CarLoanDao.setAccountAsFrozenByUsername(username) != 1) {
         			throw new Exception();
         		}

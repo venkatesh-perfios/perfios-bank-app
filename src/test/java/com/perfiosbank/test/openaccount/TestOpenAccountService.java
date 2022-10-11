@@ -80,7 +80,7 @@ public class TestOpenAccountService {
 		enteredDetails.setUsername(user.getUsername());
 		enteredDetails.setPassword("Test2@OpenAccount");
 		
-		File file = new File("linuxcommands.pdf");
+		File file = new File("src/main/resources/linuxcommands.pdf");
 		final String[] fileTypes = {"photo", "aadhaarProof", "panProof"};
 		HashMap<String, byte[]> uploadedFiles = new HashMap<>();
 		List<String> uploadedFilenames = new ArrayList<String>();
@@ -212,7 +212,7 @@ public class TestOpenAccountService {
 	@Test
 	public void givenNonPdfFile_testOpenAccount_shouldThrowFileInvalidException() {
 		assertThrows(FileInvalidException.class, () -> {
-			File file = new File("Core_Java.txt");
+			File file = new File("src/main/resources/Core_Java.txt");
 			InputStream fileContent = new FileInputStream(file);
 			
 			List<String> uploadedFilenames = accountInfo.getUploadedFilenames();

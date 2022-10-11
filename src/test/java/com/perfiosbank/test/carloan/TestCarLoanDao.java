@@ -55,7 +55,7 @@ public class TestCarLoanDao {
 			e.printStackTrace();
 		}
 
-		File file = new File("linuxcommands.pdf");
+		File file = new File("src/main/resources/linuxcommands.pdf");
 		final String[] fileTypes = {"cibilReport", "identityProof", "addressProof", "incomeProof"};
 		uploadedFiles = new HashMap<>();
 		uploadedFilenames = new ArrayList<String>();
@@ -245,8 +245,12 @@ public class TestCarLoanDao {
 
 			ResultSet resultSet = OpenAccountDao.getAccountByUsername(carLoanInfo.getUsername());
 			assertTrue(resultSet.next());
-			assertEquals(0, resultSet.getInt("Is_Frozen"));
+			assertEquals(1, resultSet.getInt("Is_Frozen"));
 			assertFalse(resultSet.next());
+			
+			String unfreezeAccountSql = "update Accounts set Is_Frozen=0 where Username='" + carLoanInfo.getUsername() + "'";
+			Statement statement = DatabaseUtils.getConnection().createStatement();
+			statement.executeUpdate(unfreezeAccountSql);
 		} catch(Exception e) {
 			e.printStackTrace();
 			fail("Should have frozen the corresponding account!");

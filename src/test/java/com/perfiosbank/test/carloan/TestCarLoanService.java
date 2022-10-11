@@ -73,7 +73,7 @@ public class TestCarLoanService {
 	public void setUp() throws Exception {
 		carLoanService = new CarLoanService();
 		
-		File file = new File("linuxcommands.pdf");
+		File file = new File("src/main/resources/linuxcommands.pdf");
 		final String[] fileTypes = {"cibilReport", "identityProof", "addressProof", "incomeProof"};
 		HashMap<String, byte[]> uploadedFiles = new HashMap<>();
 		List<String> uploadedFilenames = new ArrayList<String>();
@@ -161,7 +161,7 @@ public class TestCarLoanService {
 	@Test
 	public void givenNonPdfFile_testOpenAccount_shouldThrowFileInvalidException() {
 		assertThrows(FileInvalidException.class, () -> {
-			File file = new File("Core_Java.txt");
+			File file = new File("src/main/resources/Core_Java.txt");
 			InputStream fileContent = new FileInputStream(file);
 			
 			List<String> uploadedFilenames = carLoanInfo.getUploadedFilenames();

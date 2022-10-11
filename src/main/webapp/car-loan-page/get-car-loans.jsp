@@ -119,7 +119,7 @@
 						<h2 class="card-header" style="color: red">You don't have any active car loan(s) at the moment!</h2>
 					</div>
 					<div>
-						<a href="car-loan.jsp">Get a car loan now?</a>
+						<a href="car-loan.jsp">Apply for a car loan now?</a>
 					</div>
 				</div>
 			</div>

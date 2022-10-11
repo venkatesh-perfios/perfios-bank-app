@@ -24,6 +24,7 @@ import com.perfiosbank.exceptions.TargetAccountNumberSameAsUserException;
 import com.perfiosbank.login.LoginService;
 import com.perfiosbank.model.TransferInfo;
 import com.perfiosbank.model.User;
+import com.perfiosbank.transfer.TransferDao;
 import com.perfiosbank.transfer.TransferService;
 
 public class TestTransferService {
@@ -60,7 +61,7 @@ public class TestTransferService {
 		transferInfo = new TransferInfo();
 		transferInfo.setUsername(user.getUsername());
 		transferInfo.setPassword("Test3@Services");
-		transferInfo.setTargetAccountNumber("PBIN1000000001");
+		transferInfo.setTargetAccountNumber("PBIN1000000002");
 		transferInfo.setAmount(762.16);
 	}
 	
@@ -77,7 +78,7 @@ public class TestTransferService {
 			resultSet.next();
 			double senderOldBalanceFromDb = resultSet.getDouble(1);
 
-			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("venky");
+			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("adithya");
 			resultSet.next();
 			double receiverOldBalanceFromDb = resultSet.getDouble(1);
 			
@@ -90,7 +91,7 @@ public class TestTransferService {
 
 			assertEquals(expectedSenderNewBalanceFromDb, senderNewBalanceFromDb);
 			
-			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("venky");
+			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("adithya");
 			resultSet.next();
 			double receiverNewBalanceFromDb = resultSet.getDouble(1);
 			double expectedReceiverNewBalanceFromDb = Math.round((receiverOldBalanceFromDb + transferInfo.getAmount()) * 100) / 100.0;
@@ -129,7 +130,9 @@ public class TestTransferService {
 	@Test
 	public void givenUserAccountNumberAsTarget_testTransferMoney_shouldTargetAccountNumberSameAsUserException() {
 		assertThrows(TargetAccountNumberSameAsUserException.class, () -> {
-			transferInfo.setTargetAccountNumber("PBIN1000000008");
+			ResultSet resultSet = TransferDao.getAccountByUsername(user.getUsername());
+			resultSet.next();
+			transferInfo.setTargetAccountNumber(resultSet.getString("Account_Number"));
 			transferService.transferMoney(user, transferInfo);
 		});
 	}

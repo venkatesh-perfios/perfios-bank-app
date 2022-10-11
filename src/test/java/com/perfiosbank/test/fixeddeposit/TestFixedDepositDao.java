@@ -85,9 +85,9 @@ public class TestFixedDepositDao {
 			assertEquals(1, rowsAffected);
 			
 			ResultSet resultSet = FixedDepositDao.getAllFixedDepositAccountsByUsername(fixedDepositInfo.getUsername());
-			assertTrue(resultSet.next());
-			assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
-			assertFalse(resultSet.next());
+			while (resultSet.next()) {
+				assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			fail("Should have opened the FD account!");
@@ -112,9 +112,9 @@ public class TestFixedDepositDao {
 	public void givenValidUsername_testGetAllFixedDepositAccountsByUsername_shouldReturnAllFixedDepositAccountsByUsername() {
 		try {
 			ResultSet resultSet = FixedDepositDao.getAllFixedDepositAccountsByUsername(username);
-			assertTrue(resultSet.next());
-			assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
-			assertFalse(resultSet.next());
+			while (resultSet.next()) {
+				assertEquals(fixedDepositInfo.getUsername(), resultSet.getString("Username"));
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			fail("Should have returned the user's FDs!");

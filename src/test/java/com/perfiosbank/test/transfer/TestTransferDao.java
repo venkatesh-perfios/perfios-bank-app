@@ -48,7 +48,7 @@ public class TestTransferDao {
 	
 	@BeforeEach
 	public void setUp() throws Exception {
-		targetAccountNumber = "PBIN1000000001";
+		targetAccountNumber = "PBIN1000000002";
 		username = user.getUsername();
 	}
 	
