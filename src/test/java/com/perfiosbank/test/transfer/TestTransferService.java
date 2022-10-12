@@ -78,7 +78,7 @@ public class TestTransferService {
 			resultSet.next();
 			double senderOldBalanceFromDb = resultSet.getDouble(1);
 
-			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("adithya");
+			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("PB");
 			resultSet.next();
 			double receiverOldBalanceFromDb = resultSet.getDouble(1);
 			
@@ -91,7 +91,7 @@ public class TestTransferService {
 
 			assertEquals(expectedSenderNewBalanceFromDb, senderNewBalanceFromDb);
 			
-			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("adithya");
+			resultSet = CheckBalanceDao.getCurrentBalanceByUsername("PB");
 			resultSet.next();
 			double receiverNewBalanceFromDb = resultSet.getDouble(1);
 			double expectedReceiverNewBalanceFromDb = Math.round((receiverOldBalanceFromDb + transferInfo.getAmount()) * 100) / 100.0;
